@@ -1,5 +1,5 @@
 #' Runking top N partners
-rank_top_N_partners <- function(df, top_n, oneEU = TRUE, oneFSR = TRUE, oneRUS = FALSE) {
+rank_top_N_partners <- function(df, top_n, oneEU = TRUE, oneFSR = TRUE, oneRUS = FALSE, otherEU = FALSE) {
   # top_n <- 5
   top_n <- as.integer(top_n)
   
@@ -47,7 +47,7 @@ rank_top_N_partners <- function(df, top_n, oneEU = TRUE, oneFSR = TRUE, oneRUS =
   df %>% 
     filter(Partner.Code != 0) %>% 
     mutate(Partner.Top = as.integer(Partner.Code),
-           Partner.Top = if_else(oneEU & Partner.Top %in% eu.Partners, eu.Code, Partner.Top),
+           Partner.Top = if_else(oneEU & !otherEU & Partner.Top %in% eu.Partners, eu.Code, Partner.Top),
            Partner.Top = if_else(oneRUS & Partner.Top %in% rus.Partner, rus.Partner, Partner.Top),
            Partner.Top = if_else(oneFSR & Partner.Top %in% fsr.Partners, fsr.Code, Partner.Top)) %>%
     group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Top")]) %>%
@@ -56,6 +56,7 @@ rank_top_N_partners <- function(df, top_n, oneEU = TRUE, oneFSR = TRUE, oneRUS =
     mutate(Rank = dense_rank(desc(Value.Sum))) %>% 
     arrange(desc(Value.Sum)) %>% 
     mutate(Partner.Top = if_else(Rank >= top_n, row.Code, Partner.Top),
+           Partner.Top = if_else(Rank >= top_n & otherEU & Partner.Code %in% eu.Partners, eu.Code, Partner.Top),
            Rank = if_else(Rank >= top_n, top_n, Rank)) %>% 
     select(-Value.Sum) %>% 
     ungroup() %>% 
