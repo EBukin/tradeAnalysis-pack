@@ -3,7 +3,7 @@ rank_top_N_partners <- function(df, top_n, oneEU = TRUE, oneFSR = TRUE, oneRUS =
   # top_n <- 5
   top_n <- as.integer(top_n)
   
-  group_var <-
+  groupVars <-
     c("Classification",
       "Year",
       "Period",
@@ -41,11 +41,8 @@ rank_top_N_partners <- function(df, top_n, oneEU = TRUE, oneFSR = TRUE, oneRUS =
   fsr.Code <- 889L
   row.Code <- 888L
   
-  
-  world <- df %>% filter(Partner.Code == 0)
-  
+  # Actual calculations
   df %>% 
-    filter(Partner.Code != 0) %>% 
     mutate(Partner.Top = as.integer(Partner.Code),
            Partner.Top = if_else(oneEU & !otherEU & Partner.Top %in% eu.Partners, eu.Code, Partner.Top),
            Partner.Top = if_else(oneRUS & Partner.Top %in% rus.Partner, rus.Partner, Partner.Top),
@@ -53,14 +50,12 @@ rank_top_N_partners <- function(df, top_n, oneEU = TRUE, oneFSR = TRUE, oneRUS =
     group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Top")]) %>%
     mutate(Value.Sum = sum(Value, na.rm = TRUE)) %>% 
     group_by_(.dots = names(.)[names(.) %in% c(groupVars)]) %>% 
-    mutate(Rank = dense_rank(desc(Value.Sum))) %>% 
-    arrange(desc(Value.Sum)) %>% 
+    mutate(Rank = dense_rank(desc(Value.Sum)) - 1L) %>% 
+    ungroup() %>% 
     mutate(Partner.Top = if_else(Rank >= top_n, row.Code, Partner.Top),
            Partner.Top = if_else(Rank >= top_n & otherEU & Partner.Code %in% eu.Partners, eu.Code, Partner.Top),
            Rank = if_else(Rank >= top_n, top_n, Rank)) %>% 
-    select(-Value.Sum) %>% 
-    ungroup() %>% 
-    bind_rows(world %>% mutate(Rank = 0L, Partner.Top = Partner.Code)) %>% 
+    select(-Value.Sum)  %>% 
     return()
   
 }
