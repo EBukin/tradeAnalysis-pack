@@ -42,13 +42,14 @@ ctMonGeo <-
 # Analysis ----------------------------------------------------------------
 
 # Define top n desetinations in each commodity, year
-ctAnGeoTop <- 
+agg <- 
   ctAnGeo %>% 
+  agg_commodities() %>% 
+  View()
+
   rank_top_N_partners(5, otherEU = TRUE) %>% 
-  mutate(Commodity.Code = as.factor(Commodity.Code),
-         Partner.Code = as.factor(Partner.Code))
-
-
+  join_lables()
+  
 
 treeMapCoordinates <- 
   treemapify(
