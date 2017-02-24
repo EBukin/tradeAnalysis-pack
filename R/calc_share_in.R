@@ -1,4 +1,4 @@
-# Function for calculating shares
+#' Function for calculating shares
 calc_share_in <- 
   function(df, shareBaseCommodity.Code = "TOTAL") {
     dfVares <- c("Classification", "Year", "Period", "Trade.Flow.Code", "Reporter.Code", "Partner.Code", "Variable")
