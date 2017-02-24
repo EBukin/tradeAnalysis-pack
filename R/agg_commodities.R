@@ -31,7 +31,8 @@ agg_commodities <-
       data %>%
       mutate(Commodity.Code = as.character(Commodity.Code)) %>%
       left_join(mappingTable, by = "Commodity.Code") %>%
-      mutate(Commodity.Code = Commodity.Agg) %>%
+      mutate(Commodity.Code = Commodity.Agg) %>% 
+      filter(!is.na(Commodity.Code)) %>% 
       select_(.dots = names(.)[!names(.) %in% c("Partner.Top", "Rank", "Commodity.Agg")]) %>%
       group_by_(.dots = names(.)[names(.) %in% grouping_vars]) %>%
       summarise_each(funs(sum(., na.rm = TRUE))) %>%
