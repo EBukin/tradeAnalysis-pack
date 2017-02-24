@@ -8,8 +8,9 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 library(readr)
-devtools::install_github("wilkox/treemapify")
-library(treemapify)
+library(ggplot2)
+# devtools::install_github("wilkox/treemapify")
+# library(treemapify)
 
 # Loading funcitons
 l_ply(str_c("R/", list.files("R/",pattern="*.R")), source)
@@ -52,16 +53,62 @@ shres_in_totals <-
     calc_share_in("WTO_AgriFood")
 
 # Plotting first things
+df <- 
 shres_in_totals %>% 
   filter(Commodity.Code %in% c("1_24_Total_excl_fish", "29_38_Chemicals", "29_53_AgriFoodGoods", "3_Fish", "51_Wool", "52_Cotton", "53_Fibers", "41_43_Skins", "50_Silk")) %>% 
   filter(Year %in% c(2010:2014),
-         Partner.Code == 0,
-         Trade.Flow.Code == 1) %>% 
+         Partner.Code == 0)
+
+
+df %>% 
   ggplot()+
-  aes(x = Year, y = Share_in_WTO_AgriFood, colour = Commodity.Code, fill = Commodity.Code) +
+  aes(x = Year, y = Value, colour = Commodity.Code, fill = Commodity.Code) +
   # geom_jitter()
   geom_bar(stat = "identity", position = "stack") 
-  
+
+
+# Building a function for plotting trade balance --------------------------
+
+
+# xVar <- "Period"
+# yVar <- "Value"  
+# stackVar <- "Commodity.Code"
+# # srackMax <- 5
+# otherCompulsoryVars <- c("Reporter.Code", "Trade.Flow")
+# exp <- "Export"
+# imp <- "Import"
+# horizontalLine <- "Trade balance"
+# p_dataName <- c(xVar, yVar, stackVar, otherCompulsoryVars, horizontalLine, exp, imp)
+# 
+# # Extracting plotting data and calculating trade balance
+# p_data <-
+#   df %>%
+#   join_lables() %>%
+#   select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
+#   spread(., Trade.Flow, Value, fill = 0) %>%
+#   select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
+#   mutate_(.dots = setNames(str_c("-", imp), imp))%>%
+#   mutate_(.dots = setNames(str_c(imp, "+", exp), horizontalLine)) %>%
+#   gather(Trade.Flow, Value, 4:length(.))
+# 
+# # Calculatgin how many stacks are present
+# nStacks <- 
+#   p_data %>% 
+#   group_by_(.dots = stackVar) %>% 
+#   distinct %>% 
+#   nrow()
+# 
+# # Implement later Rank stacks and group them into other groups
+# 
+# # Ordering the stacking variable propperly.
+# stackingOrder <- 
+#   p_data %>% 
+#   filter_(.dots = str_c(xVar, "==max(", xVar,",na.rm = TRUE)")) %>% 
+#   group_by_(.dots = c(xVar, stackVar)) %>% 
+#   filter_(.dots = str_c(yVar, "==max(", yVar,",na.rm = TRUE)")) %>% 
+#   ungroup() %>%
+#   mutate(stackOrder = min_rank(desc(Value))) %>% 
+#   select_(.dots = c(stackVar, "stackOrder"))
 
 
 # 1         1_24_AgriFood
