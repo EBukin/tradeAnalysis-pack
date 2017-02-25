@@ -11,8 +11,11 @@ plot_tb <-
            exp = "Export",
            imp = "Import",
            otherCompulsoryVars = c("Reporter.Code", "Trade.Flow"),
+           groupVar = "Trade.Flow",
+           colourVar = "Trade.Flow",
            horizontalLine = "Trade balance",
-           manualScale = FALSE,
+           brewScale = TRUE,
+           brewScaleType = "seq",
            brewPalName = "Set1",
            revertColours = FALSE) {
     require(plyr)
@@ -48,9 +51,12 @@ plot_tb <-
         yVar,
         stackVar,
         otherCompulsoryVars,
+        groupVar,
         horizontalLine,
         exp,
-        imp)
+        imp,
+        colourVar) %>% 
+      unique()
 
     # Names for variables in legend
     if (is.na(stackVarName)) {
@@ -75,7 +81,7 @@ plot_tb <-
       select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
       mutate_(.dots = setNames(str_c("-", imp), imp)) %>%
       mutate_(.dots = setNames(str_c(imp, "+", exp), horizontalLine)) %>%
-      gather(Trade.Flow, Value, 4:length(.))
+      gather(Trade.Flow, Value, (df %>% select_(.dots = names(.)[names(.) %in% p_dataName]) %>% length(.)+1):length(.))
     
     # Calculating trade balance
     p_data <-
@@ -150,8 +156,12 @@ plot_tb <-
     
     
     # Define colours for categories.
+    # myPal <-
+    #   colorRampPalette(brewer.pal(max(3, min(8, nStacks)), name = brewPalName), bias = 2)
     myPal <-
-      colorRampPalette(brewer.pal(max(3, min(8, nStacks)), name = brewPalName), bias = 2)
+      colorRampPalette(brewer_pal(type = brewScaleType, 
+                                  palette = brewPalName,
+                                  direction = 1)(max(3, min(8, nrow(stackingOrder)))), bias = 1)
     
     # Determine colour scale with the names for each colour
     if (revertColours) {
@@ -174,14 +184,14 @@ plot_tb <-
     # Initializing plot
     p <-
       ggplot(p_data) +
-      aes_string(x = xVar, y = yVar, fill = stackVar) +
+      aes_string(x = xVar, y = yVar, fill = stackVar, group = groupVar) +
       geom_hline(aes(yintercept = 0))
     
     # Imp
     p <-
       p +
       geom_bar(
-        data = p_data %>% filter(Trade.Flow == imp),
+        data = p_data %>% filter(Trade.Flow == imp) %>% arrange_(xVar, yVar),
         colour = "black",
         stat = "identity",
         position = "stack"
@@ -191,7 +201,7 @@ plot_tb <-
     p <-
       p +
       geom_bar(
-        data = p_data %>% filter(Trade.Flow == exp),
+        data = p_data %>% filter(Trade.Flow == exp) %>% arrange_(xVar, str_c("-",yVar)),
         colour = "black",
         stat = "identity",
         position = "stack"
@@ -204,8 +214,8 @@ plot_tb <-
         mapping = aes_string(
           x = xVar,
           y = yVar,
-          group = otherCompulsoryVars[2],
-          colour = otherCompulsoryVars[2]
+          group = groupVar,
+          colour = colourVar
         ),
         data = p_data %>% filter(Trade.Flow == horizontalLine) ,
         inherit.aes = FALSE
@@ -214,13 +224,12 @@ plot_tb <-
         mapping = aes_string(
           x = xVar,
           y = yVar,
-          group = otherCompulsoryVars[2],
-          colour = otherCompulsoryVars[2]
+          group = groupVar,
+          colour = colourVar
         ),
         data = p_data %>% filter(Trade.Flow == horizontalLine),
         inherit.aes = FALSE
-      ) +
-      scale_color_manual(values = "black")
+      ) 
     
     # Adding legend
     p <-
@@ -230,16 +239,17 @@ plot_tb <-
         y = yVarName,
         colour = "",
         fill = stackVarName
-      ) 
+      ) +
+      scale_color_grey()
     
     # Adding scale 
-    if(manualScale) {
-      p <- p + scale_fill_manual(values = palLegend)
+    if(brewScale) {
+      p <- 
+      p + 
+      scale_fill_manual(values = palLegend)
     }
     
     p
-    
-    
     
   }
 
