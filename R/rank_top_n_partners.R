@@ -1,27 +1,25 @@
 #' Runking top N partners
-rank_top_N_partners <- function(df, top_n, oneEU = TRUE, oneFSR = TRUE, oneRUS = FALSE, otherEU = FALSE) {
+rank_agg_top_partners <- function(df, top_n, agg = TRUE, oneEU = TRUE, oneFSR = TRUE, oneRUS = FALSE, otherEU = FALSE) {
   # top_n <- 5
   top_n <- as.integer(top_n)
   
   groupVars <-
-    c("Classification",
+    c(
+      "Classification",
       "Year",
       "Period",
       "Trade.Flow.Code",
       "Commodity.Code",
-      "Partner.Code",
       "Variable",
-      "Type",
-      "Partner",
       "Trade.Flow",
       "Commodity",
       "Unit",
       "Qty.Unit.Code",
       "Unit.Description",
-      "Partner.Code.agg",
-      "Reporter", 
+      "Reporter",
       "Reporter.Code"
     )
+  
   
   fsr.Partners <- getFSR()$Partner.Code
   
@@ -41,21 +39,47 @@ rank_top_N_partners <- function(df, top_n, oneEU = TRUE, oneFSR = TRUE, oneRUS =
   fsr.Code <- 889L
   row.Code <- 888L
   
-  # Actual calculations
-  df %>% 
-    mutate(Partner.Top = as.integer(Partner.Code),
-           Partner.Top = if_else(oneEU & !otherEU & Partner.Top %in% eu.Partners, eu.Code, Partner.Top),
-           Partner.Top = if_else(oneRUS & Partner.Top %in% rus.Partner, rus.Partner, Partner.Top),
-           Partner.Top = if_else(oneFSR & Partner.Top %in% fsr.Partners, fsr.Code, Partner.Top)) %>%
-    group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Top")]) %>%
-    mutate(Value.Sum = sum(Value, na.rm = TRUE)) %>% 
-    group_by_(.dots = names(.)[names(.) %in% c(groupVars)]) %>% 
-    mutate(Rank = dense_rank(desc(Value.Sum)) - 1L) %>% 
-    ungroup() %>% 
-    mutate(Partner.Top = if_else(Rank >= top_n, row.Code, Partner.Top),
-           Partner.Top = if_else(Rank >= top_n & otherEU & Partner.Code %in% eu.Partners, eu.Code, Partner.Top),
-           Rank = if_else(Rank >= top_n, top_n, Rank)) %>% 
-    select(-Value.Sum)  %>% 
-    return()
+  if(!agg) {
+    # Actual calculations
+    df <- 
+      df %>% 
+      mutate(Partner.Top = as.integer(Partner.Code),
+             Partner.Top = if_else(oneEU & !otherEU & Partner.Top %in% eu.Partners, eu.Code, Partner.Top),
+             Partner.Top = if_else(oneRUS & Partner.Top %in% rus.Partner, rus.Partner, Partner.Top),
+             Partner.Top = if_else(oneFSR & Partner.Top %in% fsr.Partners, fsr.Code, Partner.Top)) %>%
+      group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Top")]) %>%
+      mutate(Value.Sum = sum(Value, na.rm = TRUE)) %>% 
+      group_by_(.dots = names(.)[names(.) %in% c(groupVars)]) %>% 
+      mutate(Rank = dense_rank(desc(Value.Sum)) - 1L) %>% 
+      ungroup() %>% 
+      mutate(Partner.Top = if_else(Rank >= top_n, row.Code, Partner.Top),
+             Partner.Top = if_else(Rank >= top_n & otherEU & Partner.Code %in% eu.Partners, eu.Code, Partner.Top),
+             Rank = if_else(Rank >= top_n, top_n, Rank)) %>% 
+      select(-Value.Sum)
+  } else {
+    
+    df <- 
+      df %>% 
+      mutate(Partner.Top = as.integer(Partner.Code),
+             Partner.Top = if_else(oneEU & !otherEU & Partner.Top %in% eu.Partners, eu.Code, Partner.Top),
+             Partner.Top = if_else(oneRUS & Partner.Top %in% rus.Partner, rus.Partner, Partner.Top),
+             Partner.Top = if_else(oneFSR & Partner.Top %in% fsr.Partners, fsr.Code, Partner.Top)) %>%
+      group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Top")]) %>%
+      mutate(Value.Sum = sum(Value, na.rm = TRUE)) %>% 
+      group_by_(.dots = names(.)[names(.) %in% c(groupVars)]) %>% 
+      mutate(Rank = dense_rank(desc(Value.Sum)) - 1L) %>% 
+      arrange(desc(Rank)) %>% 
+      ungroup() %>% 
+      mutate(Partner.Top = ifelse(Rank >= top_n, row.Code, Partner.Top),
+             Partner.Top = ifelse(Rank >= top_n & otherEU & Partner.Code %in% eu.Partners, eu.Code, Partner.Top),
+             Rank = ifelse(Rank >= top_n, top_n, Rank),
+             Partner.Code = Partner.Top) %>% 
+      select(-Value.Sum, -Rank, - Partner.Top) %>% 
+      group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Code")]) %>% 
+      summarise(Value = sum(Value)) %>% 
+      ungroup()
+  }
+
+  return(df)
   
 }
