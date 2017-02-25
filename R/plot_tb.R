@@ -12,6 +12,7 @@ plot_tb <-
            imp = "Import",
            otherCompulsoryVars = c("Reporter.Code", "Trade.Flow"),
            horizontalLine = "Trade balance",
+           manualScale = FALSE,
            brewPalName = "Set1",
            revertColours = FALSE) {
     require(plyr)
@@ -29,11 +30,11 @@ plot_tb <-
     # stackVar <- "Partner.Code"
     # stackVarName <- "Partner Code" # NA by default
     # srackMax <- 5
-    if("Reporter" %in% names(df)) {
-      otherCompulsoryVars <- c("Reporter", "Trade.Flow")
-    } else {
-      otherCompulsoryVars <- c("Reporter.Code", "Trade.Flow")
-    }
+    # if("Reporter" %in% names(df)) {
+    #   otherCompulsoryVars <- c("Reporter", "Trade.Flow")
+    # } else {
+    #   otherCompulsoryVars <- c("Reporter.Code", "Trade.Flow")
+    # }
     # 
     # exp <- "Export"
     # imp <- "Import"
@@ -61,12 +62,13 @@ plot_tb <-
     }
     # Names for variables in legend
     if (is.na(yVarName)) {
-      yVarName <- yVar
+      yVarName <- "- Import / + Export (milions USD)"
     }
     
     # Extracting plotting data
     p_data <-
       df %>%
+      filter(Trade.Flow.Code %in% c(1, 2)) %>% 
       join_lables() %>%
       select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
       spread(., Trade.Flow, Value, fill = 0) %>%
@@ -123,7 +125,7 @@ plot_tb <-
         "),na.rm = TRUE)"
       )) %>%
       group_by_(.dots = c(xVar, stackVar)) %>%
-      filter_(.dots = str_c(yVar, "==max(", yVar, ",na.rm = TRUE)")) %>%
+      filter_(.dots = str_c(yVar, "==max(", yVar, ",na.rm = TRUE) & ", yVar, "!= 0")) %>%
       ungroup()
     
     stackingOrder <-
@@ -138,7 +140,7 @@ plot_tb <-
         "),na.rm = TRUE)"
       )) %>%
       group_by_(.dots = c(stackVar)) %>%
-      filter_(.dots = str_c(yVar, "==max(", yVar, ",na.rm = TRUE)")) %>%
+      filter_(.dots = str_c(yVar, "==max(", yVar, ",na.rm = TRUE)& ", yVar, "!= 0")) %>%
       ungroup() %>%
       anti_join(stackingOrder, by = stackVar) %>%
       bind_rows(stackingOrder) %>%
@@ -154,13 +156,13 @@ plot_tb <-
     # Determine colour scale with the names for each colour
     if (revertColours) {
       palLegend <-
-        setNames(rev(myPal(nStacks)),
+        setNames(rev(myPal(nrow(stackingOrder))),
                  stackingOrder %>%
                    arrange(stackOrder) %>%
                    .[[stackVar]])
     } else {
       palLegend <-
-        setNames(myPal(nStacks),
+        setNames(myPal(nrow(stackingOrder)),
                  stackingOrder %>%
                    arrange(stackOrder) %>%
                    .[[stackVar]])
@@ -228,7 +230,12 @@ plot_tb <-
         y = yVarName,
         colour = "",
         fill = stackVarName
-      )
+      ) 
+    
+    # Adding scale 
+    if(manualScale) {
+      p <- p + scale_fill_manual(values = palLegend)
+    }
     
     p
     
