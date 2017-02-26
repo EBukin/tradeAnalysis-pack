@@ -10,6 +10,7 @@ plot_tb <-
            stackVarName = NA,
            exp = "Export",
            imp = "Import",
+           plotTradeBalance = TRUE,
            otherCompulsoryVars = c("Reporter.Code", "Trade.Flow"),
            groupVar = "Trade.Flow",
            colourVar = "Trade.Flow",
@@ -17,7 +18,8 @@ plot_tb <-
            brewScale = TRUE,
            brewScaleType = "seq",
            brewPalName = "Set1",
-           revertColours = FALSE) {
+           revertColours = FALSE,
+           returnData = FALSE) {
     require(plyr)
     require(tidyverse)
     require(dplyr)
@@ -66,46 +68,79 @@ plot_tb <-
     if (is.na(xVarName)) {
       xVarName <- xVar
     }
-    # Names for variables in legend
-    if (is.na(yVarName)) {
-      yVarName <- "- Import / + Export (milions USD)"
-    }
+
     
     # Extracting plotting data
-    p_data <-
-      df %>%
-      filter(Trade.Flow.Code %in% c(1, 2)) %>% 
-      join_lables() %>%
-      select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
-      spread(., Trade.Flow, Value, fill = 0) %>%
-      select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
-      mutate_(.dots = setNames(str_c("-", imp), imp)) %>%
-      mutate_(.dots = setNames(str_c(imp, "+", exp), horizontalLine)) %>%
-      gather(Trade.Flow, Value, (df %>% select_(.dots = names(.)[names(.) %in% p_dataName]) %>% length(.)+1):length(.))
+    if(plotTradeBalance) {
+      p_data <-
+        df %>%
+        filter(Trade.Flow.Code %in% c(1, 2)) %>% 
+        join_lables() %>%
+        select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
+        spread(., Trade.Flow, Value, fill = 0) %>%
+        select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
+        mutate_(.dots = setNames(str_c("-", imp), imp)) %>%
+        mutate_(.dots = setNames(str_c(imp, "+", exp), horizontalLine)) 
+      
+      ncols <- 
+        p_data %>% 
+        select_(.dots = names(.)[names(.) %in% p_dataName[!p_dataName %in% c(imp, exp, horizontalLine)]]) %>% 
+        length(.) + 1
+      
+      p_data <- 
+        p_data %>%
+        gather(Trade.Flow, Value, ncols:length(.))
+      
+      # Calculating trade balance
+      p_data <-
+        p_data %>%
+        filter(Trade.Flow == horizontalLine) %>%
+        group_by_(.dots = names(.)[names(.) %in% c(xVar, otherCompulsoryVars)]) %>%
+        summarise_(.dots = setNames(str_c("sum(", yVar, ", na.rm = TRUE)"), yVar)) %>%
+        # add_column(setNames(rep(horizontalLine, nrow(.)), stackVar)) %>%
+        ungroup() %>%
+        bind_rows(p_data %>%
+                    filter(Trade.Flow != horizontalLine)) %>%
+        # mutate(Commodity.Code = ifelse(is.na(Commodity.Code), stacVarValeuTradeBal, Commodity.Code))
+        mutate_(.dots = setNames(
+          str_c(
+            "ifelse(is.na(",
+            stackVar,
+            "),",
+            stacVarValeuTradeBal ,
+            ", ",
+            stackVar,
+            ")"
+          ),
+          stackVar
+        ))
+      
+    } else {
+      p_data <-
+        df %>%
+        filter(Trade.Flow.Code %in% c(1, 2)) %>% 
+        join_lables() %>%
+        select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
+        spread(., Trade.Flow, Value, fill = 0) %>%
+        select_(.dots = names(.)[names(.) %in% p_dataName]) 
+        # mutate_(.dots = setNames(str_c("-", imp), imp)) %>%
+        # mutate_(.dots = setNames(str_c(imp, "+", exp), horizontalLine)) 
+        ncols <- 
+          p_data %>% 
+          select_(.dots = names(.)[names(.) %in% p_dataName[!p_dataName %in% c(imp, exp, horizontalLine)]]) %>% 
+          length(.) + 1
+        
+        p_data <- 
+          p_data %>%
+          gather(Trade.Flow, Value, ncols:length(.))
+      
+    }
     
-    # Calculating trade balance
-    p_data <-
-      p_data %>%
-      filter(Trade.Flow == horizontalLine) %>%
-      group_by_(.dots = names(.)[names(.) %in% c(xVar, otherCompulsoryVars)]) %>%
-      summarise_(.dots = setNames(str_c("sum(", yVar, ", na.rm = TRUE)"), yVar)) %>%
-      # add_column(setNames(rep(horizontalLine, nrow(.)), stackVar)) %>%
-      ungroup() %>%
-      bind_rows(p_data %>%
-                  filter(Trade.Flow != horizontalLine)) %>%
-      # mutate(Commodity.Code = ifelse(is.na(Commodity.Code), stacVarValeuTradeBal, Commodity.Code))
-      mutate_(.dots = setNames(
-        str_c(
-          "ifelse(is.na(",
-          stackVar,
-          "),",
-          stacVarValeuTradeBal ,
-          ", ",
-          stackVar,
-          ")"
-        ),
-        stackVar
-      ))
+    # Names for variables in legend
+    if (is.na(yVarName)) {
+      yVarName <- str_c(unique(p_data$Trade.Flow), "milions USD", sep = ", ")
+    }
+    
     
     # Calculatgin how many stacks are present
     nStacks <-
@@ -181,66 +216,58 @@ plot_tb <-
     # Adding order to plotting data
     p_data[stackVar] <- eval(parse(text = str_c("factor(p_data$", stackVar,", levels = stackingOrder$", stackVar, ")")))
     
+    # Ordering data
+    p_data <- p_data %>% 
+      mutate_(.dots = setNames(str_c("abs(", yVar, ")"), "order")) %>% 
+      arrange_(xVar, "-order")
+    
     # Initializing plot
     p <-
-      ggplot(p_data) +
+      ggplot(p_data %>% 
+               filter(Trade.Flow %in% c(imp, exp))) +
       aes_string(x = xVar, y = yVar, fill = stackVar, group = groupVar) +
-      geom_hline(aes(yintercept = 0))
-    
-    # Imp
-    p <-
-      p +
+      geom_hline(aes(yintercept = 0)) +
       geom_bar(
-        data = p_data %>% filter(Trade.Flow == imp) %>% arrange_(xVar, yVar),
         colour = "black",
         stat = "identity",
         position = "stack"
-      )
-    
-    # Exp
-    p <-
-      p +
-      geom_bar(
-        data = p_data %>% filter(Trade.Flow == exp) %>% arrange_(xVar, str_c("-",yVar)),
-        colour = "black",
-        stat = "identity",
-        position = "stack"
-      )
-    
-    # Trade balance
-    p <-
-      p +
-      geom_point(
-        mapping = aes_string(
-          x = xVar,
-          y = yVar,
-          group = groupVar,
-          colour = colourVar
-        ),
-        data = p_data %>% filter(Trade.Flow == horizontalLine) ,
-        inherit.aes = FALSE
-      ) +
-      geom_line(
-        mapping = aes_string(
-          x = xVar,
-          y = yVar,
-          group = groupVar,
-          colour = colourVar
-        ),
-        data = p_data %>% filter(Trade.Flow == horizontalLine),
-        inherit.aes = FALSE
       ) 
     
-    # Adding legend
-    p <-
+    # Extracting plotting data
+    if (plotTradeBalance) {
+      p <-
+        p +
+        geom_point(
+          data = p_data %>% filter(Trade.Flow == horizontalLine),
+          mapping = aes_string(
+            x = xVar,
+            y = yVar,
+            group = groupVar,
+            colour = colourVar
+          ),
+          inherit.aes = FALSE
+        ) +
+        geom_line(
+          data = p_data %>% filter(Trade.Flow == horizontalLine),
+          mapping = aes_string(
+            x = xVar,
+            y = yVar,
+            group = groupVar,
+            colour = colourVar
+          ),
+          inherit.aes = FALSE
+        ) +
+        scale_color_grey()
+    }
+    
+    p <- 
       p +
       labs(
         x = xVarName,
         y = yVarName,
         colour = "",
         fill = stackVarName
-      ) +
-      scale_color_grey()
+      ) 
     
     # Adding scale 
     if(brewScale) {
@@ -249,7 +276,12 @@ plot_tb <-
       scale_fill_manual(values = palLegend)
     }
     
-    p
+    if(returnData) {
+      list(plot = p, data = p_data, pal = palLegend)
+    } else {
+      p
+    }
+    
     
   }
 
