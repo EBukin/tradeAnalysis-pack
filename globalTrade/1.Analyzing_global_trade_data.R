@@ -8,6 +8,7 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 library(ggplot2)
+library(ggrepel)
 library(tidyverse)
 
 source("R/grid_arrange_shared_legend.R")
@@ -60,101 +61,51 @@ nutr <-
 
 World <-
   c(
-    "USA",
-    "ARG",
-    "AUS",
-    "BRA",
-    "CAN",
-    "CHE",
-    "CHN",
-    "E15",
-    "EUN",
-    "JPN",
-    "KOR",
-    "MEX",
-    "NMS",
-    "NOR",
-    "NZL",
-    "RUS",
-    "AFL",
-    "AFN",
-    "AFS",
-    "ASA",
-    "ASD",
-    "ASL",
-    "BGD",
-    "CHL",
-    "COL",
-    "DZA",
-    "EGY",
-    "ETH",
-    "EUE",
-    "EUW",
-    "GHA",
-    "HTI",
-    "IDN",
-    "IND",
-    "IRN",
-    "ISR",
-    "KAZ",
-    "MLE",
-    "MOZ",
-    "MYS",
-    "NGA",
-    "OCE",
-    "OCL",
-    "PAK",
-    "PER",
-    "PHL",
-    "PRY",
-    "SAC",
-    "SAU",
-    "SDN",
-    "THA",
-    "TUR",
-    "TZA",
-    "UKR",
-    "URY",
-    "VNM",
-    "ZAF",
-    "ZMB"
+    "USA", "ARG", "AUS", "BRA", "CAN", "CHE", "CHN", "E15",
+    "EUN", "JPN", "KOR", "MEX", "NMS", "NOR", "NZL", "RUS",
+    "AFL", "AFN", "AFS", "ASA", "ASD", "ASL", "BGD", "CHL",
+    "COL", "DZA", "EGY", "ETH", "EUE", "EUW", "GHA", "HTI",
+    "IDN", "IND", "IRN", "ISR", "KAZ", "MLE", "MOZ", "MYS",
+    "NGA", "OCE", "OCL", "PAK", "PER", "PHL", "PRY", "SAC",
+    "SAU", "SDN", "THA", "TUR", "TZA", "UKR", "URY", "VNM",
+    "ZAF", "ZMB"
   )
 
 Africa <-
   c("AFL","AFN","AFS","DZA","EGY","ETH","GHA","MOZ","NGA","SDN","TZA","ZAF","ZMB")
 
 Asia <-
-  c("CHN","JPN","KOR","ASA","ASL","BGD","IDN","IND","IRN","MLE",
-    "MYS","PAK","PHL","SAU","THA","VNM","ISR","KAZ")
+  c("CHN","JPN","KOR","ASA","ASL","BGD","IDN","IND","IRN","MLE", "ASD", "KAZ",
+    "MYS","PAK","PHL","SAU","THA","VNM","ISR")
 
 Oceania <-
   c("AUS", "NZL", "OCE", "OCL")
 
 AsiaOceania <-
-  c("CHN","JPN","KOR","ASA","ASD","ASL","BGD","IDN","IND","IRN","MLE",
+  c("CHN","JPN","KOR","ASA", "ASL","BGD","IDN","IND","IRN","MLE", "ASD", "KAZ",
     "MYS","PAK","PHL","SAU","THA","TUR","VNM","ISR", "AUS", "NZL", "OCE", "OCL")
 
 Europe <-
-  c("CHE", "EUN", "NOR", "RUS", "EUE", "EUW", "UKR", "TUR", "ASD", "KAZ")
+  c("CHE", "EUN", "NOR", "RUS", "EUE", "EUW", "UKR", "TUR")
 # EU is excluded ,"E15", "NMS"
 
 NorthAmerica <-
   c("USA", "CAN")
 
-SouthAmerica <-
+LatinAmericaCaribbean <-
   c("ARG","BRA","MEX","CHL","COL","PER","PRY","SAC","URY","HTI") # ok
 
 # Initializing regions mapping table
 regionsMT <-
   bind_rows(
-    tibble(Region = "Africa", AreaCode = Africa),
-    #tibble(Region = "Asia", AreaCode = Asia),
-    #tibble(Region = "Oceania", AreaCode = Oceania),
-    tibble(Region = "Asia Oceania", AreaCode = AsiaOceania),
-    tibble(Region = "Europe", AreaCode = Europe),
-    tibble(Region = "North America", AreaCode = NorthAmerica),
-    tibble(Region = "South America", AreaCode = SouthAmerica),
-   tibble(Region = "World", AreaCode = c(Africa, AsiaOceania, Europe, NorthAmerica, SouthAmerica))
+    tibble(Region = "África", AreaCode = Africa),
+    tibble(Region = "Ásia", AreaCode = Asia),
+    tibble(Region = "Oceanía", AreaCode = Oceania),
+    tibble(Region = "Ásia y Oceanía", AreaCode = AsiaOceania),
+    tibble(Region = "Europa", AreaCode = Europe),
+    tibble(Region = "América del Norte", AreaCode = NorthAmerica),
+    tibble(Region = "América Latina y el Caribe", AreaCode = LatinAmericaCaribbean),
+   tibble(Region = "World", AreaCode = c(Africa, AsiaOceania, Europe, NorthAmerica, LatinAmericaCaribbean))
   )
 
 # Year mapping table
@@ -167,7 +118,7 @@ yearsMT <-
 Wheat <- "WT"
 Rice <- "RI"
 Maize <- "MA"
-CoarsGrains <- c("OCG")
+CoarseGrains <- c("OCG")
 Oilseeds <- c("SB", "OOS")
 Meat <- c("BV", "PT", "PK", "SH")
 Sugar <- "SU"
@@ -193,8 +144,8 @@ itemsMT <-
     ),
     tibble(
       type = "Grains",
-      Item = "Coars grains",
-      ItemCode = CoarsGrains
+      Item = "Coarse grains",
+      ItemCode = CoarseGrains
     ),
     tibble(
       type = "Oilseeds",
@@ -227,7 +178,7 @@ itemsMT <-
 Flows <- c("QP", "QC", "IM", "EX", "ST", "FO", "OU", "FE")
 
 # Nutrient specific items 
-nutrients <- c(Wheat, Rice, Maize, CoarsGrains, Oilseeds, Meat, Sugar)
+nutrients <- c(Wheat, Rice, Maize, CoarseGrains, Oilseeds, Meat, Sugar)
 
 
 # Analyzing nutrients for regions -----------------------------------------------------
@@ -435,7 +386,7 @@ pRegData_FULL <-
   spread(ItemCode, Value) %>% 
   # select(Region, ElementCode,  Year,  )
   mutate(
-    `Coars grains` = OCG,
+    `Coarse grains` = OCG,
     Maize = MA,
     Meat =  BV + PK + PT + SH,
     Wheat = WT,
@@ -446,7 +397,7 @@ pRegData_FULL <-
     `Protein meals` = sum(KM, CM,  OOS * (1 - 0.38), CSE * (1 - 0.15), na.rm = TRUE),
     `Soy beans` = SB,
     `Eidable oils`= sum(PL, KL, CL, OOS * 0.38, CSE * 0.15, na.rm = TRUE)) %>% 
-  select(Region, ElementCode, Year, `Coars grains`, `Soy beans`, Maize, Meat, Wheat, Rice, `Protein meals`, `Eidable oils`, Sugar) %>% 
+  select(Region, ElementCode, Year, `Coarse grains`, `Soy beans`, Maize, Meat, Wheat, Rice, `Protein meals`, `Eidable oils`, Sugar) %>% 
   gather(Item, Value, 4:length(.)) 
 
 pRegData <-
@@ -458,8 +409,18 @@ pRegData <-
   summarise(Value = mean(Value, na.rm = TRUE) / 1000) %>%
 
   ungroup() %>%
-  mutate(Type = ifelse(Item %in% c("Coars grains", "Wheat", "Rice", "Maize"), "Cereals", "Other products" )) %>%
-  filter(!is.na(YearAggregate)) %>%
+  mutate(Type = ifelse(Item %in% c("Coarse grains", "Wheat", "Rice", "Maize"), "Cereales", "Otros productos" )) %>% 
+    mutate(
+         Item = ifelse(Item == "Coarse grains", "Cereales secundarios", Item),       #   cereales secundarios
+         Item = ifelse(Item == "Soy beans", "Soya", Item),
+         Item = ifelse(Item == "Maize", "Maíz", Item),
+         Item = ifelse(Item == "Meat", "Carne", Item),
+         Item = ifelse(Item == "Wheat", "Trigo", Item),
+         Item = ifelse(Item == "Rice", "Arroz", Item),
+         Item = ifelse(Item == "Protein meals", "Harina proteica", Item),     # harinas proteicas
+         Item = ifelse(Item == "Eidable oils", "Aceites comestibles", Item),
+         Item = ifelse(Item == "Sugar", "Azúcar", Item)) %>%
+  filter(!is.na(YearAggregate)) %>% 
   spread(ElementCode, Value) %>%
   mutate(Item = as.factor(Item))
 
@@ -469,35 +430,35 @@ write.csv(pRegData, file = "globalTrade/output/PROD_CONS_DATA.CSV", row.names = 
 # # Plotting one region -----------------------------------------------------
 # 
 # # Testing
-plotData <-
-  pRegData %>%
-  filter(Region == "Africa", YearAggregate %in% c("2001-2005", "2011-2015", "2021-2025")) %>%
-  # filter(YearAggregate %in% c("2001-2005", "2021-2025")) %>%
-  mutate(NT = EX - IM) %>% 
-  group_by(Region, Type) %>% 
-  mutate(maxCoord = seq(from = 0, to = max(QC, QP), length.out = n()))
-
-
+# plotData <-
+#   pRegData %>%
+#   filter(Region == "Africa", YearAggregate %in% c("2001-2005", "2011-2015", "2021-2025")) %>%
+#   # filter(YearAggregate %in% c("2001-2005", "2021-2025")) %>%
+#   mutate(NT = EX - IM) %>% 
+#   group_by(Region, Type) %>% 
+#   mutate(maxCoord = seq(from = 0, to = max(QC, QP), length.out = n()))
 # 
-p <-
-  ggplot(plotData, aes(
-    QC,
-    QP)) +
-  # geom_label(mapping = aes(label = Lable), vjust = "inward", hjust = "inward")+
-  geom_point(mapping = aes(group = Item, colour = Item, fill = Item, shape = as.factor(YearAggregate)))  +
-  geom_line(mapping = aes(group = Item, colour = Item)) + #, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
-  geom_line(mapping = aes(x = maxCoord, y = maxCoord), inherit.aes = FALSE, show.legend = FALSE) +
-  theme_bw() +
-  # scale_color_brewer(type = "qual", palette = 7) +
-  facet_wrap( ~Type, scales = "free") +
-  labs(title = unique(plotData$Region),
-       subtitle = str_c("Dynamic for 5 years averages from ", min(plotData$YearAggregate), " to ", max(plotData$YearAggregate), "."),
-       shape = "Period",
-       group = "Commodity",
-       x = "Consumption, million MT",
-       y = "Production, million MT") +
-  theme(aspect.ratio = 1)
-p
+# 
+# # 
+# p <-
+#   ggplot(plotData, aes(
+#     QC,
+#     QP)) +
+#   # geom_label(mapping = aes(label = Lable), vjust = "inward", hjust = "inward")+
+#   geom_point(mapping = aes(group = Item, colour = Item, fill = Item, shape = as.factor(YearAggregate)))  +
+#   geom_line(mapping = aes(group = Item, colour = Item)) + #, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+#   geom_line(mapping = aes(x = maxCoord, y = maxCoord), inherit.aes = FALSE, show.legend = FALSE) +
+#   theme_bw() +
+#   # scale_color_brewer(type = "qual", palette = 7) +
+#   facet_wrap( ~Type, scales = "free") +
+#   labs(title = unique(plotData$Region),
+#        subtitle = str_c("Dynamic for 5 years averages from ", min(plotData$YearAggregate), " to ", max(plotData$YearAggregate), "."),
+#        shape = "Period",
+#        group = "Commodity",
+#        x = "Consumption, million MT",
+#        y = "Production, million MT") +
+#   theme(aspect.ratio = 1)
+# p
 # 
 # ggsave(
 #   str_c(
@@ -516,24 +477,27 @@ d_ply(
     mutate(maxCoord = seq(from = 0, to = max(QC, QP), length.out = n())),
       .(Region),
       function(plotData) {
+        
+        plotData <-
+          plotData %>% 
+          rename(Prodcutos = Item)
 
         p <-
           ggplot(plotData, aes(
             QC,
             QP)) +
           # geom_label(mapping = aes(label = Lable), vjust = "inward", hjust = "inward")+
-          geom_point(mapping = aes(group = Item, colour = Item, fill = Item, shape = as.factor(YearAggregate)))  +
-          geom_line(mapping = aes(group = Item, colour = Item)) + #, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+          geom_point(mapping = aes(group = Prodcutos, colour = Prodcutos, fill = Prodcutos, shape = as.factor(YearAggregate)))  +
+          geom_line(mapping = aes(group = Prodcutos, colour = Prodcutos)) + #, arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
           geom_line(mapping = aes(x = maxCoord, y = maxCoord), inherit.aes = FALSE, show.legend = FALSE) +
           theme_bw() +
           # scale_color_brewer(type = "qual", palette = 7) +
           facet_wrap( ~Type, scales = "free") +
-          labs(title = unique(plotData$Region),
-               subtitle = str_c("Dynamic for 5 years averages from ", min(plotData$YearAggregate), " to ", max(plotData$YearAggregate), "."),
-               shape = "Period",
-               group = "Commodity",
-               x = "Consumption, million MT",
-               y = "Production, million MT") +
+          labs(title = str_c("Dinámica de promedios quinquenales de ", min(plotData$YearAggregate), " a ", max(plotData$YearAggregate), "."),
+               shape = "Periodo ",
+               group = "Prodcutos",
+               x = "Consumo, millón de t",
+               y = "Producción, millón de t") +
           theme(aspect.ratio = 1)
         
         ggsave(
@@ -562,7 +526,7 @@ Share_in_import <-
          ElementCode %in% Flows) %>%
   spread(ItemCode, Value) %>% 
   mutate(
-    `Coars grains` = OCG,
+    `Coarse grains` = OCG,
     Maize = MA,
     Meat =  BV + PK + PT + SH,
     Wheat = WT,
@@ -570,39 +534,58 @@ Share_in_import <-
     Sugar = SU,
     `Soybeans` = SB,
     `Other oilseeds` =  OOS,
-    `Palm oil` = PL) %>% 
+    `Palm oil` = OL + VL) %>% 
   rowwise() %>% 
-  select(AreaCode, ElementCode, Year, `Coars grains`, `Soybeans`, Maize, Meat, Wheat, Rice, `Other oilseeds`, `Palm oil`, Sugar) %>%
-  gather(Item, Value, 4:length(.))  %>%
+  select(AreaCode, ElementCode, Year, `Coarse grains`, `Soybeans`, Maize, Meat, Wheat, Rice, `Other oilseeds`, `Palm oil`, Sugar) %>%
+  gather(Item, Value, 4:length(.))   %>%
+  mutate(Type = ifelse(Item %in% c("Coarse grains", "Wheat", "Rice", "Maize"), "Cereales", "Otros productos" )) %>% # select(Item) %>% distinct()
+  
+  mutate(
+    Item = ifelse(Item == "Coarse grains", "Cereales secundarios", Item),       #   cereales secundarios
+    Item = ifelse(Item == "Soybeans", "Soya", Item),
+    Item = ifelse(Item == "Maize", "Maíz", Item),
+    Item = ifelse(Item == "Meat", "Carne", Item),
+    Item = ifelse(Item == "Wheat", "Trigo", Item),
+    Item = ifelse(Item == "Rice", "Arroz", Item),
+    Item = ifelse(Item == "Other oilseeds", "Otras oleaginosas", Item),     # harinas proteicas
+    Item = ifelse(Item == "Palm oil", "Aceites vegetales", Item),
+    Item = ifelse(Item == "Sugar", "Azúcar", Item)) %>%
+  
   spread(ElementCode, Value) %>%
   rowwise() %>% 
   mutate(Share_EX_in_QP = EX / QP * 100,
-         Share_IM_in_QP = IM / QC * 100)
+         Share_IM_in_QP = IM / QC * 100) %>% 
+  rename(Prodcutos = Item)
 
 
-pp<- 
-  Share_in_import %>%
-  mutate(Type = ifelse(Item %in% c("Coars grains", "Wheat", "Rice", "Maize"), "Cereals", "Other products" )) %>% 
-  ggplot(., aes(Year,Share_EX_in_QP, group = Item, colour = Item)) +
+pp<-
+  Share_in_import  %>% 
+  ggplot(., aes(Year,Share_EX_in_QP, group = Prodcutos, colour = Prodcutos)) +
   geom_line()  +
   geom_vline(xintercept = 2015) +
+  geom_label_repel(data = filter(Share_in_import, Year == 2025), 
+                   mapping = aes(label = Prodcutos),
+                   segment.color = 'black',
+                   segment.alpha = 0,
+                   nudge_x = 10) + 
+  expand_limits(y = 0, x = 2030)+
   # scale_color_manual(values = setNames(1:length(unique(Share_in_import$Item)), unique(Share_in_import$Item))) +
-  scale_color_brewer(type = "qual", palette = 3) +
+  # scale_color_brewer(type = "qual", palette = 1) +
   # geom_smooth()+
-  labs(title = "World",
-       subtitle = "% of production exported",
-       colour = "Commodity",
-       x = "Year",
-       y = "Exported, %") +
+  labs(x = "Año",
+       y = "% de producción exportada") +
   theme_bw() +
-  theme(aspect.ratio = 0.25) + facet_wrap(~Type,dir = "v", scales = "free")
+  theme(aspect.ratio = 0.25) + 
+    facet_wrap(~Type,dir = "v", scales = "free") +
+    guides(colour=FALSE)+
+  scale_x_continuous(breaks = seq(2000, 2025, 5))
 
 ggsave(
   str_c(
     "globalTrade/output/Export_vs_Production_World_.png"
   ),
   width = 8.15, 
-  height = 4.5,
+  height = 5.5,
   plot = pp,
   dpi = 900
 )
