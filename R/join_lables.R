@@ -9,6 +9,13 @@ join_lables <-
            keepCodes = TRUE) {
     require(plyr)
     require(dplyr)
+    data("classes", envir = environment())
+    data("aggNames", envir = environment())
+    data("rep", envir = environment())
+    data("part", envir = environment())
+    data("classes", envir = environment())
+    data("units", envir = environment())
+    data("reg", envir = environment())
     # load(mappingTbls)
     classes <-
       bind_rows(classes, aggNames)
