@@ -4,14 +4,14 @@
 #'  @param keepCodes Logical variable for keeping or removing the codes.
 join_lables <-
   function(data,
-           mappingTbls = "data/ctClass.Rdata",
-           commAggMT = "data/HS_agg_names.csv" ,
+           # mappingTbls = "data/ctClass.Rdata",
+           # commAggMT = "data/HS_agg_names.csv" ,
            keepCodes = TRUE) {
     require(plyr)
     require(dplyr)
-    load(mappingTbls)
+    # load(mappingTbls)
     class <-
-      bind_rows(class, read.csv(commAggMT, stringsAsFactors = FALSE))
+      bind_rows(class, aggNames)
     oldNames <- c("r",
                   "Reporter.Code",
                   "Partner.Code",
