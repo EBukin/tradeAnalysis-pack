@@ -1,0 +1,10 @@
+Package: tradeAnalysis
+Type: Package
+Title: Set of functions for trade data analysis 
+Version: 0.0.4
+Author: Eduard Bukin
+Maintainer: Eduard Bukin <edwardbukin@gmail.com>
+Description: This package contains essential functions for trade data manipulation and analisys.
+License: MIT
+Encoding: UTF-8
+LazyData: true
