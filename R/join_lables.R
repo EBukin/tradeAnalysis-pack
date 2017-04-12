@@ -11,7 +11,7 @@ join_lables <-
     require(dplyr)
     # load(mappingTbls)
     classes <-
-      bind_rows(classeses, aggNames)
+      bind_rows(classes, aggNames)
     oldNames <- c("r",
                   "Reporter.Code",
                   "Partner.Code",
