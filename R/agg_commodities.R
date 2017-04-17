@@ -1,13 +1,14 @@
 #' Aggregating trade items using provided mapping table
 agg_commodities <-
   function(data,
-           mt = "data/HS_agg_mt.csv",
+           mt = system.file("extdata", "HS_agg_mt.csv", package = "tradeAnalysis"),
            onlyAggregates = TRUE) {
+    require(stringr)
     require(dplyr)
     
-    if (any(names(data) %in% c("Partner.Top", "Rank")))
-      message(str_c("Columns as ",
-                    names(data)[names(data) %in% c("Partner.Top", "Rank")],
+    if (any(names(data) %in% c("Partner.Top", "Rank", "Commodity")))
+      message(str_c("Column(s) ",
+                    names(data)[names(data) %in% c("Partner.Top", "Rank", "Commodity")],
                     " are dropped."))
     grouping_vars <-
       c(
@@ -19,7 +20,10 @@ agg_commodities <-
         "Partner.Code",
         "Commodity.Code",
         "Variable",
-        "Source"
+        "Source",
+        "Reporter",
+        "Partner",
+        "Trade.Flow"
       )
     
     mappingTable <-
@@ -33,7 +37,7 @@ agg_commodities <-
       left_join(mappingTable, by = "Commodity.Code") %>%
       mutate(Commodity.Code = Commodity.Agg) %>% 
       filter(!is.na(Commodity.Code)) %>% 
-      select_(.dots = names(.)[!names(.) %in% c("Partner.Top", "Rank", "Commodity.Agg")]) %>%
+      select_(.dots = names(.)[!names(.) %in% c("Partner.Top", "Rank", "Commodity.Agg", "Commodity")]) %>%
       group_by_(.dots = names(.)[names(.) %in% grouping_vars]) %>%
       summarise_each(funs(sum(., na.rm = TRUE))) %>%
       ungroup()
@@ -42,7 +46,7 @@ agg_commodities <-
       return(dataAgg)
     } else {
       return(bind_rows(data %>%
-                         select_(.dots = names(.)[!names(.) %in% c("Partner.Top", "Rank", "Commodity.Agg")]),
+                         select_(.dots = names(.)[!names(.) %in% c("Partner.Top", "Rank", "Commodity.Agg", "Commodity")]),
                        dataAgg))
     }
     

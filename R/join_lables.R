@@ -4,21 +4,25 @@
 #'  @param keepCodes Logical variable for keeping or removing the codes.
 join_lables <-
   function(data,
-           # mappingTbls = "data/ctclasses.Rdata",
-           # commAggMT = "data/HS_agg_names.csv" ,
+           commAggMT = system.file("extdata", "HS_agg_names.csv", package = "tradeAnalysis"),
            keepCodes = TRUE) {
-    require(plyr)
-    require(dplyr)
+    # require(plyr)
+    # require(dplyr)
+    
+    # Loading mapping tabels
     data("classes", envir = environment())
-    data("aggNames", envir = environment())
+    aggNames <-
+      read_csv(commAggMT,
+               col_types =  cols(Commodity.Code = col_character(),
+                                 Commodity = col_character()))
     data("rep", envir = environment())
     data("part", envir = environment())
-    data("classes", envir = environment())
     data("units", envir = environment())
     data("reg", envir = environment())
-    # load(mappingTbls)
+    
     classes <-
       bind_rows(classes, aggNames)
+    
     oldNames <- c("r",
                   "Reporter.Code",
                   "Partner.Code",
