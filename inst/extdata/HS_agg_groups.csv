@@ -1,0 +1,13 @@
+Commodity.Code,Commodity,Group
+WTO_AgriFood,"WTO Agrifood - Agriculture and food related commodities covered by chapters 01 - 53 according to the WTO Agreement on Agriculture, Annex 2",WTO Agrifood level 1
+1_24_Total_excl_fish,"01-02, 04-24 - Food and agricultural commodities in chapters 01-24 of the HS excluding chapter 03-Fish",WTO Agrifood level 2
+3_Fish,03 - Fish and Fish products,WTO Agrifood level 2
+29_53_AgriFoodGoods,"29-53 - Agriculture related commoditiesselected HS codes from chaptes 29 - 53 according to the WTO Agreement on Agriculture, Annex 2",WTO Agrifood level 2
+1_24_Total_excl_fish,"01-02, 04-24 - Food and agricultural commodities in chapters 01-24 of the HS excluding chapter 03-Fish",WTO Agrifood level 3
+3_Fish,03 - Fish and Fish products,WTO Agrifood level 3
+29_38_Chemicals,"29-38 - Chemicals as a part of agricultural production processes - selected HS codes from chapters 29-38 according to the WTO Agreement on Agriculture, Annex 2",WTO Agrifood level 3
+41_43_Skins,"41-43 - Raw animal skins - selected HS codes from chapters 41 - 43 according to the WTO Agreement on Agriculture, Annex 2",WTO Agrifood level 3
+50_Silk,"50 - Silk - selected HS codes from chapter 50 according to the WTO Agreement on Agriculture, Annex 2",WTO Agrifood level 3
+51_Wool,"51 - Wool - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2",WTO Agrifood level 3
+52_Cotton,"52 - Cotton - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2",WTO Agrifood level 3
+53_Fibers,"53 - Fibers - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2",WTO Agrifood level 3
