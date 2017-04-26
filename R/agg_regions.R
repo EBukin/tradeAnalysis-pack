@@ -6,11 +6,12 @@
 #' @param mt Path to the mapping table
 #' @param intraExtraOnly return only intra- and extra-regional trade
 #' @param onlyAggregates return aonly ggregates or also source data
-function(data, 
-         RegionsType = "Income", 
-         mt = "policyBrief/ct_regions.csv", 
-         intraExtraOnly = TRUE,
-         onlyAggregates = TRUE) {
+agg_regions <- function(data,
+                        RegionsType = "Income",
+                        mt = system.file("extdata", "ct_regions.csv", package = "tradeAnalysis"),
+                        intraExtraOnly = TRUE,
+                        onlyAggregates = TRUE) {
+  
   
   # All available names
   nonAggName <- c("Reporter", "Partner", "Classification")
