@@ -37,24 +37,43 @@ join_lables <-
     
     # Reporters names
     if ("Reporter.Code" %in% names(data)) {
-      data <- data %>%
-        mutate(Reporter.Code = as.integer(Reporter.Code)) %>%
-        left_join(rep, by = "Reporter.Code")
+      if (all(is.integer(data$Reporter.Code))) {
+        data <- data %>%
+          mutate(Reporter.Code = as.integer(Reporter.Code)) %>%
+          left_join(mutate(rep, Reporter.Code = as.integer(Reporter.Code)) %>% 
+                      filter(!is.na(Reporter.Code)), 
+                    by = "Reporter.Code")
+      } else {
+        data <- data %>%
+          mutate(Reporter.Code = as.character(Reporter.Code)) %>%
+          left_join(mutate(rep, Reporter.Code = as.character(Reporter.Code)) %>% 
+                      filter(!is.na(Reporter.Code)), 
+                    by = "Reporter.Code")
+      }
     }
     
     # Reporters names
     if ("r" %in% names(data)) {
       data <- data %>%
-        mutate(r = as.integer(r)) %>%
+        # mutate(r = as.integer(r)) %>%
         left_join(rep, by = c("r" = "Reporter.Code"))
     }
     
     # Partners names
     if ("Partner.Code" %in% names(data)) {
-      data <- data %>%
-        mutate(Partner.Code = as.integer(Partner.Code)) %>%
-        left_join(part, by = "Partner.Code") %>%
-        mutate(Partner = ifelse(is.na(Partner), "ROW", Partner))
+      if (all(is.integer(data$Partner.Code))) {
+        data <- data %>%
+          mutate(Partner.Code = as.integer(Partner.Code)) %>%
+          left_join(mutate(part, Partner.Code = as.integer(Partner.Code)) %>% 
+                      filter(!is.na(Partner.Code)), 
+                    by = "Partner.Code")
+      } else {
+        data <- data %>%
+          mutate(Partner.Code = as.character(Partner.Code)) %>%
+          left_join(mutate(part, Partner.Code = as.character(Partner.Code)) %>% 
+                      filter(!is.na(Partner.Code)), 
+                    by = "Partner.Code")
+      }
     }
     
     # Trade flows names

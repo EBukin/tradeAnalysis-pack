@@ -1,6 +1,6 @@
 Commodity.Code,Commodity
 1_24_Total_excl_fish,"01-02, 04-24 - Food and agricultural commodities in chapters 01-24 of the HS excluding chapter 03-Fish"
-3_Fish,"03 - Fish and Fish products"
+3_Fish,03 - Fish and Fish products
 29_38_Chemicals,"29-38 - Chemicals as a part of agricultural production processes - selected HS codes from chapters 29-38 according to the WTO Agreement on Agriculture, Annex 2"
 41_43_Skins,"41-43 - Raw animal skins - selected HS codes from chapters 41 - 43 according to the WTO Agreement on Agriculture, Annex 2"
 50_Silk,"50 - Silk - selected HS codes from chapter 50 according to the WTO Agreement on Agriculture, Annex 2"
@@ -9,6 +9,6 @@ Commodity.Code,Commodity
 53_Fibers,"53 - Fibers - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2"
 29_53_AgriGoods,"29-53 - Agriculture related commodities selected HS codes from chapters 29 - 53 according to the WTO Agreement on Agriculture, Annex 2"
 WTO_AgriFood,"WTO Agri-food - Agriculture and food related commodities covered by chapters 01 - 53 according to the WTO Agreement on Agriculture, Annex 2"
-1_05_Animal, "01-02, 04-05 - Agricultural products of animal origin"
-06_15_Vegetable, "06-15 - Agricultural products of vegetable origin"
-16_24_Food_products, "16-24 Food products"
+1_05_Animal,01-02 04-05 - Agricultural products of animal origin
+06_15_Vegetable,06-15 - Agricultural products of vegetable origin
+16_24_Food_products,16-24 Food products
