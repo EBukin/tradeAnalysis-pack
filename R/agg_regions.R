@@ -8,14 +8,17 @@
 #' @param onlyAggregates return aonly ggregates or also source data
 agg_regions <- function(data,
                         RegionsType = "Income",
-                        mt = system.file("extdata", "ct_regions.csv", package = "tradeAnalysis"),
+                        mt = system.file("extdata", str_c(mtType, "_regions.csv"), package = "tradeAnalysis"),
+                        mtType = "ct",
+                        dropCols = NULL,
+                        valCol = "Value",
                         intraExtraOnly = TRUE,
                         onlyAggregates = TRUE) {
   
   
   # All available names
-  nonAggName <- c("Reporter", "Partner", "Classification")
-  dataGroupName <- names(data)[!names(data) %in% c(nonAggName, "Value")]
+  nonAggName <- c("Reporter", "Partner", "areacode", "areaname", "Classification", drop)
+  dataGroupName <- names(data)[!names(data) %in% c(nonAggName, valCol)]
   dropName <- names(data)[names(data) %in% nonAggName]
   if(length(dropName) != 0) {
     message(str_c("Variables ", str_c(dropName, collapse = ", ")," are dropped during aggregation.") )
@@ -40,7 +43,8 @@ agg_regions <- function(data,
     select(-Partner.Code) %>% 
     rename(Partner.Code = Region) %>% 
     group_by_(.dots = dataGroupName) %>% 
-    summarise(Value = sum(Value)) %>% 
+    summarise_(.dots = setNames(list(lazyeval::interp(~ sum(.x), .x = as.name(valCol))), valCol)) %>% 
+    # summarise(Value = sum(Value)) %>% 
     ungroup() %>% 
     mutate(Region = RegionsType)
   
@@ -50,7 +54,8 @@ agg_regions <- function(data,
       mutate(Partner.Code = ifelse(Reporter.Code == Partner.Code, "Intra-region trade", Partner.Code),
              Partner.Code = ifelse(!Partner.Code %in% c("0", "World", "Intra-region trade"), "Extra-region trade", Partner.Code)) %>% 
       group_by_(.dots = dataGroupName) %>% 
-      summarise(Value = sum(Value)) %>% 
+      summarise_(.dots = setNames(list(lazyeval::interp(~ sum(.x), .x = as.name(valCol))), valCol))  %>% 
+      # summarise(Value = sum(Value)) %>% 
       ungroup() %>% 
       mutate(Region = RegionsType)
   }
