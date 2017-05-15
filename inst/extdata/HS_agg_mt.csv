@@ -7,14 +7,14 @@ Commodity.Code,Commodity.Agg,Commodity
 07,1_24_Total_excl_fish,07 - Edible vegetables and certain roots and tubers
 08,1_24_Total_excl_fish,"08 - Edible fruit, nuts, peel of citrus fruit, melons"
 09,1_24_Total_excl_fish,"09 - Coffee, tea, mate and spices"
-10,1_24_Total_excl_fish,10 - Cereals
+10,1_24_Total_excl_fish,10-Cereals
 11,1_24_Total_excl_fish,"11 - Milling products, malt, starches, inulin, wheat glute"
 12,1_24_Total_excl_fish,"12 - Oil seed, oleagic fruits, grain, seed, fruit, etc, ne"
 13,1_24_Total_excl_fish,"13 - Lac, gums, resins, vegetable saps and extracts nes"
 14,1_24_Total_excl_fish,"14 - Vegetable plaiting materials, vegetable products nes"
 15,1_24_Total_excl_fish,"15 - Animal,vegetable fats and oils, cleavage products, et"
 16,1_24_Total_excl_fish,"16 - Meat, fish and seafood food preparations nes"
-17,1_24_Total_excl_fish,17 - Sugars and sugar confectionery
+17,1_24_Total_excl_fish,17-Sugars and sugar confectionery
 18,1_24_Total_excl_fish,18 - Cocoa and cocoa preparations
 19,1_24_Total_excl_fish,"19 - Cereal, flour, starch, milk preparations and products"
 20,1_24_Total_excl_fish,"20 - Vegetable, fruit, nut, etc food preparations"
@@ -137,7 +137,7 @@ Commodity.Code,Commodity.Agg,Commodity
 14,06_15_Vegetable,
 15,06_15_Vegetable,
 16,16_24_Food_products,"16 - Meat, fish and seafood food preparations nes"
-17,16_24_Food_products,17 - Sugars and sugar confectionery
+17,16_24_Food_products,17-Sugars and sugar confectionery
 18,16_24_Food_products,18 - Cocoa and cocoa preparations
 19,16_24_Food_products,"19 - Cereal, flour, starch, milk preparations and products"
 20,16_24_Food_products,"20 - Vegetable, fruit, nut, etc food preparations"
@@ -145,3 +145,228 @@ Commodity.Code,Commodity.Agg,Commodity
 22,16_24_Food_products,"22 - Beverages, spirits and vinegar"
 23,16_24_Food_products,"23 - Residues, wastes of food industry, animal fodder"
 24,16_24_Food_products,24 - Tobacco and manufactured tobacco substitutes
+0101,"01-03-Animal, Meat and Fish","0101 - Live horses, asses, mules and hinnies"
+0102,"01-03-Animal, Meat and Fish",0102 - Live bovine animals
+0103,"01-03-Animal, Meat and Fish",0103 - Live swine
+0104,"01-03-Animal, Meat and Fish",0104 - Live sheep and goats
+0105,"01-03-Animal, Meat and Fish","0105 - Live poultry, domestic fowls, ducks, geese, etc."
+0106,"01-03-Animal, Meat and Fish","0106 - Animals, live, except farm animals"
+0201,"01-03-Animal, Meat and Fish","0201 - Meat of bovine animals, fresh or chilled"
+0202,"01-03-Animal, Meat and Fish","0202 - Meat of bovine animals, frozen"
+0203,"01-03-Animal, Meat and Fish","0203 - Meat of swine, fresh, chilled or frozen"
+0204,"01-03-Animal, Meat and Fish","0204 - Meat of sheep or goats, fresh, chilled or frozen"
+0205,"01-03-Animal, Meat and Fish","0205 - Horse, ass, mule, hinny meat, fresh, chilled or froze"
+0206,"01-03-Animal, Meat and Fish",0206 - Edible offal of domestic animals
+0207,"01-03-Animal, Meat and Fish","0207 - Meat, edible offal of domestic poultry"
+0208,"01-03-Animal, Meat and Fish","0208 - Meat, edible meat offal nes, fresh, chilled or frozen"
+0209,"01-03-Animal, Meat and Fish","0209 - Pig and poultry fat, unrendered"
+0210,"01-03-Animal, Meat and Fish","0210 - Salted, dried or smoked meat or offal, flour and meal"
+0301,"01-03-Animal, Meat and Fish",0301 - Live fish
+0302,"01-03-Animal, Meat and Fish","0302 - Fish, fresh or chilled, whole"
+0303,"01-03-Animal, Meat and Fish","0303 - Fish, frozen, whole"
+0304,"01-03-Animal, Meat and Fish","0304 - Fish fillets, fish meat, mince except liver, roe"
+0305,"01-03-Animal, Meat and Fish","0305 - Fish,cured, smoked, fish meal for human consumption"
+0306,"01-03-Animal, Meat and Fish",0306 - Crustaceans
+0307,"01-03-Animal, Meat and Fish",0307 - Molluscs
+0308,"01-03-Animal, Meat and Fish","0308 - Fish and crustaceans, molluscs and other aquatic invertebrates // Aquatic invertebrates other than crustaceans and molluscs, live, fresh, chilled, frozen, dried, salted or in brine; smoked aquatic invertebrates other than crustaceans and molluscs, whether"
+0401,04-Dairy,"0401 - Milk and cream, neither concentrated nor sweetened"
+0402,04-Dairy,"0402 - Milk and cream, concentrated or sweetened"
+0403,04-Dairy,"0403 - Buttermilk, cream, yogurt etc"
+0404,04-Dairy,"0404 - Whey, natural milk products nes"
+0405,04-Dairy,0405 - Butter and other fats and oils derived from milk
+0406,04-Dairy,0406 - Cheese and curd
+0407,"01-03-Animal, Meat and Fish","0407 - Birds eggs, in shell, fresh, preserved or cooked"
+0408,"01-03-Animal, Meat and Fish","0408 - Birds eggs, other than in shell, egg yolks"
+0409,"01-03-Animal, Meat and Fish","0409 - Honey, natural"
+0410,"01-03-Animal, Meat and Fish","0410 - Edible products of animal origin, nes"
+0501,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0501 - Hair, human, unworked, waste of human hair"
+0502,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0502 - Bristle, hair (pig, badger), brush making hair, waste"
+0503,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0503 - Horsehair, waste"
+0504,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0504 - Guts, bladders and stomachs of animals except fish"
+0505,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0505 - Feathers, down, skins, other parts of birds, unworked"
+0506,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods",0506 - Bones and horn-cores unworked or simply worked
+0507,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0507 - Ivory,whalebone etc, unworked, simply worked, unshape"
+0508,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0508 - Coral, shell, cuttle bone, etc, unworked, and waste"
+0509,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0509 - Sponges, natural, of animal origin"
+0510,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0510 - Ambergris, civet, musk, etc for pharmaceutical use"
+0511,"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","0511 - Animal products nes, dead animals (non-food)"
+0601,"06-07-Fruts, vegetables and other products","0601 - Bulbs, tubers, corms, etc., chicory plant (non-food)"
+0602,"06-07-Fruts, vegetables and other products","0602 - Live plants nes, roots, cuttings, mushroom spawn"
+0603,"06-07-Fruts, vegetables and other products","0603 - Cut flowers, dried flowers for bouquets, etc,"
+0604,"06-07-Fruts, vegetables and other products",0604 - Foliage etc except flowers for ornamental purposes
+0701,"06-07-Fruts, vegetables and other products","0701 - Potatoes, fresh or chilled"
+0702,"06-07-Fruts, vegetables and other products","0702 - Tomatoes, fresh or chilled"
+0703,"06-07-Fruts, vegetables and other products","0703 - Onions, shallots, garlic, leeks, etc. fresh or chille"
+0704,"06-07-Fruts, vegetables and other products","0704 - Cabbage, cauliflower, kohlrabi & kale, fresh, chilled"
+0705,"06-07-Fruts, vegetables and other products","0705 - Lettuce and chicory, fresh or chilled"
+0706,"06-07-Fruts, vegetables and other products","0706 - Carrots, turnips, beetroot, etc. fresh or chilled"
+0707,"06-07-Fruts, vegetables and other products","0707 - Cucumbers and gherkins, fresh or chilled"
+0708,"06-07-Fruts, vegetables and other products","0708 - Leguminous vegetables, fresh or chilled"
+0709,"06-07-Fruts, vegetables and other products","0709 - Vegetables nes, fresh or chilled"
+0710,"06-07-Fruts, vegetables and other products","0710 - Vegetables (uncooked, steamed, boiled) frozen"
+0711,"06-07-Fruts, vegetables and other products","0711 - Vegetables provisionally preserved, not ready to eat"
+0712,"06-07-Fruts, vegetables and other products","0712 - Vegetables, dried, not further prepared"
+0713,"06-07-Fruts, vegetables and other products","0713 - Vegetables, leguminous dried, shelled"
+0714,"06-07-Fruts, vegetables and other products","0714 - Manioc, rrowroot, salep etc, fresh, dried, sago pith"
+0801,"06-07-Fruts, vegetables and other products","0801 - Coconuts, Brazil nuts and cashew nuts, fresh or dried"
+0802,"06-07-Fruts, vegetables and other products","0802 - Nuts except coconut, brazil & cashew, fresh or dried"
+0803,"06-07-Fruts, vegetables and other products","0803 - Bananas, including plantains, fresh or dried"
+0804,"06-07-Fruts, vegetables and other products","0804 - Dates, figs, pineapple, avocado, guava, fresh or drie"
+0805,"06-07-Fruts, vegetables and other products","0805 - Citrus fruit, fresh or dried"
+0806,"06-07-Fruts, vegetables and other products","0806 - Grapes, fresh or dried"
+0807,"06-07-Fruts, vegetables and other products","0807 - Melons, watermelons and papaws (papayas), fresh"
+0808,"06-07-Fruts, vegetables and other products","0808 - Apples, pears and quinces, fresh"
+0809,"06-07-Fruts, vegetables and other products","0809 - Stone fruit, fresh (apricot, cherry, plum, peach, etc"
+0810,"06-07-Fruts, vegetables and other products","0810 - Fruits nes, fresh"
+0811,"06-07-Fruts, vegetables and other products","0811 - Fruits and nuts, uncooked boiled or steamed, frozen"
+0812,"06-07-Fruts, vegetables and other products","0812 - Fruits, nuts provisionally preserved, not ready to ea"
+0813,"06-07-Fruts, vegetables and other products","0813 - Fruit, dried, nes, dried fruit and nut mixtures"
+0814,"06-07-Fruts, vegetables and other products",0814 - Peel of citrus fruit or melons
+0901,"06-07-Fruts, vegetables and other products","0901 - Coffee, coffee husks and skins and coffee substitutes"
+0902,"06-07-Fruts, vegetables and other products",0902 - Tea
+0903,"06-07-Fruts, vegetables and other products",0903 - Mate
+0904,"06-07-Fruts, vegetables and other products","0904 - Pepper (Piper), crushed or ground Capsicum, Pimenta"
+0905,"06-07-Fruts, vegetables and other products",0905 - Vanilla beans
+0906,"06-07-Fruts, vegetables and other products",0906 - Cinnamon and cinnamon-tree flowers
+0907,"06-07-Fruts, vegetables and other products","0907 - Cloves (whole fruit, cloves and stems)"
+0908,"06-07-Fruts, vegetables and other products","0908 - Nutmeg, mace and cardamons"
+0909,"06-07-Fruts, vegetables and other products",0909 - Seed spices
+0910,"06-07-Fruts, vegetables and other products",0910 - Other spices
+1001,10-Cereals,1001 - Wheat and meslin
+1002,10-Cereals,1002 - Rye
+1003,10-Cereals,1003 - Barley
+1004,10-Cereals,1004 - Oats
+1005,10-Cereals,1005 - Maize (corn)
+1006,10-Cereals,1006 - Rice
+1007,10-Cereals,1007 - Grain sorghum
+1008,10-Cereals,"1008 - Buckwheat, millet and canary seed, other cereals"
+1101,10-Cereals,1101 - Wheat or meslin flour
+1102,10-Cereals,1102 - Cereal flours other than of wheat or meslin
+1103,10-Cereals,"1103 - Cereal grouts, meal and pellets"
+1104,10-Cereals,"1104 - Worked cereal grains except flour, groat, meal, pelle"
+1105,10-Cereals,"1105 - Potato flour, meal, flakes, etc"
+1106,10-Cereals,"1106 - Flour and meal of legumes, roots, tubers, nuts, citru"
+1107,10-Cereals,1107 - Malt
+1108,10-Cereals,"1108 - Starches, inulin"
+1109,10-Cereals,1109 - Wheat gluten
+1201,12-Oilseeds,1201 - Soya beans
+1202,12-Oilseeds,"1202 - Ground-nuts, not roasted or otherwise cooked"
+1203,12-Oilseeds,1203 - Copra
+1204,12-Oilseeds,1204 - Linseed
+1205,12-Oilseeds,1205 - Rape or colza seeds
+1206,12-Oilseeds,1206 - Sunflower seeds
+1207,12-Oilseeds,1207 - Oil seeds and oleaginous fruits nes
+1208,12-Oilseeds,"1208 - Flour, meal of oleaginous seed or fruit except mustar"
+1209,12-Oilseeds,"1209 - Seed, fruit and spores, for sowing"
+1210,12-Oilseeds,"1210 - Hop cones, fresh or dried, lupulin"
+1211,12-Oilseeds,"1211 - Plants, plant parts for perfumery, pharmacy, etc,"
+1212,12-Oilseeds,"1212 - Locust beans, seaweed, sugar beet, cane, for food"
+1213,12-Oilseeds,"1213 - Cereal straw and husks, unprepared"
+1214,12-Oilseeds,"1214 - Animal fodder and forage products, roots etc."
+1301,12-Oilseeds,"1301 - Lac, natural gums, resins, gum-resins and balsams"
+1302,12-Oilseeds,"1302 - Vegetable saps, etc, pectin etc, agar-agar etc"
+1401,"14,24-53-Tobacco, skins, fibers and other agicultural goods",1401 - Vegetable material for plaiting
+1402,"14,24-53-Tobacco, skins, fibers and other agicultural goods",1402 - Vegetable material for stuffing or padding
+1403,"14,24-53-Tobacco, skins, fibers and other agicultural goods",1403 - Vegetable material for brooms and brushes
+1404,"14,24-53-Tobacco, skins, fibers and other agicultural goods","1404 - Vegetable products, nes"
+1501,15-Animal and vegetable fats,"1501 - Lard, other pig fat and poultry fat, rendered"
+1502,15-Animal and vegetable fats,"1502 - Bovine, sheep and goat fats, raw or rendered"
+1503,15-Animal and vegetable fats,"1503 - Lard stearin, oleostearin & oils, natural tallow oil"
+1504,15-Animal and vegetable fats,"1504 - Fish, marine mammal fat or oil not chemically modifie"
+1505,15-Animal and vegetable fats,1505 - Wool grease and fatty derivatives (including lanolin)
+1506,15-Animal and vegetable fats,"1506 - Animal fat, oil, fractions not chemically modified ne"
+1507,15-Animal and vegetable fats,"1507 - Soya-bean oil, fractions, not chemically modified"
+1508,15-Animal and vegetable fats,"1508 - Ground-nut oil, fractions, not chemically modified"
+1509,15-Animal and vegetable fats,"1509 - Olive oil and its fractions, not chemically modified"
+1510,15-Animal and vegetable fats,"1510 - Olive oil, fractions, blends, not chemically modified"
+1511,15-Animal and vegetable fats,"1511 - Palm oil and its fractions, not chemically modified"
+1512,15-Animal and vegetable fats,"1512 - Safflower, sunflower and cotton-seed oil, fractions"
+1513,15-Animal and vegetable fats,"1513 - Coconut, palm kernel, babassu oil, fractions, refined"
+1514,15-Animal and vegetable fats,"1514 - Rape, colza, mustard oil, fractions, simply refined"
+1515,15-Animal and vegetable fats,"1515 - Fixed veg fat, oil, fractions, not chemically modifie"
+1516,15-Animal and vegetable fats,"1516 - Animal and vegetable fats or oils, hydrogenated only"
+1517,15-Animal and vegetable fats,"1517 - Margarine, edible animal or veg oil preparations nes"
+1518,15-Animal and vegetable fats,"1518 - Processed animal, vegetable oils, industrial preps ne"
+1519,15-Animal and vegetable fats,"1519 - Industrial monocarboxylic fatty acid,alcohol, acid oi"
+1520,15-Animal and vegetable fats,"1520 - Glycerol (glycerine), glycerol waters & glycerol lyes"
+1521,15-Animal and vegetable fats,"1521 - Veg waxes except triglycerides, insect wax, spermacet"
+1522,15-Animal and vegetable fats,"1522 - Degras, residues from treatment animal, veg waxes"
+1601,"11,16,18-23-Food and baverage","1601 - Sausages, similar products of meat, meat offal & bloo"
+1602,"11,16,18-23-Food and baverage","1602 - Prepared or preserved meat, meat offal and blood, nes"
+1603,"11,16,18-23-Food and baverage","1603 - Extracts, juices of meat, fish, aquatic invertebrates"
+1604,"11,16,18-23-Food and baverage","1604 - Prepared or preserved fish, fish eggs, caviar"
+1605,"11,16,18-23-Food and baverage","1605 - Crustaceans, molluscs, etc, prepared or preserved"
+1701,17-Sugar,1701 - Solid cane or beet sugar and chemically pure sucrose
+1702,17-Sugar,"1702 - Sugars nes, lactose, fructose, glucose, maple syrup"
+1703,17-Sugar,1703 - Molasses from the extraction or refining of sugar
+1704,"11,16,18-23-Food and baverage","1704 - Sugar confectionery, non-cocoa, white chocolate"
+1801,"11,16,18-23-Food and baverage","1801 - Cocoa beans, whole or broken, raw or roasted"
+1802,"11,16,18-23-Food and baverage","1802 - Cocoa shells, husks, skins and waste"
+1803,"11,16,18-23-Food and baverage",1803 - Cocoa paste
+1804,"11,16,18-23-Food and baverage","1804 - Cocoa butter, fat, oil"
+1805,"11,16,18-23-Food and baverage","1805 - Cocoa powder, unsweetened"
+1806,"11,16,18-23-Food and baverage",1806 - Chocolate and other foods containing cocoa
+1901,"11,16,18-23-Food and baverage","1901 - Malt extract, flour, dairy preparations, low cocoa"
+1902,"11,16,18-23-Food and baverage","1902 - Pasta, couscous, etc."
+1903,"11,16,18-23-Food and baverage",1903 - Tapioca and tapioca substitutes
+1904,"11,16,18-23-Food and baverage","1904 - Cereal food (roasted, swelled), cooked grain not maiz"
+1905,"11,16,18-23-Food and baverage","1905 - Baked bread, pastry, wafers, rice paper, biscuits, et"
+2001,"11,16,18-23-Food and baverage","2001 - Vegetables, fruit, nuts, etc, preserved in vinegar"
+2002,"11,16,18-23-Food and baverage","2002 - Tomatoes prepared, preserved, not in vinegar"
+2003,"11,16,18-23-Food and baverage","2003 - Mushroom, truffle, prepared or preserved, not vinegar"
+2004,"11,16,18-23-Food and baverage","2004 - Vegetables nes, prepared, frozen"
+2005,"11,16,18-23-Food and baverage","2005 - Vegetables nes, prepared/preserved, not frozen/vinega"
+2006,"11,16,18-23-Food and baverage","2006 - Fruits, nuts, fruit-peel, etc preserved by sugar"
+2007,"11,16,18-23-Food and baverage","2007 - Jams, jellies, marmalades, fruit, nut pastes, purees"
+2008,"11,16,18-23-Food and baverage","2008 - Fruit, nut, edible plant parts nes, prepared/preserve"
+2009,"11,16,18-23-Food and baverage","2009 - Fruit and vegetable juices, not fermented or spirited"
+2101,"11,16,18-23-Food and baverage","2101 - Extracts, essences, concentrates of tea, coffee, mate"
+2102,"11,16,18-23-Food and baverage","2102 - Yeast, dead unicellular organisms nes, baking powders"
+2103,"11,16,18-23-Food and baverage","2103 - Sauce, condiments, mixed seasoning and mustard"
+2104,"11,16,18-23-Food and baverage","2104 - Soups, broths and homogenized food preparations"
+2105,"11,16,18-23-Food and baverage",2105 - Ice cream and other edible ice
+2106,"11,16,18-23-Food and baverage","2106 - Food preparations, nes"
+2201,"11,16,18-23-Food and baverage","2201 - Unsweetened beverage waters, ice and snow"
+2202,"11,16,18-23-Food and baverage","2202 - Waters, non-alcoholic sweetened or flavoured beverage"
+2203,"11,16,18-23-Food and baverage",2203 - Beer made from malt
+2204,"11,16,18-23-Food and baverage","2204 - Grape wines(including fortified), alcoholic grape mus"
+2205,"11,16,18-23-Food and baverage",2205 - Vermouth and other flavoured grape wine
+2206,"11,16,18-23-Food and baverage","2206 - Fermented beverages nes (eg cider, perry, mead)"
+2207,"11,16,18-23-Food and baverage","2207 - Ethyl alcohol, undenatured and > 80%, or denatured"
+2208,"11,16,18-23-Food and baverage","2208 - Liqueur, spirits and undenatured ethyl alcohol <80%"
+2209,"11,16,18-23-Food and baverage",2209 - Vinegar and substitutes for vinegar from acetic acid
+2301,"11,16,18-23-Food and baverage","2301 - Flour etc of meat, fish or offal for animal feed"
+2302,"11,16,18-23-Food and baverage","2302 - Bran, sharps etc, from working of cereals or legumes"
+2303,"11,16,18-23-Food and baverage","2303 - Starch, sugar, brewing & distilling industry residues"
+2304,"11,16,18-23-Food and baverage",2304 - Soya-bean oil-cake and other solid residues
+2305,"11,16,18-23-Food and baverage",2305 - Ground-nut oil-cake and other solid residues
+2306,"11,16,18-23-Food and baverage",2306 - Oil-cake other than soya-bean or groundnut
+2307,"11,16,18-23-Food and baverage","2307 - Wine lees, argol"
+2308,"11,16,18-23-Food and baverage","2308 - Vegetable waste, residues, etc for animal feed nes"
+2309,"11,16,18-23-Food and baverage","2309 - Animal feed preparations, nes"
+2401,"14,24-53-Tobacco, skins, fibers and other agicultural goods","2401 - Tobacco unmanufactured, tobacco refuse"
+2402,"14,24-53-Tobacco, skins, fibers and other agicultural goods","2402 - Cigars, cigarettes etc, tobacco or tobacco substitute"
+2403,"14,24-53-Tobacco, skins, fibers and other agicultural goods","2403 - Tobacco, tobacco substitute products nes"
+3301,"14,24-53-Tobacco, skins, fibers and other agicultural goods","3301 - Essential oils, resinoids and terpenic by-products"
+3501,"14,24-53-Tobacco, skins, fibers and other agicultural goods","3501 - Casein, caseinates & casein derivatives, casein glues"
+3502,"14,24-53-Tobacco, skins, fibers and other agicultural goods","3502 - Albumins, albuminates and other albumin derivatives"
+3503,"14,24-53-Tobacco, skins, fibers and other agicultural goods","3503 - Gelatin & derivatives, isinglass, glues (animal) nes"
+3504,"14,24-53-Tobacco, skins, fibers and other agicultural goods","3504 - Peptones, proteins, derivatives, nes, hide powder"
+3505,"14,24-53-Tobacco, skins, fibers and other agicultural goods","3505 - Dextrins, other modified starches, starch glues"
+3809,"14,24-53-Tobacco, skins, fibers and other agicultural goods","3809 - Finishing agents, dye carriers nes"
+3823,"14,24-53-Tobacco, skins, fibers and other agicultural goods",3823 - Chemical industry products nes
+410110,"14,24-53-Tobacco, skins, fibers and other agicultural goods","410110 - Bovine skins, whole, raw"
+410160,"14,24-53-Tobacco, skins, fibers and other agicultural goods",
+4103,"14,24-53-Tobacco, skins, fibers and other agicultural goods","4103 - Raw hides and skins except bovine, equine, sheep"
+4301,"14,24-53-Tobacco, skins, fibers and other agicultural goods","4301 - Raw furskins, pieces for furriers use, not hides etc"
+5001,"14,24-53-Tobacco, skins, fibers and other agicultural goods",5001 - Silk-worm cocoons suitable for reeling
+5002,"14,24-53-Tobacco, skins, fibers and other agicultural goods",5002 - Raw silk (not thrown)
+5003,"14,24-53-Tobacco, skins, fibers and other agicultural goods",5003 - Silk waste
+5101,"14,24-53-Tobacco, skins, fibers and other agicultural goods","5101 - Wool, not carded or combed"
+5102,"14,24-53-Tobacco, skins, fibers and other agicultural goods","5102 - Fine or coarse animal hair, not carded or combed"
+5103,"14,24-53-Tobacco, skins, fibers and other agicultural goods","5103 - Waste of wool or animal hair, except garnetted stock"
+5201,"14,24-53-Tobacco, skins, fibers and other agicultural goods","5201 - Cotton, not carded or combed"
+5202,"14,24-53-Tobacco, skins, fibers and other agicultural goods","5202 - Cotton waste, including yarn waste and garnetted stoc"
+5203,"14,24-53-Tobacco, skins, fibers and other agicultural goods","5203 - Cotton, carded, combed"
+5301,"14,24-53-Tobacco, skins, fibers and other agicultural goods","5301 - Flax, raw or processed, not spun, flax tow and waste"
+5302,"14,24-53-Tobacco, skins, fibers and other agicultural goods","5302 - True hemp, raw or processed but not spun"
