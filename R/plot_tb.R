@@ -1,20 +1,30 @@
 #' Function for plotting trade balance of one country staking multiple partners at one bar
+#' 
+#' This funciton takes filtered to one reporter CT data and plots a trade balance out of it.
+#' 
+#' @param xVarName,yVarName names of x and y axeses
+#' @param exp,imp names of variables and categories for exporn and import
+#' @param plotTradeBalance logical value indicates if the trade balance line should be plotted
+#' @param horizontalLine Name of the category wiuth the trade balance
+#' @param returnData variable that indicates if the data should be returned in a list along with the plot
+#' @param stackVar variable used to stack elements of the bar
+#' @param stackVarName namse of the spacked categories
+#' 
 plot_tb <-
   function(df,
            xVar = "Period",
            yVar = "Value",
            stackVar = "Commodity.Code",
-           srackMax = 100,
            xVarName = NA,
            yVarName = NA,
            stackVarName = NA,
            exp = "Export",
            imp = "Import",
            plotTradeBalance = TRUE,
+           horizontalLine = "Trade balance",
            otherCompulsoryVars = c("Reporter.Code", "Trade.Flow"),
            groupVar = "Trade.Flow",
            colourVar = "Trade.Flow",
-           horizontalLine = "Trade balance",
            brewScale = TRUE,
            brewScaleType = "seq",
            brewPalName = "Set1",
@@ -34,7 +44,6 @@ plot_tb <-
     # yVarName <- NA
     # stackVar <- "Partner.Code"
     # stackVarName <- "Partner Code" # NA by default
-    # srackMax <- 5
     # if("Reporter" %in% names(df)) {
     #   otherCompulsoryVars <- c("Reporter", "Trade.Flow")
     # } else {
