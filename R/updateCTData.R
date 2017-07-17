@@ -1,46 +1,29 @@
 #' Function for updating zip archives with tade data in a specific folder
 #'
-#' @param repo List of the reporters, we want to focus on. If it is specified 
+#' @param reporters List of the reporters, we want to focus on. If it is specified
 #'    "ALL", only files with data for all countries will be checked. If specified
-#'    NA or NULL, only  
+#'    NA or NULL, only
 updateCTData <-
-  function(ctAval, folder, period = "MONTHLY", repo = NA) {
-    
-    localData <- listCTdata(folder)
-    
-    # Cleaning available data
-    ctCurData <-
-      ctAval %>%
-      mutate(
-        year = str_sub(ps, start = 1, end = 4),
-        month = stringr::str_sub(ps, start = 5, end = 6),
-        month = ifelse(month == "" & freq == "ANNUAL", "AN", month),
-        publicationDate = as.Date(str_sub(
-          publicationDate, start = 1, end = 10
-        )),
-        extractDate = as.Date(str_sub(
-          extractDate, start = 1, end = 10
-        ))
-      ) %>%
-      filter(px == "HS") %>%
-      select(-type) %>%
-      arrange(r, year) %>%
-      filter(freq %in% period)
-    
-    if (any(!is.na(repo))) {
-      ctCurData <- ctCurData %>% filter(r %in% repo)
-    } else {
-      ctCurData <- ctCurData %>% filter(!(r %in% "ALL"))
-    }
+  function(toFolder,
+           ctCurData = getCTParameters(),
+           classification = "HS",
+           types = "COMMODITIES",
+           frequency,
+           reporters = getCTReporters()$Reporter.Code,
+           period = NA,
+           token = NA,
+           maxIterations = 3) {
+    localData <- listCTdata(toFolder)
     
     toDownload <-
-      ctCurData %>%
-      left_join(localData,
-                by = c("r", "year", "month", "px", "freq", "ps")) %>%
+      # Comparing available data with existing
+      left_join(ctCurData,
+                localData,
+                by = c("r", "year", "month", "px", "freq", "ps", "type")) %>%
+      
+      # Ading existing data that is not available now.
       bind_rows(
-        localData %>%
-          anti_join(ctCurData,
-                    by = c("r", "year", "month")) %>%
+        anti_join(localData, ctCurData, by = c("r", "year", "month")) %>%
           rename(
             name.y = name,
             publicationDate.y = publicationDate,
@@ -48,18 +31,28 @@ updateCTData <-
             filesize.y = filesize
           )
       ) %>%
+      
+      # Comparing new and old data
       mutate(
         new_data = is.na(publicationDate.y),
         updated_data = publicationDate.x > publicationDate.y,
-        updated_data = 
-          ifelse(publicationDate.x == publicationDate.y & filesize.x != filesize.y, 
-                 TRUE, 
-                 updated_data),
+        updated_data =
+          ifelse(
+            publicationDate.x == publicationDate.y & filesize.x != filesize.y,
+            TRUE,
+            updated_data
+          ),
         not_available = is.na(publicationDate.x)
-      )
+      ) %>% 
+      flt_default_ct(classification = classification,
+                     types = types,
+                     frequency = frequency,
+                     reporters = reporters,
+                     period = period)
     
-    if (nrow(toDownload %>% filter(new_data)) > 0) {
-      print(paste0(
+    # Showing messages
+    if (nrow(filter(toDownload, new_data)) > 0) {
+      message(paste0(
         "New files to download - ",
         nrow(filter(toDownload, new_data)),
         ", total size ",
@@ -70,8 +63,8 @@ updateCTData <-
       ))
     }
     
-    if (nrow(toDownload %>% filter(updated_data)) > 0) {
-      print(paste0(
+    if (nrow(filter(toDownload, updated_data)) > 0) {
+      message(paste0(
         "Existing files to uptade - ",
         nrow(filter(toDownload, updated_data)),
         ", total size ",
@@ -82,46 +75,69 @@ updateCTData <-
       ))
     }
     
-      
+    # Dowloading new data
     if (nrow(toDownload %>% filter(new_data)) > 0) {
-
-      d_ply(toDownload %>% filter(new_data),
-            "name.x",
-            function(x) {
-              newDF <-
-                x %>%
-                select(name.x, filesize.x, downloadUri) %>%
-                rename(name = name.x, filesize = filesize.x)
-              try(downloadCTZIP(df = newDF, folder = folder))
-            },
-            .progress = "text")
+      message("Downloading new data. To stop, press Esc.")
+      plyr::d_ply(filter(toDownload, new_data),
+                  "name.x",
+                  function(x) {
+                    downloadCTZIP(
+                      df = list(
+                        name = x$name.x,
+                        filesize = x$filesize.x,
+                        downloadUri = x$downloadUri
+                      ),
+                      toFolder = toFolder,
+                      token = token,
+                      maxIterations = maxIterations
+                    )
+                  },
+                  .progress = "text")
     } else {
       message("No new data to download")
     }
     
-
-    if (nrow(toDownload %>% filter(updated_data)) > 0) {
-
-      d_ply(toDownload %>% filter(updated_data),
-            "name.x",
-            function(x) {
-              oldName <- x$name.y
-              newDF <-
-                x %>%
-                select(name.x, filesize.x, downloadUri) %>%
-                rename(name = name.x, filesize = filesize.x)
-              
-              moveToOld(file_name = oldName, folder = folder)
-              downloadCTZIP(df = newDF, folder = folder)
-              
-            },
-            .progress = "text")
+    # Updating old data
+    if (nrow(filter(toDownload, updated_data)) > 0) {
+      message("Updating existing data. To stop, press Esc.")
+      plyr::d_ply(filter(toDownload, updated_data),
+                  "name.x",
+                  function(x) {
+                    moveToOld(file_name = x$name.y, folder = toFolder)
+                    downloadCTZIP(
+                      df = list(
+                        name = x$name.x,
+                        filesize = x$filesize.x,
+                        downloadUri = x$downloadUri
+                      ),
+                      toFolder = toFolder,
+                      token = token,
+                      maxIterations = maxIterations
+                    )
+                  },
+                  .progress = "text")
+      
     } else {
       message("No new data to update old data")
     }
     
-    # Writing all existing data the Index.csv file
-    localData <- listCTdata(folder)
-    write.csv(localData, str_c(folder, "index.csv"), row.names = FALSE)
+    # Updating old data
+    if (nrow(filter(toDownload, not_available)) > 0) {
+      message("Moving to the 'NotAvailable' folder all no longer available files")
+      plyr::d_ply(filter(toDownload, not_available),
+                  "name.y",
+                  function(x) {
+                    moveToOld(file_name = x$name.y, folder = toFolder, oldName = "NotAvailable")
+                  },
+                  .progress = "text")
+      
+    } else {
+      message("No new data to update old data")
+    }
+    
+    
+    # # Writing all existing data into the Index.csv file
+    # localData <- listCTdata(toFolder)
+    # write.csv(localData, str_c(toFolder, "index.csv"), row.names = FALSE)
     
   }

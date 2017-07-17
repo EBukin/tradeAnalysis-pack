@@ -55,7 +55,7 @@ join_lables <-
     # Reporters names
     if ("r" %in% names(data)) {
       data <- data %>%
-        # mutate(r = as.integer(r)) %>%
+        mutate(r = as.integer(r)) %>%
         left_join(rep, by = c("r" = "Reporter.Code"))
     }
     

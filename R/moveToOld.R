@@ -6,12 +6,12 @@
 #' @param file_name Name of the file.
 #' @param folder Full (or relative) path to the folder with files.
 moveToOld <- 
-  function(file_name, folder) {
+  function(file_name, folder, oldName = "old") {
     
-    dir.create(str_c(folder,"/","old"), showWarnings = FALSE)
+    dir.create(str_c(folder,"/",oldName), showWarnings = FALSE)
     
     suppressWarnings(file.copy(from = str_c(folder, file_name),
-                               to = str_c(folder, "/old/", file_name), 
+                               to = str_c(folder, "/",oldName,"/", file_name), 
                                overwrite = TRUE, 
                                copy.date = TRUE))
     

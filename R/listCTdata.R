@@ -9,6 +9,8 @@ listCTdata <-
       filesList <-
         tibble(name = list.files(path = folder, pattern = pattern)) %>%
         mutate(
+          type = str_extract(name, "(?<=type-)(.*?)(?=_r-)"),
+          type = ifelse(type == "C", "COMMODITIES", "SERVICES"),
           r = str_extract(name, "(?<=_r-)(.*?)(?=_ps-)"),
           px = str_extract(name, "(?<=_px-)(.*?)(?=_pub-)"),
           ps = str_extract(name, "(?<=_ps-)(.*?)(?=_freq-)"),
