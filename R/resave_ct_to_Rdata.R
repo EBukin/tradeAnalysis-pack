@@ -23,4 +23,5 @@ resave_ct_to_Rdata <-
     save(list = c(object), file = toFile)
     rm(list = object)
     gc(verbose = F)
+    tibble()
   }
