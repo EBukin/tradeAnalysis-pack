@@ -1,10 +1,6 @@
 #' Get list of CT reporters
 getCTReporters <-
   function() {
-    require(plyr)
-    require(dplyr)
-    
-    
     ct_reporters <-
       data.frame(
         jsonlite::fromJSON("http://comtrade.un.org/data/cache/reporterAreas.json")$results

@@ -132,7 +132,7 @@ updateCTData <-
                   .progress = "text")
       
     } else {
-      message("No new data to update old data")
+      message("No not-available data to remove")
     }
     
     

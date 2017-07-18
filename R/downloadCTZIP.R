@@ -46,8 +46,6 @@ downloadCTZIP <-
         maxIterations = maxIterations,
         token = token
       )
-    } else {
-      moveToOld(df$name, toFolder)
-    }
+    } 
     
   }

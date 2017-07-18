@@ -3,7 +3,6 @@
 
 getCTParameters <- function() {
   require(tidyverse)
-  require(jsonlite)
   require(stringr)
   
   jsonlite::fromJSON("http://comtrade.un.org/api/refs/da/bulk?parameters") %>%
