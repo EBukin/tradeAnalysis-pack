@@ -13,7 +13,7 @@ resave_ct_to_Rdata <-
     
     # Moving to old old R data file
     if (file.exists(file.path(toFolder, data$name.y))) {
-      moveToOld(file.path(toFolder, data$name.y), fromFolder)
+      moveToOld(data$name.y, toFolder)
     }
     
     # Saving new Rdata file
