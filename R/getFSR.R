@@ -1,7 +1,6 @@
 #' Get list of former soviet republics in the CT countries codes
 getFSR <- 
   function() {
-    require(plyr)
     require(dplyr)
   part %>% 
     filter(Partner.Code %in% 

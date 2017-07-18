@@ -24,6 +24,7 @@ resave_ct_to_Rdata_all <-
               by = c("r", "px", "ps", "freq", "year", "month")) %>% 
       mutate(reload = publicationDate.x > publicationDate.y,
              reload = ifelse(is.na(publicationDate.y), TRUE, reload),
+             name.z = ifelse(reload, name.y, NA),
              name.y = ifelse(is.na(publicationDate.y), name.x, name.y),
              name.y = ifelse(str_detect(name.x, "\\.zip$"), 
                              str_replace(name.x, "\\.zip$", ".Rdata"), 
@@ -34,7 +35,7 @@ resave_ct_to_Rdata_all <-
     
     if(nrow(dataToLoad) > 0) {
       dataToLoad %>% 
-        select(name.x, name.y, r, px, freq, ps) %>%
+        select(name.x, name.y, name.z, r, px, freq, ps) %>%
         rowwise() %>%
         do(resave_ct_to_Rdata(., fromFolder = fromFolder, toFolder = toFolder))
       

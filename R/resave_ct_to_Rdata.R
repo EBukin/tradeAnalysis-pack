@@ -8,12 +8,11 @@ resave_ct_to_Rdata <-
     # Defining files
     # browser()
     fromFile <- file.path(fromFolder, data$name.x)
-    toFile <-
-      file.path(toFolder, data$name.y)
+    toFile <- file.path(toFolder, data$name.y)
     
     # Moving to old old R data file
-    if (file.exists(file.path(toFolder, data$name.y))) {
-      moveToOld(data$name.y, toFolder)
+    if (file.exists(file.path(toFolder, data$name.z))) {
+      moveToOld(data$name.z, toFolder)
     }
     
     # Saving new Rdata file
