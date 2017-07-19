@@ -57,10 +57,13 @@ all_ct <-
 wtoAgFoodFull <-
   bind_rows(
     left_join(ag_general, all_ct, by = "cc1") %>% filter(cc2 == ""),
-    left_join(special, all_ct, by = c("cc1", "cc2", "cc3")),
-    left_join(ag_general, all_ct, by = "cc1") %>% filter(cc3 == "", cc2 != "") %>% mutate(prime = FALSE),
-    left_join(ag_general, all_ct, by = "cc1") %>% filter(cc3 != "", cc2 != "") %>% mutate(prime = FALSE)
+    left_join(ag_general, all_ct, by = "cc1") %>% filter(cc2 != "", cc3 == "") %>% mutate(prime = FALSE),
+    left_join(ag_general, all_ct, by = "cc1") %>% filter(cc2 != "", cc3 != "") %>% mutate(prime = FALSE),
+    left_join(filter(special, cc3 == "") %>% select(-cc3), all_ct, by = c("cc1", "cc2")) %>% filter(cc3 == ""),
+    left_join(filter(special, cc3 == "") %>% select(-cc3), all_ct, by = c("cc1", "cc2")) %>% filter(cc3 != "") %>% mutate(prime = FALSE),
+    left_join(filter(special, cc3 != ""), all_ct, by = c("cc1", "cc2", "cc3"))
   ) %>%
+  mutate(Commodity.Code = ifelse(is.na(Commodity.Code), str_c(cc1, cc2, cc3), Commodity.Code)) %>% 
   select(cc1, cc2, cc3, prime, Commodity.Code, Commodity, prime)
 
 wtoAgFood <-
@@ -72,6 +75,8 @@ wtoAgFood <-
 # Saving data -------------------------------------------------------------
 
 save(wtoAgFoodFull, wtoAgFood, file = "data/wtoAgFood.Rdata")
+save(wtoAgFoodFull, file = "data/wtoAgFoodFull.rda")
+save(wtoAgFood, file = "data/wtoAgFood.rda")
 
 # Writing an excel file
 write.xlsx2(
