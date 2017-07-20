@@ -2,9 +2,29 @@
 #' 
 flt_rep_ct <- function(x, reps) {
   if (all(!is.na(reps))) {
-    x <- 
-      x %>%
-      dplyr::filter(r %in% reps)
+    if ("r" %in% names(x)) {
+      x <-
+        x %>%
+        dplyr::filter(r %in% reps)
+    }
+    
+    if ("Reporter.Code" %in% names(x)) {
+      x <-
+        x %>%
+        dplyr::filter(Reporter.Code %in% reps)
+    }
+  }
+  x
+}
+
+
+flt_par_ct <- function(x, part) {
+  if (any(!is.na(part))) {
+    if ("Partner.Code" %in% names(x)) {
+      x <-
+        x %>%
+        dplyr::filter(Partner.Code %in% part)
+    }
   }
   x
 }

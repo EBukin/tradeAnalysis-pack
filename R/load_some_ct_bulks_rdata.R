@@ -12,32 +12,32 @@ load_some_ct_bulks_rdata <-
              
              loadedObject <- load(file = file.path(fromFolder, x), verbose = F)
              
-             assign(loadedObject,
-                    eval(parse(text = loadedObject)) %>%
-                      filter(Trade.Flow.Code %in% tradeFlows))
-             
-             if (all(!is.na(hsCodes))) {
+             if (any(!is.na(tradeFlows))) {
                assign(loadedObject,
-                      eval(parse(text = loadedObject)) %>%
+                      get(loadedObject) %>%
+                        filter(Trade.Flow.Code %in% tradeFlows))
+             }
+             
+             if (any(!is.na(hsCodes))) {
+               assign(loadedObject,
+                      get(loadedObject) %>%
                         filter(Commodity.Code %in% hsCodes))
              }
              
-             gc()
-             if (all(!is.na(reporters))) {
+             if (any(!is.na(reporters))) {
                assign(loadedObject,
-                      eval(parse(text = loadedObject)) %>%
+                      get(loadedObject) %>%
                         filter(Reporter.Code %in% reporters))
              }
              
-             gc()
-             if (all(!is.na(partners))) {
+             if (any(!is.na(partners))) {
                assign(loadedObject,
-                      eval(parse(text = loadedObject)) %>%
+                      get(loadedObject) %>%
                         filter(Partner.Code %in% partners))
              }
              
              gc()
-             eval(parse(text = loadedObject))
+             get(loadedObject)
            })
     
   }
