@@ -39,58 +39,109 @@ rank_agg_top_partners <- function(df, top_n, agg = TRUE, oneEU = TRUE, oneFSR = 
   fsr.Code <- 889L
   row.Code <- 888L
   
-  if(topPeriod == 0) {
-    df <- 
-      df %>% 
-      mutate(Partner.Top = Partner.Code,
-             Partner.Top = ifelse(oneEU & !otherEU & Partner.Top %in% eu.Partners, eu.Code, Partner.Top),
-             Partner.Top = ifelse(oneRUS & Partner.Top %in% rus.Partner, rus.Partner, Partner.Top),
-             Partner.Top = ifelse(oneFSR & Partner.Top %in% fsr.Partners, fsr.Code, Partner.Top)) %>%
-      group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Top")]) %>%
-      mutate(Value.Sum = sum(Value, na.rm = TRUE)) %>% 
-      group_by_(.dots = names(.)[names(.) %in% c(groupVars)]) %>% 
-      mutate(Rank = dense_rank(desc(Value.Sum)) - 1L) %>% 
-      ungroup() %>% 
-      mutate(Partner.Top = ifelse(Rank >= top_n, row.Code, Partner.Top),
-             Partner.Top = ifelse(Rank >= top_n & otherEU & Partner.Code %in% eu.Partners, eu.Code, Partner.Top),
-             Rank = ifelse(Rank >= top_n, top_n, Rank)) %>% 
-      select(-Value.Sum)
+  
+  if (topPeriod == 0) {
+    df <-
+      df %>%
+      dplyr::mutate(
+        Partner.Top = Partner.Code,
+        Partner.Top = ifelse(
+          oneEU &
+            !otherEU & Partner.Top %in% eu.Partners,
+          eu.Code,
+          Partner.Top
+        ),
+        Partner.Top = ifelse(
+          oneRUS & Partner.Top %in% rus.Partner,
+          rus.Partner,
+          Partner.Top
+        ),
+        Partner.Top = ifelse(oneFSR &
+                               Partner.Top %in% fsr.Partners, fsr.Code, Partner.Top)
+      ) %>%
+      dplyr::group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Top")]) %>%
+      dplyr::mutate(Value.Sum = sum(Value, na.rm = TRUE)) %>%
+      dplyr::group_by_(.dots = names(.)[names(.) %in% c(groupVars)]) %>%
+      dplyr::mutate(Rank = dense_rank(desc(Value.Sum)) - 1L) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(
+        Partner.Top = ifelse(Rank >= top_n, row.Code, Partner.Top),
+        Partner.Top = ifelse(
+          Rank >= top_n &
+            otherEU & Partner.Code %in% eu.Partners,
+          eu.Code,
+          Partner.Top
+        ),
+        Rank = ifelse(Rank >= top_n, top_n, Rank)
+      ) %>%
+      dplyr::select(-Value.Sum)
     
   } else {
     # Actual calculations
     df <-
-      df %>% 
-      filter(Year > max(Year) - topPeriod) %>%  
-      mutate(Partner.Top = Partner.Code,
-             Partner.Top = ifelse(oneEU & !otherEU & Partner.Top %in% eu.Partners, eu.Code, Partner.Top),
-             Partner.Top = ifelse(oneRUS & Partner.Top %in% rus.Partner, rus.Partner, Partner.Top),
-             Partner.Top = ifelse(oneFSR & Partner.Top %in% fsr.Partners, fsr.Code, Partner.Top)) %>%
-      group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Top", "Partner.Code") & !names(.) %in% c("Year", "Period", "Classification")]) %>%
-      summarise(Value.Sum = sum(Value, na.rm = TRUE)) %>% 
-      group_by_(.dots = names(.)[names(.) %in% c(groupVars)]) %>%
-      mutate(Rank = dense_rank(desc(Value.Sum)) - 1L) %>% 
-      select(-Value.Sum) %>% 
-      ungroup() %>% 
-      mutate(Partner.Top = ifelse(Rank >= top_n, row.Code, Partner.Top),
-             Partner.Top = ifelse(Rank >= top_n & otherEU & Partner.Code %in% eu.Partners, eu.Code, Partner.Top),
-             Rank = ifelse(Rank >= top_n, top_n, Rank)) %>% 
-      right_join(df, names(df)[names(df) %in% c("Trade.Flow.Code", "Reporter.Code", "Partner.Code", "Commodity.Code", "Variable")]) %>% 
-      mutate(Rank = ifelse(is.na(Rank), top_n, Rank),
-             Partner.Top = ifelse(Rank >= top_n, row.Code, Partner.Top),
-             Partner.Top = ifelse(Rank >= top_n & otherEU & Partner.Code %in% eu.Partners, eu.Code, Partner.Top),
-             Rank = ifelse(Rank >= top_n, top_n, Rank))
+      df %>%
+      dplyr::filter(Year > max(Year) - topPeriod) %>%
+      dplyr::mutate(
+        Partner.Top = Partner.Code,
+        Partner.Top = ifelse(
+          oneEU &
+            !otherEU & Partner.Top %in% eu.Partners,
+          eu.Code,
+          Partner.Top
+        ),
+        Partner.Top = ifelse(
+          oneRUS & Partner.Top %in% rus.Partner,
+          rus.Partner,
+          Partner.Top
+        ),
+        Partner.Top = ifelse(oneFSR &
+                               Partner.Top %in% fsr.Partners, fsr.Code, Partner.Top)
+      ) %>%
+      dplyr::group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Top", "Partner.Code") &
+                                          !names(.) %in% c("Year", "Period", "Classification")]) %>%
+      dplyr::summarise(Value.Sum = sum(Value, na.rm = TRUE)) %>%
+      dplyr::group_by_(.dots = names(.)[names(.) %in% c(groupVars)]) %>%
+      dplyr::mutate(Rank = dense_rank(desc(Value.Sum)) - 1L) %>%
+      dplyr::select(-Value.Sum) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(
+        Partner.Top = ifelse(Rank >= top_n, row.Code, Partner.Top),
+        Partner.Top = ifelse(
+          Rank >= top_n &
+            otherEU & Partner.Code %in% eu.Partners,
+          eu.Code,
+          Partner.Top
+        ),
+        Rank = ifelse(Rank >= top_n, top_n, Rank)
+      ) %>%
+      dplyr::right_join(df, names(df)[names(df) %in% c("Trade.Flow.Code",
+                                                       "Reporter.Code",
+                                                       "Partner.Code",
+                                                       "Commodity.Code",
+                                                       "Variable")]) %>%
+      dplyr::mutate(
+        Rank = ifelse(is.na(Rank), top_n, Rank),
+        Partner.Top = ifelse(Rank >= top_n, row.Code, Partner.Top),
+        Partner.Top = ifelse(
+          Rank >= top_n &
+            otherEU & Partner.Code %in% eu.Partners,
+          eu.Code,
+          Partner.Top
+        ),
+        Rank = ifelse(Rank >= top_n, top_n, Rank)
+      )
   }
   
   if (agg) {
     df <-
       df %>%
-      mutate(Partner.Code = Partner.Top) %>%
-      select(-Rank,-Partner.Top) %>%
-      group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Code")]) %>%
-      summarise(Value = sum(Value)) %>%
-      ungroup()
+      dplyr::mutate(Partner.Code = Partner.Top) %>%
+      dplyr::select(-Rank, -Partner.Top) %>%
+      dplyr::group_by_(.dots = names(.)[names(.) %in% c(groupVars, "Partner.Code")]) %>%
+      dplyr::summarise(Value = sum(Value)) %>%
+      dplyr::ungroup()
   }
-
+  
   return(df)
   
 }

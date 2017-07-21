@@ -6,6 +6,7 @@ agg_month_to_years <-
              c(
                "Classification",
                "Year",
+               "Period",
                "Trade.Flow.Code",
                "Reporter.Code",
                "Partner.Code",
@@ -15,13 +16,15 @@ agg_month_to_years <-
                "Reporter",
                "Partner",
                "Qty.Unit.Code",
-               "Trade.Flow"
+               "Trade.Flow",
+               "Type"
              ),
            valuse_Vars = 
              c(
                "Qty",
                "Netweight..kg.",
-               "Trade.Value..US.."
+               "Trade.Value..US..",
+               "Value"
              ),
            drop_vars = 
              c(
@@ -29,10 +32,18 @@ agg_month_to_years <-
                "Flag"
              )) {
     
+    valuse_Vars <-
+      names(data)[names(data) %in% valuse_Vars]
+    
+    if(length(names(data)[names(data) %in% drop_vars]) > 0) {
+      data <- 
+        data%>% 
+        select_(.dots = stringr::str_c("-", names(data)[names(data) %in% drop_vars]))
+    }
+    
     # browser()
     data %>%
-      mutate(Period = Year) %>% 
-      select_(.dots = stringr::str_c("-", drop_vars)) %>% 
+      mutate(Period = as.character(Year))  %>% 
       group_by_(.dots = names(.)[names(.) %in% grouping_vars]) %>% 
       summarise_at(.cols = valuse_Vars, sum, na.rm = TRUE) %>% 
       ungroup()
