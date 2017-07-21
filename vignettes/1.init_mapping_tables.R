@@ -1,23 +1,32 @@
 # Loading funcitons
-library(plyr)
+# library(plyr)
 library(stringr)
-l_ply(str_c("R/", list.files("R/", pattern="*.R")), source)
+plyr::l_ply(str_c("R/", list.files("R/", pattern="*.R")), source)
 
 # this is a script where we initialise the ct maping elements
-rep <- getCTReporters()
+reporters <- getCTReporters()
 
-part <- 
+save(reporters, file = "data/reporters.rda")
+
+partners <- 
   getCTPartners() %>% 
-  bind_rows(data.frame(Partner.Code = 889L, Partner = "FSR", stringsAsFactors = FALSE))
+  bind_rows(data.frame(Partner.Code = 889L, Partner = "FSR", stringsAsFactors = FALSE),
+            data.frame(Partner.Code = 888L, Partner = "ROW", stringsAsFactors = FALSE))
 
-reg <- 
+save(partners, file = "data/partners.rda")
+
+regimes <- 
   getCTRegimes() %>% 
   bind_rows(data.frame(Trade.Flow.Code = 9, Trade.Flow = "Trade balance" , stringsAsFactors = FALSE))
 
-class <- 
+save(regimes, file = "data/regimes.rda")
+
+classes <- 
   bind_rows(data.frame( Commodity.Code = "01-24", Commodity = "Agriculture", stringsAsFactors = FALSE),
             getCTClass()) %>% 
   tbl_df()
+
+save(classes, file = "data/classes.rda")
 
 units <-
   data.frame(
@@ -35,4 +44,6 @@ units <-
     stringsAsFactors = FALSE
   )
 
-save(rep, part, reg, class, units, file = "data/ctClass.Rdata")
+save(units, file = "data/units.rda")
+
+# save(reporters, partners, regimes, classes, units, file = "data/ctClass.Rdata")
