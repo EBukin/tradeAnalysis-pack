@@ -57,10 +57,15 @@ flt_freq_ct <- function(x, freqs) {
 }
 
 flt_year_ct <- function(x, years) {
-  if(all(!is.na(years))) {
+  if(any(!is.na(years)) & "year" %in% names(x)) {
     x <- 
       x %>% 
       dplyr::filter(year %in% years)
+  }
+  if(any(!is.na(years)) & "Year" %in% names(x)) {
+    x <- 
+      x %>% 
+      dplyr::filter(Year %in% years)
   }
   x
 }

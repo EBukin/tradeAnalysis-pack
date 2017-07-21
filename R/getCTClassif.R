@@ -1,7 +1,7 @@
 #' Get the COMTRADE classification (hs codes with names)
 getCTClass <- 
   function() {
-    require(plyr)
+    # require(plyr)
     require(dplyr)
     
     ctClassif <-
