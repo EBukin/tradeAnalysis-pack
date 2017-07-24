@@ -6,12 +6,30 @@ join_lables <-
   function(data,
            # mappingTbls = "ctClass.Rdata",
            commAggMT = system.file("extdata", "HS_agg_names.csv", package = "tradeAnalysis"),
+           reportersExtras = system.file("extdata", "reporters_extras_names.csv", package = "tradeAnalysis"),
+           partnersExtras = system.file("extdata", "partners_extras_names.csv", package = "tradeAnalysis"),
            keepCodes = TRUE) {
-    # require(plyr)
-    require(dplyr)
-    # load(mappingTbls)
+    require(tidyverse)
+    
     class <-
       bind_rows(classes, read.csv(commAggMT, stringsAsFactors = FALSE))
+    
+    partners <-
+      bind_rows(partners,
+                readr::read_csv(
+                  partnersExtras,
+                  col_types = cols(Partner.Code = col_integer(),
+                                   Partner = col_character())
+                )) %>% distinct()
+    
+    reporters <-
+      bind_rows(reporters,
+                readr::read_csv(
+                  reportersExtras,
+                  col_types = cols(Reporter.Code = col_integer(),
+                                   Reporter = col_character())
+                )) %>% distinct()
+    
     oldNames <- c("r",
                   "Reporter.Code",
                   "Partner.Code",
@@ -35,7 +53,8 @@ join_lables <-
     if ("r" %in% names(data)) {
       data <- data %>%
         mutate(r = as.integer(r)) %>%
-        left_join(reporters, by = c("r" = "Reporter.Code"))
+        left_join(reporters, by = c("r" = "Reporter.Code")) %>%
+        mutate(Reporter = ifelse(is.na(Reporter, Reporter.Code, Reporter)))
     }
     
     # Partners names
@@ -43,7 +62,7 @@ join_lables <-
       data <- data %>%
         mutate(Partner.Code = as.integer(Partner.Code)) %>%
         left_join(partners, by = "Partner.Code") %>%
-        mutate(Partner = ifelse(is.na(Partner), "ROW", Partner))
+        mutate(Partner = ifelse(is.na(Partner), Partner.Code, Partner))
     }
     
     # Trade flows names
