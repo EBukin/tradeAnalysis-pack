@@ -20,7 +20,7 @@ rank_agg_top_partners <-
     rus.Partner <- 643L
     
     # Introduce in the CT countries mapping table new country codes
-    euCode <- 492L
+    euCode <- 97L
     fsrCode <- 889L
     otherEUCode <- 7492L
     otherFSRCode <- 7889L
