@@ -84,7 +84,7 @@ rank_agg_top_partners <-
       
       # FSR Other if applicable
       dplyr::mutate(Partner.Top = ifelse(
-        Rank > top_n & otherEU & !oneEU & (Partner.Code %in% fsr.Partners),
+        Rank > top_n & otherFSR & !oneFSR & (Partner.Code %in% fsr.Partners),
         otherFSRCode,
         Partner.Top
       )) %>%
@@ -130,11 +130,20 @@ rank_agg_top_partners <-
     
     # Sometimes, in the selected timeframe, there is no information about some countries.
     #   We aggregated them under ROW classification with the same rank.
-    rowRank <- data %>% filter(., !is.na(Rank), Partner.Top == rowCode) %>% .$Rank %>% unique()
-    data <- 
-      data %>% 
-      dplyr::mutate(Partner.Top = ifelse(is.na(Partner.Top), rowCode, Partner.Top),
-                    Rank = ifelse(is.na(Rank), rowRank, Rank))
+    #   It should be carefully done group by group.
+    data <-
+      data %>%
+      group_by(Reporter.Code, Trade.Flow.Code, Commodity.Code) %>%
+      do({
+        rowRank <-
+          filter(., !is.na(Rank), Partner.Top == rowCode)$Rank %>% unique()
+        mutate(
+          .,
+          Partner.Top = ifelse(is.na(Partner.Top), rowCode, Partner.Top),
+          Rank = ifelse(is.na(Rank), rowRank, Rank)
+        )
+      }) %>% 
+      ungroup()
     
     if (agg) {
       data <-

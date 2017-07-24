@@ -29,9 +29,10 @@ plot_tb <-
            groupVar = "Trade.Flow",
            colourVar = "Trade.Flow",
            brewScaleType = "seq",
-           brewPalName = "Set1",
+           brewPalName = "Set3",
            revertColours = FALSE,
-           returnData = FALSE) {
+           returnData = FALSE,
+           lang = NA) {
     require(plyr)
     require(tidyverse)
     require(dplyr)
@@ -71,7 +72,7 @@ plot_tb <-
       p_data <-
         df %>%
         filter(Trade.Flow.Code %in% c(1, 2)) %>%
-        join_lables() %>%
+        join_lables(lang = lang) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
         spread(., Trade.Flow, Value, fill = 0) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
@@ -113,7 +114,7 @@ plot_tb <-
       p_data <-
         df %>%
         filter(Trade.Flow.Code %in% c(1, 2)) %>%
-        join_lables() %>%
+        join_lables(lang = lang) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
         spread(., Trade.Flow, Value, fill = 0) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName])
@@ -141,6 +142,9 @@ plot_tb <-
       group_by_(.dots = stackVar) %>%
       distinct %>%
       nrow()
+    
+    # Manula pallet
+    coloursPal <- colorRampPalette(brewer.pal(8, brewPalName))(nStacks)
     
     # Implement later Rank stacks and group them into other groups
     
@@ -258,19 +262,21 @@ plot_tb <-
         fill = stackVarName
       ) +
       ggtitle(plotTitle, plotSubtitle) +
-      guides(fill = guide_legend(reverse = T))
+      guides(fill = guide_legend(reverse = T, order = 2),
+             colour = guide_legend(order = 1))
     
     # Adding scale
     if (brewScale) {
       p <-
         p +
-        scale_fill_brewer(type = brewScaleType,
-                          palette = brewPalName)
+        scale_fill_manual(values = coloursPal)
+        # scale_fill_brewer(type = brewScaleType,
+        #                   palette = brewPalName)
     }
     
     if (returnData) {
       list(plot = p,
-           data = p_data)
+           data = p_data %>% select(-order) %>% spread(key = Period, value = Value))
     } else {
       p
     }
