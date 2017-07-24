@@ -44,11 +44,11 @@ updateCTData <-
           ),
         not_available = is.na(publicationDate.x)
       ) %>% 
-      flt_default_ct(classification = classification,
-                     types = types,
-                     frequency = frequency,
-                     reporters = reporters,
-                     period = period)
+      flt_clas_ct(clas = classification) %>% 
+      flt_type_ct(types = types) %>% 
+      flt_rep_ct(reps = reporters) %>% 
+      flt_year_ct(years = period) %>% 
+      flt_freq_ct(freqs = frequency)
     
     # Showing messages
     if (nrow(filter(toDownload, new_data)) > 0) {
