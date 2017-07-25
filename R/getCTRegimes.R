@@ -1,7 +1,6 @@
 #' Get list of CT regimes
 getCTRegimes <-
   function() {
-    require(plyr)
     require(dplyr)
     
     ctRegimes <-

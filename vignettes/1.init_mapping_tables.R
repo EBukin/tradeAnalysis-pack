@@ -1,5 +1,4 @@
 # Loading funcitons
-# library(plyr)
 library(stringr)
 plyr::l_ply(str_c("R/", list.files("R/", pattern="*.R")), source)
 

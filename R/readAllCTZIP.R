@@ -1,13 +1,12 @@
 #' Reading all CT zip achive in one folder
 readAllCTZIP <-
   function(folder, parallel = FALSE, delete = TRUE, ...) {
-    require(plyr)
     require(stringr)
     
     files <- listCTdata(folder)
     
     data <-
-      ddply(
+      plyr::ddply(
         .data = files,
         .variables = .(name),
         .fun = function(x) {

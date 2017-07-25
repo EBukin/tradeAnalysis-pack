@@ -4,7 +4,6 @@
 # Setup -------------------------------------------------------------------
 
 library(data.table)
-library(plyr)
 library(dplyr)
 library(tidyr)
 library(jsonlite)

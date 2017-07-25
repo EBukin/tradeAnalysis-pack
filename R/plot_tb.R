@@ -33,10 +33,7 @@ plot_tb <-
            revertColours = FALSE,
            returnData = FALSE,
            lang = NA) {
-    require(plyr)
     require(tidyverse)
-    require(dplyr)
-    require(tidyr)
     require(RColorBrewer)
     require(scales)
     require(ggplot2)
@@ -304,7 +301,6 @@ plot_tb <-
 #            brewPalName = "Set1",
 #            revertColours = FALSE,
 #            returnData = FALSE) {
-#     require(plyr)
 #     require(tidyverse)
 #     require(dplyr)
 #     require(tidyr)

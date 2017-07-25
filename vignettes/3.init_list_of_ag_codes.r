@@ -5,9 +5,7 @@
 # Setups -----------------------------------------------------------------
 
 
-require("plyr")
-require("dplyr")
-require("tidyr")
+require("tidyverse")
 require("stringr")
 require("knitr")
 require("xlsx")

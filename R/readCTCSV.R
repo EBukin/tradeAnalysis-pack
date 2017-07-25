@@ -2,7 +2,7 @@
 readCTCSV <-
   function(path) {
     
-    require(dplyr)
+    require(tidyverse)
     
     # Reading data
     df <- data.table::fread(
