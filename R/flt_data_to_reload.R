@@ -3,7 +3,8 @@ flt_data_to_reload <- function(fromFolder,
                                toFolder,
                                newPrefix = "",
                                fromExt = ".Rdata$",
-                               toExt = ".Rdata$") {
+                               toExt = ".Rdata$",
+                               returnFiltered = TRUE) {
   
   # Raw data
   dataToLoad <- listCTdata(fromFolder, fromExt)
@@ -15,6 +16,8 @@ flt_data_to_reload <- function(fromFolder,
       dataToLoad %>%
       mutate(publicationDate = publicationDate - 1)
   }
+  
+  allData <- 
   # browser()
   full_join(dataToLoad,
             loadedData,
@@ -32,7 +35,14 @@ flt_data_to_reload <- function(fromFolder,
     rename(originNewFile = name.x,
            destOldFile = name.z,
            destNewFile = name.y) %>% 
-    select(originNewFile, destOldFile, destNewFile, reload, r, px, ps, freq, year, month) %>% 
-    filter(reload) 
+    select(originNewFile, destOldFile, destNewFile, reload, r, px, ps, freq, year, month)
+  
+  if (returnFiltered) {
+    allData <-
+      allData %>%
+      filter(reload)
+  }
+  
+  allData
   
 }
