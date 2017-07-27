@@ -39,7 +39,8 @@ agg_partners <-
       dataAgg <- 
         dataAgg %>% 
         mutate(Partner.Code = as.character(Partner.Code)) %>% 
-        bind_rows(data)
+        bind_rows(data %>% 
+                    mutate(Partner.Code = as.character(Partner.Code)))
     }
     
     return(dataAgg)

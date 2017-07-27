@@ -45,6 +45,6 @@ agg_month_to_years <-
     data %>%
       mutate(Period = as.character(Year))  %>% 
       group_by_(.dots = names(.)[names(.) %in% grouping_vars]) %>% 
-      summarise_at(.cols = valuse_Vars, sum, na.rm = TRUE) %>% 
+      summarise_at(.vars = valuse_Vars, sum, na.rm = TRUE) %>% 
       ungroup()
   }

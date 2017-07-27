@@ -41,29 +41,66 @@ join_lables <-
       
       # Reporters names
       if ("Reporter.Code" %in% names(data)) {
-        data <- data %>%
-          mutate(Reporter.Code = as.integer(Reporter.Code)) %>%
-          left_join(dplyr::rename(countries, Reporter = Name),
-                    by = c("Reporter.Code" = "Code")) %>%
-          mutate(Reporter = ifelse(is.na(Reporter), Reporter.Code, Reporter))
+        if(is.integer(data$Reporter.Code)) {
+          data <- 
+            data %>%
+            left_join(dplyr::rename(countries, Reporter = Name),
+                      by = c("Reporter.Code" = "Code")) %>%
+            mutate(Reporter = ifelse(is.na(Reporter), Reporter.Code, Reporter))
+        }
+        if(is.character(data$Reporter.Code)) {
+          data <- 
+            data %>%
+            left_join(
+              countries %>% 
+                dplyr::mutate(Code = as.character(Code)) %>% 
+                dplyr::rename(Reporter = Name),
+              by = c("Reporter.Code" = "Code")) %>%
+            mutate(Reporter = ifelse(is.na(Reporter), Reporter.Code, Reporter))
+        }
+        
       }
       
       # Reporters names
       if ("r" %in% names(data)) {
-        data <- data %>%
-          mutate(r = as.integer(r)) %>%
-          left_join(dplyr::rename(countries, Reporter = Name),
-                    by = c("r" = "Code")) %>%
-          mutate(Reporter = ifelse(is.na(Reporter), r, Reporter))
+        if(is.integer(data$r)) {
+          data <- 
+            data %>%
+            left_join(dplyr::rename(countries, Reporter = Name),
+                      by = c("r" = "Code")) %>%
+            mutate(Reporter = ifelse(is.na(Reporter), r, Reporter))
+        }
+        if(is.character(data$r)) {
+          data <- 
+            data %>%
+            left_join(
+              countries %>% 
+                dplyr::mutate(Code = as.character(Code)) %>% 
+                dplyr::rename(Reporter = Name),
+              by = c("r" = "Code")) %>%
+            mutate(Reporter = ifelse(is.na(Reporter), r, Reporter))
+        }
       }
       
       # Partners names
       if ("Partner.Code" %in% names(data)) {
-        data <- data %>%
-          mutate(Partner.Code = as.integer(Partner.Code)) %>%
-          left_join(dplyr::rename(countries, Partner = Name),
-                    by = c("Partner.Code" = "Code")) %>%
-          mutate(Partner = ifelse(is.na(Partner), Partner.Code, Partner))
+        if(is.integer(data$Partner.Code)) {
+          data <- 
+            data %>%
+            left_join(dplyr::rename(countries, Partner = Name),
+                      by = c("Partner.Code" = "Code")) %>%
+            mutate(Partner = ifelse(is.na(Partner), Partner.Code, Partner))
+        }
+        if(is.character(data$Partner.Code)) {
+          data <- 
+            data %>%
+            left_join(
+              countries %>% 
+                dplyr::mutate(Code = as.character(Code)) %>% 
+                dplyr::rename(Partner = Name),
+              by = c("Partner.Code" = "Code")) %>%
+            mutate(Partner = ifelse(is.na(Partner), Partner.Code, Partner))
+        }
       }
       
       # Trade flows names
@@ -83,7 +120,8 @@ join_lables <-
       if ("Commodity.Code" %in% names(data)) {
         data <- data %>%
           mutate(Commodity.Code = as.character(Commodity.Code)) %>%
-          left_join(classes, by = "Commodity.Code")
+          left_join(classes, by = "Commodity.Code") %>% 
+          mutate(Commodity = ifelse(is.na(Commodity), Commodity.Code, Commodity))
       }
       
       if (!keepCodes) {

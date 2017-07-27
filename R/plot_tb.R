@@ -136,8 +136,9 @@ plot_tb <-
     # Calculatgin how many stacks are present
     nStacks <-
       p_data %>%
-      group_by_(.dots = stackVar) %>%
-      distinct %>%
+      dplyr::group_by_(.dots = stackVar) %>%
+      dplyr::select_(.dots = stackVar) %>%
+      dplyr::distinct() %>%
       nrow()
     
     # Manula pallet
