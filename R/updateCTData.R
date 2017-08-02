@@ -15,6 +15,12 @@ updateCTData <-
            maxIterations = 3) {
     localData <- listCTdata(toFolder)
     
+    if(is.null(localData)) {
+      localData <- 
+        ctAval[0,] %>% 
+        select(-downloadUri)
+    }
+    
     toDownload <-
       # Comparing available data with existing
       left_join(ctCurData,
@@ -57,7 +63,7 @@ updateCTData <-
         nrow(filter(toDownload, new_data)),
         ", total size ",
         round(sum(
-          filter(toDownload, new_data)$filesize.x
+          as.numeric(filter(toDownload, new_data)$filesize.x), na.rm = TRUE
         ) / 1024 ^ 3, 3),
         " GB."
       ))
