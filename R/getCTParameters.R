@@ -1,10 +1,6 @@
-#' Get CT bulk data availability
+#' Get CT bulk data availability from the web
 #'
-
 getCTParameters <- function() {
-  require(tidyverse)
-  require(stringr)
-  
   jsonlite::fromJSON("http://comtrade.un.org/api/refs/da/bulk?parameters") %>%
     tbl_df() %>%
     mutate(

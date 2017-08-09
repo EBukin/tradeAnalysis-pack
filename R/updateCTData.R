@@ -1,21 +1,36 @@
-#' Function for updating zip archives with tade data in a specific folder
+#' Function for updating zip archives with trade data in a specific folder
 #'
+#' @param toFolder Folder where all files are stored
+#' @param ctCurData dataframe with current data availability obtained with `getCTParameters()`
+#' @param classification type of the classification to use. Default is 'HS', but other options are available. 
+#' @param types defines the type of data 'COMMODITIES' or 'SERVICES'.
+#' @param frequency type of the data 'ANNUAL' of 'MONTHLY' 
 #' @param reporters List of the reporters, we want to focus on. If it is specified
 #'    "ALL", only files with data for all countries will be checked. If specified
 #'    NA or NULL, only
+#' @param period atomic vector identifying time interval when data should be loaded. 
+#'    by default NA meaning for entire period.
+#' @inheritParams downloadCTZIP
+#' @examples
+#'   updateCTData(ctCurData = values$ctCurData,
+#'       toFolder = rawFolder,
+#'       frequency = "MONTHLY",
+#'       reporters = "ALL",
+#'       token = token
+#'       )
 updateCTData <-
   function(toFolder,
+           frequency,
            ctCurData = getCTParameters(),
            classification = "HS",
            types = "COMMODITIES",
-           frequency,
            reporters = getCTReporters()$Reporter.Code,
            period = NA,
            token = NA,
            maxIterations = 3) {
     localData <- listCTdata(toFolder)
     
-    if(is.null(localData)) {
+    if (is.null(localData)) {
       localData <- 
         ctAval[0,] %>% 
         select(-downloadUri)
@@ -80,7 +95,6 @@ updateCTData <-
         " GB."
       ))
     }
-    
     # Dowloading new data
     if (nrow(toDownload %>% filter(new_data)) > 0) {
       message("Downloading new data. To stop, press Esc.")
@@ -102,7 +116,6 @@ updateCTData <-
     } else {
       message("No new data to download")
     }
-    
     # Updating old data
     if (nrow(filter(toDownload, updated_data)) > 0) {
       message("Updating existing data. To stop, press Esc.")
@@ -122,7 +135,6 @@ updateCTData <-
                     )
                   },
                   .progress = "text")
-      
     } else {
       message("No new data to update old data")
     }
@@ -136,14 +148,7 @@ updateCTData <-
                     moveToOld(file_name = x$name.y, folder = toFolder, oldName = "NotAvailable")
                   },
                   .progress = "text")
-      
     } else {
       message("No not-available data to remove")
     }
-    
-    
-    # # Writing all existing data into the Index.csv file
-    # localData <- listCTdata(toFolder)
-    # write.csv(localData, str_c(toFolder, "index.csv"), row.names = FALSE)
-    
   }
