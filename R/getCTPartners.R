@@ -1,9 +1,6 @@
 #' Get list of CT partners
 getCTPartners <- 
   function() {
-    require(plyr)
-    require(dplyr)
-    
     ct_partners <-
       data.frame(
         jsonlite::fromJSON("http://comtrade.un.org/data/cache/partnerAreas.json")$results, 
