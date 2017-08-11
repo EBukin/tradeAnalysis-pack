@@ -1,31 +1,39 @@
-# Loading funcitons
+# Script for initializing all data tables used in further analysis
+
+library(tidyverse)
 library(stringr)
 plyr::l_ply(str_c("R/", list.files("R/", pattern="*.R")), source)
 
-# this is a script where we initialise the ct maping elements
-reporters <- getCTReporters()
+# Reporters ---------------------------------------------------------------
 
-save(reporters, file = "data/reporters.rda")
+reporters <- getCTReporters()
+devtools::use_data(reporters, overwrite = TRUE)
+
+# Partners ----------------------------------------------------------------
 
 partners <- 
   getCTPartners() %>% 
   bind_rows(data.frame(Partner.Code = 889L, Partner = "FSR", stringsAsFactors = FALSE),
             data.frame(Partner.Code = 888L, Partner = "ROW", stringsAsFactors = FALSE))
+devtools::use_data(partners, overwrite = TRUE)
 
-save(partners, file = "data/partners.rda")
+
+# Trade flows -------------------------------------------------------------
 
 regimes <- 
   getCTRegimes() %>% 
   bind_rows(data.frame(Trade.Flow.Code = 9, Trade.Flow = "Trade balance" , stringsAsFactors = FALSE))
+devtools::use_data(regimes, overwrite = TRUE)
 
-save(regimes, file = "data/regimes.rda")
+
+# HS classification -------------------------------------------------------
 
 classes <- 
-  bind_rows(data.frame( Commodity.Code = "01-24", Commodity = "Agriculture", stringsAsFactors = FALSE),
-            getCTClass()) %>% 
+  getCTClass() %>% 
   tbl_df()
+devtools::use_data(classes, overwrite = TRUE)
 
-save(classes, file = "data/classes.rda")
+# Units -------------------------------------------------------------------
 
 units <-
   data.frame(
@@ -42,7 +50,4 @@ units <-
       ),
     stringsAsFactors = FALSE
   )
-
-save(units, file = "data/units.rda")
-
-# save(reporters, partners, regimes, classes, units, file = "data/ctClass.Rdata")
+devtools::use_data(units, overwrite = TRUE)
