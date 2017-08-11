@@ -25,13 +25,15 @@ get_ct_avail <-
 
 get_combined_ct_avail <-
   function(annualData, monthlyData, reps = reporters$Reporter.Code) {
-    anAv <- get_ct_avail(annualData) %>%
+    anAv <- get_ct_avail(flt_rep_ct(annualData, reps)) %>%
       dplyr::filter(Type == "Direct")
-    mnAv <- get_ct_avail(monthlyData)
+    mnAv <- get_ct_avail(flt_rep_ct(monthlyData, reps)) %>%
+      dplyr::filter(Type == "Direct")
+    
+    if(is.na(reps)) reps <- reporters$Reporter.Code
     
     mnAvSum <-
       mnAv %>%
-      dplyr::filter(Type == "Direct") %>%
       sel_dist(Year, Month, Reporter.Code, Type) %>%
       dplyr::group_by(Reporter.Code, Year) %>%
       dplyr::summarise(avDirectDataMonth = n()) %>% 
@@ -42,6 +44,7 @@ get_combined_ct_avail <-
       Reporter.Code = reps,
       stringsAsFactors = FALSE
     ) %>%
+      mutate(Reporter.Code = as.integer(Reporter.Code)) %>% 
       tbl_df()  %>% 
       dplyr::left_join(select(anAv, -Month), by = c("Reporter.Code", "Year")) %>%  
       dplyr::left_join(mnAvSum, by = c("Reporter.Code", "Year")) %>% 
