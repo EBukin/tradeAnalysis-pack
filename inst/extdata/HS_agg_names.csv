@@ -1,23 +1,24 @@
 Commodity.Code,Commodity
-1_24_Total_excl_fish,"01-02, 04-24 - Food and agricultural commodities in chapters 01-24 of the HS excluding chapter 03-Fish"
-3_Fish,03 - Fish and Fish products
-29_38_Chemicals,"29-38 - Chemicals as a part of agricultural production processes - selected HS codes from chapters 29-38 according to the WTO Agreement on Agriculture, Annex 2"
-41_43_Skins,"41-43 - Raw animal skins - selected HS codes from chapters 41 - 43 according to the WTO Agreement on Agriculture, Annex 2"
-50_Silk,"50 - Silk - selected HS codes from chapter 50 according to the WTO Agreement on Agriculture, Annex 2"
-51_Wool,"51 - Wool - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2"
-52_Cotton,"52 - Cotton - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2"
-53_Fibers,"53 - Fibers - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2"
-29_53_AgriGoods,"29-53 - Agriculture related commodities selected HS codes from chapters 29 - 53 according to the WTO Agreement on Agriculture, Annex 2"
-WTO_AgriFood,"WTO Agri-food - Agriculture and food related commodities covered by chapters 01 - 53 according to the WTO Agreement on Agriculture, Annex 2"
-1_05_Animal,01-02 04-05 - Agricultural products of animal origin
-06_15_Vegetable,06-15 - Agricultural products of vegetable origin
-16_24_Food_products,16-24 Food products
-"01-03-Animal, Meat and Fish","Meat, fish and other edible animal products"
-04-Dairy,Dairy products
-"06-07-Fruts, vegetables and other products","Fruts, vegetables and other edible vegetable products"
-10-Cereals,Cereals
-12-Oilseeds,Oilseeds
-"11,16,18-23-Food and baverage","Food, baverage and flour"
-"5,14,24-53-Tobacco, skins, fibers and other agicultural goods","Tobacco, skins, fibers and other notedible animal products"
-15-Animal and vegetable fats,Fats animal and vegetable
-17-Sugar,Sugar
+00__WTO_AgriFood_HS2,"WTO Agri-food - Agriculture and food related commodities covered by chapters 01 - 53 according to the WTO Agreement on Agriculture, Annex 2"
+01__1_24_Total_excl_fish_HS2,"01-02, 04-24 - Food and agricultural commodities in chapters 01-24 of the HS excluding chapter 03-Fish"
+01__29_38_Chemicals_HS2,"29-38 - Chemicals as a part of agricultural production processes - selected HS codes from chapters 29-38 according to the WTO Agreement on Agriculture, Annex 2"
+01__3_Fish_HS2,03 - Fish and Fish products
+01__41_43_Skins_HS2,"41-43 - Raw animal skins - selected HS codes from chapters 41 - 43 according to the WTO Agreement on Agriculture, Annex 2"
+01__50_Silk_HS2,"50 - Silk - selected HS codes from chapter 50 according to the WTO Agreement on Agriculture, Annex 2"
+01__51_Wool_HS2,"51 - Wool - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2"
+01__52_Cotton_HS2,"52 - Cotton - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2"
+01__53_Fibers_HS2,"53 - Fibers - selected HS codes from chapter 51 according to the WTO Agreement on Agriculture, Annex 2"
+02__1_5_Animal_HS2,01-02 04-05 - Agricultural products of animal origin
+02__16_24_Food_products_HS2,16-24 Food products
+02__29_53_Other_agri_goods_HS2,"29-53 - Agriculture related commodities selected HS codes from chapters 29 - 53 according to the WTO Agreement on Agriculture, Annex 2"
+02__3_Fish_HS2,NA
+02__6_15_Vegetable_HS2,06-15 - Agricultural products of vegetable origin
+03__1-3_5_Meat_fish_egg_honey_animal_HS4,"Meat, fish and other edible animal products"
+03__10_11_Cereals_flours_HS4,Cereals
+03__12_13_Oilseeds_HS4,Oilseeds
+03__15_Animal_veg_fats_HS4,Fats animal and vegetable
+03__16_18-23_Food_baverage_HS4,"Food, baverage and flour"
+03__17_Sugar_HS4,Sugar
+03__4_Dairy_HS4,Dairy products
+03__5_14_24-53_Tobacco_skins_fibers_other_ag_HS4,"Tobacco, skins, fibers and other notedible animal products"
+03__6-9_13_Fruts_vegetables_others_HS4,"Fruts, vegetables and other edible vegetable products"
