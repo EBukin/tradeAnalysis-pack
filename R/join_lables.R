@@ -41,19 +41,29 @@ join_lables <-
       
       # Reporters names
       if ("Reporter.Code" %in% names(data)) {
-        if(is.integer(data$Reporter.Code)) {
+        if(class(data$Reporter.Code) == "integer") {
           data <- 
             data %>%
             left_join(dplyr::rename(countries, Reporter = Name),
                       by = c("Reporter.Code" = "Code")) %>%
             mutate(Reporter = ifelse(is.na(Reporter), Reporter.Code, Reporter))
         }
-        if(is.character(data$Reporter.Code)) {
+        if(class(data$Reporter.Code) == "character") {
           data <- 
             data %>%
             left_join(
               countries %>% 
                 dplyr::mutate(Code = as.character(Code)) %>% 
+                dplyr::rename(Reporter = Name),
+              by = c("Reporter.Code" = "Code")) %>%
+            mutate(Reporter = ifelse(is.na(Reporter), Reporter.Code, Reporter))
+        }
+        if(class(data$Reporter.Code) == "numeric") {
+          data <- 
+            data %>%
+            left_join(
+              countries %>% 
+                dplyr::mutate(Code = as.numeric(Code)) %>% 
                 dplyr::rename(Reporter = Name),
               by = c("Reporter.Code" = "Code")) %>%
             mutate(Reporter = ifelse(is.na(Reporter), Reporter.Code, Reporter))
@@ -113,7 +123,7 @@ join_lables <-
       if ("Qty.Unit.Code" %in% names(data)) {
         data <- data %>%
           mutate(Qty.Unit.Code = as.integer(Qty.Unit.Code)) %>%
-          left_join(units %>% select(-Unit.Description),
+          left_join(tradeAnalysis::units %>% select(-Unit.Description),
                     by = "Qty.Unit.Code")
       }
       

@@ -6,9 +6,13 @@ join_labels_rus <-
   function(data,
            rusCountries = system.file("extdata", "rus_countries.xlsx", package = "tradeAnalysis"),
            rusFlows = system.file("extdata", "rus_flows.xlsx", package = "tradeAnalysis"),
+           commAggMT = system.file("extdata", "HS_agg_names.csv", package = "tradeAnalysis"),
            keepCodes = TRUE) {
     require(tidyverse)
     require(readxl)
+    
+    class <-
+      bind_rows(classes, read.csv(commAggMT, stringsAsFactors = FALSE))
     
     rusCountriesMT <-
       readxl::read_excel(rusCountries, sheet = 1, col_names = TRUE) %>%
