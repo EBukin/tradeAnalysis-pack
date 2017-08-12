@@ -69,7 +69,7 @@ plot_tb <-
       p_data <-
         df %>%
         filter(Trade.Flow.Code %in% c(1, 2)) %>%
-        join_lables(lang = lang) %>%
+        join_labs(lang = lang) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
         spread(., Trade.Flow, Value, fill = 0) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
@@ -111,7 +111,7 @@ plot_tb <-
       p_data <-
         df %>%
         filter(Trade.Flow.Code %in% c(1, 2)) %>%
-        join_lables(lang = lang) %>%
+        join_labs(lang = lang) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
         spread(., Trade.Flow, Value, fill = 0) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName])

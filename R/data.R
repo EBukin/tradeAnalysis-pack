@@ -24,4 +24,4 @@
 
 #' All WTO agri-food HS codes (49 in total) 
 #' 
-"atoAgFoodFull"
+"wtoAgFoodFull"

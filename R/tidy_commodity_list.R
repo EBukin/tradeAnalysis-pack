@@ -81,7 +81,7 @@ tidy_commodity_list <-
       ) %>%
       select(-cc2) %>%
       mutate(Group = 0004)
-    browser()
+    
     priorityFive <-
       otherCommodities %>%
       filter(stringr::str_length(Commodity.Code) == 6) %>%
