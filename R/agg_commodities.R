@@ -39,7 +39,8 @@ agg_commodities <-
       filter(!is.na(Commodity.Code)) %>% 
       select_(.dots = names(.)[!names(.) %in% c("Partner.Top", "Rank", "Commodity.Agg", "Commodity")]) %>%
       group_by_(.dots = names(.)[names(.) %in% grouping_vars]) %>%
-      summarise_each(funs(sum(., na.rm = TRUE))) %>%
+      # summarise_each(funs(sum(., na.rm = TRUE))) %>%
+      summarise_all(funs(sum(., na.rm = TRUE))) %>%
       ungroup()
     
     if (onlyAggregates) {

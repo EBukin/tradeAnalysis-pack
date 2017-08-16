@@ -5,9 +5,9 @@ join_labels_generic <- function(data, mappingTable, oldNames, newNames, keepCode
   # Join mapping table if the field exis
   if (any(oldNames %in% names(data))) {
     codeVar <- oldNames[oldNames %in% names(data)][1]
+    namesToKeep <- names(data)[!names(data) %in% newNames]
     data <-
-      data %>%
-      select_(.dots = names(.)[!names(.) %in% newNames])
+      select(data, !!namesToKeep)
     data <-
       match_labels_to_var_class(
         data = data,
