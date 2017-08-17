@@ -4,28 +4,33 @@ tbCountryInputUpdate <-
            output,
            session,
            getData) {
-    observeEvent(list(input$loadData,input$uploadData), {
+    observeEvent(getData(), {
       allData <- getData()
+      browser()
       if ( !is.null(allData)) {
         selectedReporter <- input$tbReporter
         selectedPartner <- input$tbPartner
         selectedTimeInterval <- input$tbPeriod
         selectedCommodity <- input$tbCommodity
+        selectedCommodityGroup <- input$tbCommodityGroup
         
+        if (!is.null(selectedTimeInterval)) {
+          years <- c(min(allData$Year), max(allData$Year))
+          if (min(selectedTimeInterval) < min(years))
+            selectedTimeInterval[1] <- min(years)
+          if (max(selectedTimeInterval) > max(years))
+            selectedTimeInterval[2] <- max(years)
+          updateSliderInput(
+            session,
+            "tbPeriod",
+            min = min(years),
+            max = max(years),
+            value = selectedTimeInterval
+          )
+        }
         # Update years
-        years <- c(min(allData$Year), max(allData$Year))
-        if (min(selectedTimeInterval) < min(years))
-          selectedTimeInterval[1] <- min(years)
-        if (max(selectedTimeInterval) > max(years))
-          selectedTimeInterval[2] <- max(years)
-        updateSliderInput(
-          session,
-          "tbPeriod",
-          min = min(years),
-          max = max(years),
-          value = selectedTimeInterval
-        )
         
+        if (!is.null(selectedReporter)) {
         # Update reporters
         availableReporters <-
           sel_dist(allData, Reporter.Code) %>%
@@ -38,8 +43,10 @@ tbCountryInputUpdate <-
                              "tbReporter",
                              choices = availableReporters,
                              selected = selectedReporter)
+        }
         
-        # Update partners
+        if (!is.null(selectedPartner)) {
+          # Update partners
         availablePartners <-
           sel_dist(allData, Partner.Code) %>%
           join_labels_par() %>%
@@ -51,21 +58,43 @@ tbCountryInputUpdate <-
                              "tbPartner",
                              choices = availablePartners,
                              selected = selectedPartner)
+        }
         
-        # Update commodities
-        avCom <-
-          sel_dist(allData, Commodity.Code) %>%
-          join_labels_com() %>%
-          arrange(Commodity)
-        avCom <- setNames(avCom$Commodity.Code, avCom$Commodity)
-        tidyAvCom <- tidy_commodity_list(avCom, trunkSymbols = 60)
-        if (any(!is.null(selectedCommodity)) &
-            selectedCommodity == "")
-          selectedCommodity <- tidyAvCom[1][1]
-        updateSelectizeInput(session,
-                             "tbCommodity",
-                             choices = tidyAvCom,
-                             selected = selectedCommodity)
+        
+        if (!is.null(selectedCommodity)) {
+          # Update commodities
+          avCom <-
+            sel_dist(allData, Commodity.Code) %>%
+            join_labels_com() %>%
+            arrange(Commodity)
+          avCom <- setNames(avCom$Commodity.Code, avCom$Commodity)
+          tidyAvCom <- tidy_commodity_list(avCom, trunkSymbols = 60)
+          if (any(!is.null(selectedCommodity)) &
+              selectedCommodity == "")
+            selectedCommodity <- tidyAvCom[1][1]
+          updateSelectizeInput(session,
+                               "tbCommodity",
+                               choices = tidyAvCom,
+                               selected = selectedCommodity)
+        }
+        
+        if (!is.null(selectedCommodityGroup)) {
+          # Update commodities
+          avCom <-
+            sel_dist(allData, Commodity.Code) %>%
+            join_labels_com() %>%
+            arrange(Commodity)
+          avCom <- setNames(avCom$Commodity.Code, avCom$Commodity)
+          tidyAvCom <- tidy_commodity_list(avCom, trunkSymbols = 60)
+          if (any(!is.null(selectedCommodity)) &
+              selectedCommodity == "")
+            selectedCommodity <- tidyAvCom[1][1]
+          updateSelectizeInput(session,
+                               "tbCommodity",
+                               choices = tidyAvCom,
+                               selected = selectedCommodity)
+        }
+        
         
       }
     })

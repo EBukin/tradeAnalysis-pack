@@ -1,4 +1,4 @@
-tbCountryInput <- function(id) {
+tbCommodityInput <- function(id) {
   ns <- NS(id)
   tagList(
     box(
@@ -6,29 +6,6 @@ tbCountryInput <- function(id) {
       solidHeader = TRUE,
       status = "primary",
       width = 12,
-      fluidRow(column(
-        4,
-        sliderInput(
-          ns("tbPeriod"),
-          "Years",
-          2005,
-          2020,
-          step = 1,
-          ticks = FALSE,
-          sep = "",
-          value = c(2007, 2017)
-        )
-      ),
-      column(
-        8,
-        selectizeInput(
-          ns("tbCommodity"),
-          "Commodity",
-          choices = NULL,
-          selected = NULL,
-          multiple = FALSE
-        )
-      )),
       fluidRow(
         column(
           3,
@@ -40,19 +17,27 @@ tbCountryInput <- function(id) {
           )
         ),
         column(3,
-               numericInput(
-                 ns("tbNumPartners"),
-                 "Number of partners",
-                 value = 5
-               )),
-        column(3,
-               numericInput(
-                 ns("tbNumPeriods"),
-                 "Number of top periods",
-                 value = 5
+               selectizeInput(
+                 ns("tbPartner"),
+                 "Parter",
+                 choices = c("World" = "0"),
+                 multiple = FALSE
                )),
         column(
-          3,
+          4,
+          sliderInput(
+            ns("tbPeriod"),
+            "Years",
+            2005,
+            2020,
+            step = 1,
+            ticks = FALSE,
+            sep = "",
+            value = c(2007, 2017)
+          )
+        ),
+        column(
+          2,
           radioButtons(
             ns("tbLang"),
             "Language",
@@ -62,32 +47,32 @@ tbCountryInput <- function(id) {
             inline = TRUE
           )
         )
-      ) ,
+      ),
       fluidRow(
-        column(2,
-               checkboxInput(ns("tbEU"),
-                             "EU as a region",
-                             value = TRUE)),
-        column(2,
-               checkboxInput(
-                 ns("tbOtherEU"),
-                 "Other EU as a region",
-                 value = FALSE
+        column(
+          4,
+          selectizeInput(
+            ns("tbCommodityGroup"),
+            "Commodity group",
+            choices = NULL,
+            selected = NULL,
+            multiple = FALSE
+          )
+        ),
+        column(3,
+               numericInput(
+                 ns("tbNumPartners"),
+                 "Number of top commodities",
+                 value = 5
                )),
-        column(2,
-               checkboxInput(ns("tbFSR"),
-                             "FSR as a region",
-                             value = FALSE)),
-        column(2,
-               checkboxInput(
-                 ns("tbOtherFSR"),
-                 "Other FSR as a region",
-                 value = TRUE
+        column(3,
+               numericInput(
+                 ns("tbNumPeriods"),
+                 "Number of top periods",
+                 value = 5
                )),
-        column(2,
-               checkboxInput(ns("tbSepRus"),
-                             "Show Russia",
-                             value = TRUE)),
+        
+        
         column(
           2,
           selectInput(
