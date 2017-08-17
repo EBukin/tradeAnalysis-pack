@@ -62,11 +62,18 @@ tidy_commodity_list <-
         )
     )
     
+    priorityTwoAndHalf <-
+      otherCommodities %>%
+      filter(Commodity.Code %in% wtoAgFood$Commodity.Code) %>%
+      select(-cc2,-cc4,-cc6) %>%
+      mutate(Group = 0004) %>%
+      mutate(SubGroup = "All components of WTO Ag Food")
+    
     priorityTree <-
       otherCommodities %>%
       filter(stringr::str_length(Commodity.Code) == 2) %>%
       select(-cc2,-cc4,-cc6) %>%
-      mutate(Group = 0003) %>%
+      mutate(Group = 0005) %>%
       mutate(SubGroup = "All 2 digits aggregates")
     
     priorityFour <-
@@ -80,7 +87,7 @@ tidy_commodity_list <-
         by = c("cc2" = "Commodity.Code")
       ) %>%
       select(-cc2) %>%
-      mutate(Group = 0004)
+      mutate(Group = 0006)
     
     priorityFive <-
       otherCommodities %>%
@@ -94,10 +101,10 @@ tidy_commodity_list <-
         by = c("cc4" = "Commodity.Code")
       ) %>%
       select(-cc4) %>%
-      mutate(Group = 0005)
+      mutate(Group = 0007)
     
     data <-
-      bind_rows(priorityOne, priorityTwo, priorityTree, priorityFour, priorityFive) %>% 
+      bind_rows(priorityOne, priorityTwo, priorityTwoAndHalf, priorityTree, priorityFour, priorityFive) %>% 
       filter(Commodity.Code %in% existingCommodities)
     dataList <- data %>%
       select(Group, SubGroup) %>%
