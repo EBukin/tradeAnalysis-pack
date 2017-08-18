@@ -3,7 +3,7 @@
 
 # Server Logic for plotting trade balance for countries
 
-tbCountry <- function(input, output, session, getData) {
+tbCommodity <- function(input, output, session, getData) {
   # Plot TB
   getTbPlot <- reactive({
     # Include progress
@@ -12,18 +12,19 @@ tbCountry <- function(input, output, session, getData) {
     progress$set(message = "Creating plot", value = 0)
     progress$inc(0.1)
     
+    
     # Extract main data
     selectedReporter <- input$tbReporter
+    selectedPartner <- input$tbPartner
     selectedPartNumb <- input$tbNumPartners
     selectedCommodity <- input$tbCommodity
-    selectedTimeInterval <-
-      seq(input$tbPeriod[1], input$tbPeriod[2], 1)
+    selectedTimeInterval <- seq(input$tbPeriod[1], input$tbPeriod[2], 1)
     selectedLang <- input$tbLang
-    selectedOneEU <- input$tbEU
-    selectedOtherEU <- input$tbOtherEU
-    selectedOneFSR <- input$tbFSR
-    selectedOtherFSR <- input$tbOtherFSR
-    selectedSepRUS <- input$tbSepRus
+    selectedOneEU <- FALSE
+    selectedOtherEU <- FALSE
+    selectedOneFSR <- FALSE
+    selectedOtherFSR <- FALSE
+    selectedSepRUS <- FALSE
     selectedNumPeriods <- input$tbNumPeriods
     selectedPalitra <- input$tbPalitra
     
@@ -34,20 +35,42 @@ tbCountry <- function(input, output, session, getData) {
       yAxisName <-
         "Торговый баланс, млн. дол. США\n-Импорт/+Экспорт"
       tbVarName <- "Торговый баланс"
-      stackVarName <- "Партнер"
+      stackVarName <- "Продукт"
+      
     } else {
       xAxisName <- ""
       yAxisName <- "Trade balance, million US$\n-Import/+Еxport"
       tbVarName <- "Trade balance"
-      stackVarName <- "Partner"
+      stackVarName <- "Commodity"
     }
+    
+    nameLab <- function(selectedPartNumb, Rep, Part, selectedLang) {
+      if (str_detect(selectedLang, regex("en", ignore_case = TRUE))) {
+        stringr::str_c("Top ",
+                       selectedPartNumb,
+                       " commodities traded between reporter ",
+                       Rep,
+                       " and the partner ",
+                       Part)
+      } else {
+        stringr::str_c("Топ ",
+                       selectedPartNumb,
+                       " продуктов которыми торгует ",
+                       Rep,
+                       " с ",
+                       Part)
+      }
+    }
+    
     # Extract all data
     allData <- getData()
     
-    if (!is.null(allData)) {
+    if (!is.null(allData) & 
+        all(!is.null(selectedCommodity))) {
       plotData <-
         allData %>%
         flt_rep_ct(selectedReporter) %>%
+        flt_par_ct(selectedPartner) %>%
         flt_com_ct(selectedCommodity) %>%
         flt_year_ct(selectedTimeInterval)
     } else {
@@ -57,12 +80,14 @@ tbCountry <- function(input, output, session, getData) {
     if (nrow(plotData) > 0) {
       progress$inc(0.3)
       
-      reporterName <-
-        partners %>%
-        flt_par_ct(selectedReporter) %>%
-        join_labs(lang = selectedLang) %>%
-        .$Partner
-      chartLable <- str_c(reporterName)
+      # Chart label
+      chartLable <-
+        plotData %>% 
+        sel_dist(Reporter.Code, Partner.Code) %>% 
+        join_labs(lang = selectedLang) 
+      reporterName <- chartLable$Reporter
+      chartLable <- nameLab(selectedPartNumb, chartLable$Reporter, chartLable$Partner, selectedLang)
+      
       
       # Preparing horisontal axis lables
       xAxisLables <-
@@ -78,7 +103,10 @@ tbCountry <- function(input, output, session, getData) {
       # Building a plot ## ## ## ## ## ## ## ## ## ##
       pData <-
         plotData %>%
-        filter(Partner.Code != 0) %>%
+        mutate(Commodity.Code2 = Partner.Code) %>%
+        mutate(Partner.Code = Commodity.Code) %>%
+        mutate(Commodity.Code = Commodity.Code2) %>%
+        select(-Commodity.Code2) %>%
         rank_agg_top_partners(
           top_n = selectedPartNumb,
           agg = T,
@@ -89,12 +117,19 @@ tbCountry <- function(input, output, session, getData) {
           otherEU = selectedOtherEU,
           topPeriod = selectedNumPeriods
         )  %>%
-        mutate(Value = Value / 1000000)
+        mutate(Partner.Code = ifelse(Partner.Code == "888", "Other commodities", Partner.Code)) %>%
+        mutate(Value = Value / 1000000) %>%
+        mutate(Commodity.Code2 = Partner.Code) %>%
+        mutate(Partner.Code = Commodity.Code) %>%
+        mutate(Commodity.Code = Commodity.Code2) %>%
+        select(-Commodity.Code2)
+      
+      stackVar = "Commodity"
       
       plt <-
         pData %>%
         plot_tb(
-          stackVar = "Partner",
+          stackVar = stackVar,
           stackVarName = stackVarName,
           brewPalName = selectedPalitra,
           brewScale = T,
@@ -120,12 +155,12 @@ tbCountry <- function(input, output, session, getData) {
       
       progress$inc(0.1)
       
-      plt$RporterName <- reporterName
+     
       # Import
       plt$PlImport <-
         pData %>%
         plot_tb(
-          stackVar = "Partner",
+          stackVar = stackVar,
           plotTradeBalance = F,
           exp = "",
           stackVarName = stackVarName,
@@ -137,11 +172,12 @@ tbCountry <- function(input, output, session, getData) {
         ) %>%
         ggplotly()
       
+      plt$RporterName <- reporterName
       # Export
       plt$PlExport <-
         pData %>%
         plot_tb(
-          stackVar = "Partner",
+          stackVar = stackVar,
           plotTradeBalance = F,
           imp = "",
           stackVarName = stackVarName,
@@ -156,10 +192,11 @@ tbCountry <- function(input, output, session, getData) {
       plt$dataTable <-
         pData %>%
         join_labs() %>%
-        select(Commodity,
+        select(
                Reporter,
-               Trade.Flow,
                Partner,
+               Trade.Flow,
+               Commodity,
                Rank,
                Period,
                Value) %>%
@@ -174,5 +211,4 @@ tbCountry <- function(input, output, session, getData) {
   
   return(getTbPlot)
 }
-
 

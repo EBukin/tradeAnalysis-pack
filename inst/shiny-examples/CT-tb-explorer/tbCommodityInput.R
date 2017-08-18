@@ -71,8 +71,6 @@ tbCommodityInput <- function(id) {
                  "Number of top periods",
                  value = 5
                )),
-        
-        
         column(
           2,
           selectInput(
@@ -91,7 +89,17 @@ tbCommodityInput <- function(id) {
             selected = "Set3"
           )
         )
-      )
+      ) ,
+      fluidRow(column(
+        12,
+        selectizeInput(
+          ns("tbCommodity"),
+          "Commodity",
+          choices = "",
+          selected = "",
+          multiple = TRUE
+        )
+      ))
     ),
     box(
       title = "Save trade balance figure",
@@ -109,15 +117,13 @@ tbCommodityInput <- function(id) {
                numericInput(ns("tbSaveHeight"),
                             "Height",
                             12)),
-        column(
-          2,
-          selectInput(
-            ns("tbSaveUnits"),
-            "Unit",
-            choices = c("cm", "in", "px"),
-            selected = "cm"
-          )
-        ),
+        column(2,
+               selectInput(
+                 ns("tbSaveUnits"),
+                 "Unit",
+                 choices = c("cm", "in", "px"),
+                 selected = "cm"
+               )),
         column(2,
                numericInput(ns("tbSaveRes"),
                             "Resolution dpi",
