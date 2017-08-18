@@ -7,11 +7,5 @@ library(shinydashboard)
 library(plotly)
 library(DT)
 
-
-# Sourcing modules
-source("uploadTradeData.R")
-source("uploadTradeDataInput.R")
-source("tbCountryInput.R")
-source("tbCountryInputUpdate.R")
-source("tbCountryOutput.R")
-source("tbCountry.R")
+folder <- "./helpers/"
+lapply(file.path(folder,list.files(folder, ".R$")), source)
