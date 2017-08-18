@@ -8,7 +8,8 @@ match_labels_to_var_class <-
   function(data,
            mappingTable,
            codeVar,
-           resultingNameVar) {
+           resultingNameVar,
+           trunk = NA) {
     mutateCall <-
       lazyeval::interp( ~ ifelse(is.na(x), y, x),
                         x = as.name(resultingNameVar),
@@ -27,5 +28,14 @@ match_labels_to_var_class <-
         by = setNames("Code", codeVar)
       ) %>%
       mutate_(.dots = setNames(list(mutateCall), resultingNameVar))
+    if (!is.na(trunk)) {
+      mutateCall <- lazyeval::interp( ~ stringr::str_trunc(x, trunk),
+                                      x = as.name(resultingNameVar),
+                                      y = as.name(codeVar))
+      data <-
+        data %>%
+        mutate_(.dots = setNames(list(mutateCall), resultingNameVar))
+        
+    }
     data
   }

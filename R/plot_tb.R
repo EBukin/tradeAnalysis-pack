@@ -69,7 +69,7 @@ plot_tb <-
       p_data <-
         df %>%
         filter(Trade.Flow.Code %in% c(1, 2)) %>%
-        join_labs(lang = lang) %>%
+        join_labs(lang = lang, trunk = 50) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
         spread(., Trade.Flow, Value, fill = 0) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
@@ -111,7 +111,7 @@ plot_tb <-
       p_data <-
         df %>%
         filter(Trade.Flow.Code %in% c(1, 2)) %>%
-        join_labs(lang = lang) %>%
+        join_labs(lang = lang, trunk = 50) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName]) %>%
         spread(., Trade.Flow, Value, fill = 0) %>%
         select_(.dots = names(.)[names(.) %in% p_dataName])
@@ -188,20 +188,30 @@ plot_tb <-
     # Adding order to plotting data
     p_data <-
       p_data  %>%
-      left_join(stackingOrder, by = "Partner") %>%
+      left_join(stackingOrder, by = stackVar) %>%
       mutate_(.dots = setNames(str_c("as.factor(", stackVar, ")"), stackVar)) %>%
       mutate(stackOrder = ifelse(is.na(stackOrder), 1000, stackOrder))
     
     if (revertColours) {
+      mutate_call <- lazyeval::interp(~ fct_reorder(a, b, .desc = TRUE), a = as.name(stackVar), b = as.name("stackOrder"))
       p_data <-
         p_data %>%
-        mutate(Partner = fct_reorder(Partner, stackOrder, .desc = TRUE)) %>%
+        mutate_(.dots = setNames(list(mutate_call), stackVar)) %>%
         select(-stackOrder)
+      # p_data <-
+      #   p_data %>%
+      #   mutate(Partner = fct_reorder(Partner, stackOrder, .desc = TRUE)) %>%
+      #   select(-stackOrder)
     } else {
+      mutate_call <- lazyeval::interp(~ fct_reorder(a, b, .desc = FALSE), a = as.name(stackVar), b = as.name("stackOrder"))
       p_data <-
         p_data %>%
-        mutate(Partner = fct_reorder(Partner, stackOrder, .desc = FALSE)) %>%
+        mutate_(.dots = setNames(list(mutate_call), stackVar)) %>%
         select(-stackOrder)
+      # p_data <-
+      #   p_data %>%
+      #   mutate(Partner = fct_reorder(Partner, stackOrder, .desc = FALSE)) %>%
+      #   select(-stackOrder)
     }
     
     # Ordering data

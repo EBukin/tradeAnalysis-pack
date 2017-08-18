@@ -8,11 +8,12 @@
 join_labs <- function(data, 
                      lang = NA,
                      keepCodes = TRUE,
+                     trunk = NA,
                      commAggMT = system.file("extdata", "HS_agg_names.csv", package = "tradeAnalysis"),
                      countriesExtras = system.file("extdata", "countries_extras_names.csv", package = "tradeAnalysis"),
                      rusCountries = system.file("extdata", "rus_countries.xlsx", package = "tradeAnalysis")) {
   
-  data <- join_labels_com(data = data, lang = lang, keepCodes = keepCodes, commAggMT = commAggMT)
+  data <- join_labels_com(data = data, lang = lang, keepCodes = keepCodes, commAggMT = commAggMT, trunk = trunk)
   data <- join_labels_par(data = data, lang = lang, keepCodes = keepCodes, countriesExtras = countriesExtras, rusCountries = rusCountries)
   data <- join_labels_rep(data = data, lang = lang, keepCodes = keepCodes, countriesExtras = countriesExtras, rusCountries = rusCountries)
   data <- join_labels_flows(data = data, lang = lang, keepCodes = keepCodes)

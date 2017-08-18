@@ -3,6 +3,7 @@ join_labels_com <-
   function(data,
            lang = NA,
            keepCodes = TRUE,
+           trunk = NA,
            commAggMT = system.file("extdata", "HS_agg_names.csv", package = "tradeAnalysis")) {
     mappingTable <-
       bind_rows(tradeAnalysis::classes,
@@ -15,6 +16,7 @@ join_labels_com <-
       mappingTable = mappingTable,
       oldNames = c("Commodity.Code"),
       newNames = c("Commodity"),
-      keepCodes = keepCodes
+      keepCodes = keepCodes,
+      trunk = trunk
     )
   }
