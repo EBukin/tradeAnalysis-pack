@@ -103,9 +103,19 @@ tidy_commodity_list <-
       select(-cc4) %>%
       mutate(Group = 0007)
     
-    data <-
-      bind_rows(priorityOne, priorityTwo, priorityTwoAndHalf, priorityTree, priorityFour, priorityFive) %>% 
-      filter(Commodity.Code %in% existingCommodities)
+    suppressWarnings(
+      data <-
+        bind_rows(
+          priorityOne,
+          priorityTwo,
+          priorityTwoAndHalf,
+          priorityTree,
+          priorityFour,
+          priorityFive
+        ) %>%
+        filter(Commodity.Code %in% existingCommodities)
+    )
+    
     dataList <- data %>%
       select(Group, SubGroup) %>%
       distinct()
