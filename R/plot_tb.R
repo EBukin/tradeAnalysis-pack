@@ -76,14 +76,14 @@ plot_tb <-
         mutate_(.dots = setNames(str_c("-", imp), imp)) %>%
         mutate_(.dots = setNames(str_c(imp, "+", exp), horizontalLine))
       
-      ncols <-
+      numCols <-
         p_data %>%
         select_(.dots = names(.)[names(.) %in% p_dataName[!p_dataName %in% c(imp, exp, horizontalLine)]]) %>%
         length(.) + 1
       
       p_data <-
         p_data %>%
-        gather(Trade.Flow, Value, ncols:length(.))
+        gather(key = Trade.Flow, value = Value, seq(numCols, length(.)))
       
       # Calculating trade balance
       p_data <-
@@ -123,7 +123,7 @@ plot_tb <-
       
       p_data <-
         p_data %>%
-        gather(Trade.Flow, Value, ncols:length(.))
+        gather(Trade.Flow, Value, seq(ncols,length(.)))
       
     }
     
