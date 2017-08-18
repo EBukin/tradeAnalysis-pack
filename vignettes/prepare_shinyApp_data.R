@@ -132,3 +132,14 @@ wtoAnAllAgData <-
 
 readr::write_rds(wtoAnAllAgData, "~/ctData/ctBulkR/wtaAnAggAll.rds", compress = "gz")
 readr::write_rds(filter(wtoAnAllAgData, !Commodity.Code %in% wtoAgFood$Commodity.Code), "~/ctData/ctBulkR/wtaAnAggShort.rds", compress = "gz")
+
+# 
+# wtoAnAllAgData <- readr::read_rds("~/ctData/ctBulkR/wtaAnAggAll.rds")
+# 
+# wtoAnAllAgData %>% 
+#   group_by(Reporter.Code) %>% 
+#   do({
+#     x <- .
+#     code <- unique(x$Reporter.Code)
+#     write_rds(x, stringr::str_c("~/ctData/ShinyData/", code, ".rds"), compress = "gz")
+#   })
