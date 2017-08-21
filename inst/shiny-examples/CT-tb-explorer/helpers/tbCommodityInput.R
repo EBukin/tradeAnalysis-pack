@@ -8,7 +8,7 @@ tbCommodityInput <- function(id) {
       width = 12,
       fluidRow(
         column(
-          3,
+          4,
           selectizeInput(
             ns("tbReporter"),
             "Reporter",
@@ -16,8 +16,8 @@ tbCommodityInput <- function(id) {
             multiple = FALSE
           )
         ),
-        column(2,
-               actionButton(ns('updateReporter'), "Load data")),
+        # column(2,
+        #        actionButton(ns('updateReporter'), "Load data")),
         column(3,
                selectizeInput(
                  ns("tbPartner"),
@@ -26,7 +26,7 @@ tbCommodityInput <- function(id) {
                  multiple = FALSE
                )),
         column(
-          2,
+          3,
           sliderInput(
             ns("tbPeriod"),
             "Years",

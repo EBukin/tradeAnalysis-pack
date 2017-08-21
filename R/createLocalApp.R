@@ -1,5 +1,5 @@
 #' Copy and save locally shiny ap from a package.
-createLocalApp <- function(appName, toFolder = "~") {
+create_local_app <- function(appName, toFolder = "~") {
   require(dplyr)
   # locate all the shiny app examples that exist
   validExamples <-
@@ -25,7 +25,7 @@ createLocalApp <- function(appName, toFolder = "~") {
     system.file("shiny-examples", appName, package = "tradeAnalysis")
   
   # New location
-  newLocation <- path.expand(file.path(toFolder, appName))
+  newLocation <- file.path(toFolder, appName)
   
   file.copy(
     from = stringr::str_c(appDir, "/"),
