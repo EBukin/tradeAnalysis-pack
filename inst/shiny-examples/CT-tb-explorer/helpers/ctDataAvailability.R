@@ -1,41 +1,43 @@
 
 
-
+# Server logic for data availability module
 ctDataAvailability <- function(input, output, session, getData) {
   values <- reactiveValues(avData = NULL)
   
   observeEvent(getData(), {
-    # browser()
     values$avData <- getData()
     
-    # Update the countries availability for selection
-    selectedCountries <- input$countriesFilter
-    availableCountries <-
-      distinct(values$avData, Reporter.Code) %>%
-      join_labs()
-    availableCountries <-
-      setNames(availableCountries$Reporter.Code,
-               availableCountries$Reporter)
-    updateSelectizeInput(session,
-                         "countriesFilter",
-                         choices = availableCountries,
-                         selected = selectedCountries)
+    if (!is.null(values$avData)) {
+      # Update the countries availability for selection
+      selectedCountries <- input$countriesFilter
+      availableCountries <-
+        distinct(values$avData, Reporter.Code) %>%
+        join_labs()
+      availableCountries <-
+        setNames(availableCountries$Reporter.Code,
+                 availableCountries$Reporter)
+      updateSelectizeInput(session,
+                           "countriesFilter",
+                           choices = availableCountries,
+                           selected = selectedCountries)
+      
+      # Update years availability
+      years <-
+        isolate(c(min(values$avData$Year), max(values$avData$Year)))
+      yearValue <- input$yearPeriod
+      if (min(yearValue) < min(years))
+        yearValue[1] <- min(years)
+      if (max(yearValue) > max(years))
+        yearValue[2] <- max(years)
+      updateSliderInput(
+        session,
+        "yearPeriod",
+        min = min(years),
+        max = max(years),
+        value = yearValue
+      )
+    }
     
-    # Update years availability
-    years <-
-      isolate(c(min(values$avData$Year), max(values$avData$Year)))
-    yearValue <- input$yearPeriod
-    if (min(yearValue) < min(years))
-      yearValue[1] <- min(years)
-    if (max(yearValue) > max(years))
-      yearValue[2] <- max(years)
-    updateSliderInput(
-      session,
-      "yearPeriod",
-      min = min(years),
-      max = max(years),
-      value = yearValue
-    )
   })
   #
   observeEvent({
@@ -76,7 +78,7 @@ ctDataAvailability <- function(input, output, session, getData) {
       out <-
         values$avData %>%
         filter(Reporter.Code %in% codes,
-               Year %in% years) %>% 
+               Year %in% years) %>%
         join_labs()
     } else {
       out <- NULL

@@ -16,6 +16,8 @@ tbCommodityInput <- function(id) {
             multiple = FALSE
           )
         ),
+        column(2,
+               actionButton(ns('updateReporter'), "Load data")),
         column(3,
                selectizeInput(
                  ns("tbPartner"),
@@ -24,7 +26,7 @@ tbCommodityInput <- function(id) {
                  multiple = FALSE
                )),
         column(
-          4,
+          2,
           sliderInput(
             ns("tbPeriod"),
             "Years",

@@ -39,6 +39,8 @@ tbCountryInput <- function(id) {
             multiple = FALSE
           )
         ),
+        # column(2,
+        #        actionButton(ns('updateReporter'), "Load data")),
         column(3,
                numericInput(
                  ns("tbNumPartners"),

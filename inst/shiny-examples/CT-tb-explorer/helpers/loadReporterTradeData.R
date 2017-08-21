@@ -7,6 +7,7 @@ loadReporterTradeData <-
     })
     allDataUpload <- eventReactive(input$tbReporter, {
       # browser()
+      # invalidateLater(2000, session)
       oneFilePath <-
         str_c(path, "/", listFiles()[str_detect(listFiles(), str_c("^", input$tbReporter, ".rds$"))])
       

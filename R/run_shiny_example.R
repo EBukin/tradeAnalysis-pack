@@ -15,7 +15,7 @@ run_shiny_example <- function(example) {
   if (missing(example) || !nzchar(example) ||
       !example %in% validExamples) {
     stop(
-      'Please run `runShinyExample()` with a valid example app as an argument.\n',
+      'Please run `run_shiny_example()` with a valid example app as an argument.\n',
       validExamplesMsg,
       call. = FALSE)
   }

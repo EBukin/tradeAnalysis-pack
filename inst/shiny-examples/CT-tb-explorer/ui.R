@@ -1,8 +1,8 @@
-
 library(shiny)
 library(shinydashboard)
 
-source("global.R")
+if (file.exists("global.R")) source("global.R")
+
 
 # UI
 header <- dashboardHeader(title = "COMTRADE data explorer")
@@ -61,42 +61,3 @@ body <-
   ))
 
 ui <- dashboardPage(header, sidebar, body)
-
-# SERVER
-server <- function(input, output, session) {
-  options(shiny.maxRequestSize = 100 * 1024 ^ 2)
-  
-  # Server logic for loading all data
-  # allData <- callModule(uploadTradeData, "DataAccess")
-  avReps <- callModule(getAvailableReporters, "DataAccess")
-  avData <- callModule(getDataAvailability, "DataAccess")
-  callModule(ctDataAvailability, "DataAccess", getData = avData)
-  
-  # Country specific trade balance module
-  countryData <-
-    callModule(loadReporterTradeData, "tbCountryModule")
-  callModule(
-    tbCountryInputUpdate,
-    "tbCountryModule",
-    getData = countryData,
-    allReporters = avReps
-  )
-  getTbPlot <-
-    callModule(tbCountry, "tbCountryModule", getData = countryData)
-  callModule(tbCountryOutputLogic, "tbCountryModule", getTbPlot)
-  
-  
-  comData <-
-    callModule(loadReporterTradeData, "tbCommoditiesModule")
-  callModule(
-    tbCountryInputUpdate,
-    "tbCommoditiesModule",
-    getData = comData,
-    allReporters = avReps
-  )
-  getTbComPlot <-
-    callModule(tbCommodity, "tbCommoditiesModule", getData = comData)
-  callModule(tbCountryOutputLogic, "tbCommoditiesModule", getTbComPlot)
-}
-
-shinyApp(ui, server)

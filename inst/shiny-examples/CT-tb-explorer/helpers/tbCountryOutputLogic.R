@@ -54,9 +54,7 @@ tbCountryOutputLogic <- function(input, output, session, getTbPlot) {
   
   output$tbDataTable <-
     DT::renderDataTable({
-      # browser()
       if (!is.null(getTbPlot()$data)) {
-        # browser()
         pDataHere <-
           getTbPlot()$dataTable %>%
           select(-1, -2) %>%
@@ -107,7 +105,6 @@ tbCountryOutputLogic <- function(input, output, session, getTbPlot) {
       },
       content = function(file) {
         if (!is.null(getTbPlot()$data)) {
-          # browser()
           pDataHere <-
             getTbPlot()$dataTable %>%
             select(-1, -2) %>%
