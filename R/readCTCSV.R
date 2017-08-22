@@ -1,4 +1,7 @@
 #' Read one CT bulk csv file previously unzipped from the archive
+#' 
+#' @param path CT bulk donwload file that is needed.
+#'  
 readCTCSV <-
   function(path) {
     
@@ -29,14 +32,21 @@ readCTCSV <-
           Commodity.Code, Qty.Unit.Code,
           Qty, Netweight..kg., Trade.Value..US.., Flag
         ) %>%
-        mutate_each(
-          funs(as.integer),
-          Year, Trade.Flow.Code,
-          Reporter.Code, Partner.Code,
-          Qty.Unit.Code, Flag
+        mutate_at(
+          .vars = vars(
+            Year,
+            Trade.Flow.Code,
+            Reporter.Code,
+            Partner.Code,
+            Qty.Unit.Code,
+            Flag
+          ),
+          .funs = funs(as.integer)
         ) %>%
-        mutate_each(funs(as.numeric),
-                    Qty, Netweight..kg., Trade.Value..US..) %>%
+        mutate_at(
+          .vars = vars(Qty, Netweight..kg., Trade.Value..US..) ,
+          .funs = funs(as.numeric)
+        ) %>%
         return()
     }
     

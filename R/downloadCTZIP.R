@@ -13,14 +13,14 @@ downloadCTZIP <-
            base_url = "https://comtrade.un.org",
            iteration = 1,
            maxIterations = 3,
-           token) {
+           token = NA) {
     handle <-
       RCurl::getCurlHandle(
-        useragent = str_c(R.version$platform, R.version$version.string, sep = ","),
+        useragent = stringr::str_c(R.version$platform, R.version$version.string, sep = ","),
         httpheader = c(from = "fao@fao.org")
       )
     suppressWarnings(dir.create(toFolder))
-    file <- str_c(toFolder, "/", df$name)
+    file <- stringr::str_c(toFolder, "/", df$name)
     if (!file.exists(file) | file.size(file) != df$filesize) {
       if (!is.na(token)) {
         url = stringr::str_c(base_url, df$downloadUri, "?token=", token)
