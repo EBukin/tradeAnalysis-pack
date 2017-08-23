@@ -5,7 +5,7 @@
 #' @param filter_hs_list list of the HS codes that should be supseted from the original data file.
 #' @param delete if TRUE, the temporary unzipped data file will be deleted.
 readCTZIP <-
-  function(file, folder, filter_hs_list = NULL, delete = TRUE, ...) {
+  function(file, folder = ".", filter_hs_list = NULL, delete = TRUE, ...) {
     from <- folder
     to <- file.path(from,"temp")
     
