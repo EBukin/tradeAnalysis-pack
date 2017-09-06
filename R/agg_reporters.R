@@ -39,7 +39,7 @@ agg_reporters <-
       dataAgg <- 
         dataAgg %>% 
         mutate(Reporter.Code = as.character(Reporter.Code)) %>% 
-        bind_rows(data)
+        bind_rows(mutate(data, Reporter.Code = as.character(Reporter.Code)))
     }
     
     return(dataAgg)
