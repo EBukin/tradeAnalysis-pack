@@ -6,7 +6,7 @@
 library(jsonlite)
 library(tidyverse)
 library(readr)
-devtools::install_github("EBukin/tradeAnalysis", ref = "pack")
+devtools::install_github("EBukin/tradeAnalysis-pack")
 library(tradeAnalysis)
 
 # Loading data ------------------------------------------------------------
