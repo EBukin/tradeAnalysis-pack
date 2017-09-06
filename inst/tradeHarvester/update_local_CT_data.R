@@ -15,8 +15,9 @@ library(tradeAnalysis)
 ctAval <- getCTParameters()
 
 # Loading token
-token <- read_lines("vignettes/.CT-token")
-if (token = "NA") token <- NA
+token <- NA
+token <- read_lines(".CT-token")
+if (token == "NA") token <- NA
 
 # Creating data structure with all folders
 build_ct_storage_structure()
