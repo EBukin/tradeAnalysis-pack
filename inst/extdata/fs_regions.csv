@@ -51,7 +51,7 @@ Code,Partner,LDC and other,LDC and other Source,Income group,Income group Source
 43,Cocos (Keeling) Islands,ODCs,Manual,Others,WB WITS,Developing economies,Manual,No,Other,WorldTotal,nonSVE,nonRAMnonWTO,nonG33nonWTO,nonLIFDC,newGroupOther,oldGroupOther
 44,Colombia,ODCs,Manual,Upper middle income,UN WESP,Developing economies,OK,Yes,Other,WorldTotal,nonSVE,nonRAM,nonG33,nonLIFDC,newGroupOther,oldGroupOther
 45,Comoros,LDC,UN WESP,Low-income,UN WESP,Developing economies,OK,No,NFIDC,WorldTotal,nonSVE,nonRAMnonWTO,nonG33nonWTO,LIFDC,newGroup,oldGroup
-46,Congo,ODCs,Manual,Lower middle income,UN WESP,Developing economies,OK,Yes,Other,WorldTotal,nonSVE,nonRAM,G33,nonLIFDC,newGroupOther,oldGroupOther
+46,Congo,ODCs,Manual,Lower middle income,UN WESP,Developing economies,OK,Yes,Other,WorldTotal,nonSVE,nonRAM,G33,nonLIFDC,newGroupOther,oldGroup
 47,Cook Islands,ODCs,Manual,Others,WB WITS,Developing economies,Small island developing States,No,Other,WorldTotal,nonSVE,nonRAMnonWTO,nonG33nonWTO,nonLIFDC,newGroupOther,oldGroupOther
 48,Costa Rica,ODCs,Manual,Upper middle income,UN WESP,Developing economies,OK,Yes,Other,WorldTotal,nonSVE,nonRAM,nonG33,nonLIFDC,newGroupOther,oldGroupOther
 107,Côte d'Ivoire,ODCs,Manual,Lower middle income,UN WESP,Developing economies,OK,Yes,NFIDC,WorldTotal,nonSVE,nonRAM,G33,LIFDC,newGroup,oldGroup
@@ -62,7 +62,7 @@ Code,Partner,LDC and other,LDC and other Source,Income group,Income group Source
 167,Czechia,ODCs,Manual,High-income,UN WESP,Developed economies,OK,Yes,Other,WorldTotal,nonSVE,nonRAM,nonG33,nonLIFDC,newGroupOther,oldGroupOther
 116,Democratic People's Republic of Korea,ODCs,Manual,Low-income,WB WITS,Developing economies,Manual,No,Other,WorldTotal,nonSVE,nonRAMnonWTO,nonG33nonWTO,LIFDC,newGroup,oldGroup
 250,Democratic Republic of the Congo,LDC,UN WESP,Low-income,UN WESP,Developing economies,OK,Yes,NFIDC,WorldTotal,nonSVE,nonRAM,nonG33,LIFDC,newGroup,oldGroup
-54,Denmark,ODCs,Manual,High-income,UN WESP,Developed economies,OK,Yes,Other,WorldTotal,nonSVE,nonRAM,nonG33,nonLIFDC,newGroupOther,oldGroup
+54,Denmark,ODCs,Manual,High-income,UN WESP,Developed economies,OK,Yes,Other,WorldTotal,nonSVE,nonRAM,nonG33,nonLIFDC,newGroupOther,oldGroupOther
 72,Djibouti,LDC,UN WESP,Lower middle income,UN WESP,Developing economies,OK,Yes,NFIDC,WorldTotal,nonSVE,nonRAM,nonG33,LIFDC,newGroup,oldGroup
 55,Dominica,ODCs,Manual,Upper middle income,World Bank list of economies (March 2017),Developing economies,Manual,Yes,NFIDC,WorldTotal,nonSVE,nonRAM,G33,nonLIFDC,newGroup,oldGroup
 56,Dominican Republic,ODCs,Manual,Upper middle income,UN WESP,Developing economies,OK,Yes,NFIDC,WorldTotal,SVE,nonRAM,G33,nonLIFDC,newGroup,oldGroup
@@ -122,8 +122,8 @@ Code,Partner,LDC and other,LDC and other Source,Income group,Income group Source
 113,Kyrgyzstan,ODCs,Manual,Lower middle income,UN WESP,Economies in transition,OK,Yes,Other,WorldTotal,nonSVE,RAM,nonG33,LIFDC,newGroup,oldGroup
 120,Lao People's Democratic Republic,LDC,UN WESP,Lower middle income,UN WESP,Developing economies,OK,No,NFIDC,WorldTotal,nonSVE,nonRAMnonWTO,nonG33nonWTO,nonLIFDC,newGroup,oldGroup
 119,Latvia,ODCs,Manual,High-income,UN WESP,Developed economies,OK,Yes,Other,WorldTotal,nonSVE,nonRAM,nonG33,nonLIFDC,newGroupOther,oldGroupOther
-121,Lebanon,ODCs,Manual,Upper middle income,UN WESP,Developing economies,OK,No,Other,WorldTotal,nonSVE,nonRAMnonWTO,nonG33nonWTO,nonLIFDC,newGroupOther,oldGroup
-122,Lesotho,LDC,UN WESP,Lower middle income,UN WESP,Developing economies,OK,Yes,NFIDC,WorldTotal,nonSVE,nonRAM,nonG33,LIFDC,newGroup,oldGroupOther
+121,Lebanon,ODCs,Manual,Upper middle income,UN WESP,Developing economies,OK,No,Other,WorldTotal,nonSVE,nonRAMnonWTO,nonG33nonWTO,nonLIFDC,newGroupOther,oldGroupOther
+122,Lesotho,LDC,UN WESP,Lower middle income,UN WESP,Developing economies,OK,Yes,NFIDC,WorldTotal,nonSVE,nonRAM,nonG33,LIFDC,newGroup,oldGroup
 123,Liberia,LDC,UN WESP,Low-income,UN WESP,Developing economies,OK,No,NFIDC,WorldTotal,nonSVE,nonRAMnonWTO,nonG33nonWTO,LIFDC,newGroup,oldGroup
 124,Libya,ODCs,Manual,Upper middle income,UN WESP,Developing economies,OK,No,Other,WorldTotal,nonSVE,nonRAMnonWTO,nonG33nonWTO,nonLIFDC,newGroupOther,oldGroupOther
 126,Lithuania,ODCs,Manual,High-income,UN WESP,Developed economies,OK,Yes,Other,WorldTotal,nonSVE,nonRAM,nonG33,nonLIFDC,newGroupOther,oldGroupOther
