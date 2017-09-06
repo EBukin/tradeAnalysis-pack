@@ -6,7 +6,7 @@
 library(jsonlite)
 library(tidyverse)
 library(readr)
-# devtools::install_github("EBukin/tradeAnalysis", ref = "pack")
+devtools::install_github("EBukin/tradeAnalysis", ref = "pack")
 library(tradeAnalysis)
 
 # Loading data ------------------------------------------------------------
@@ -15,7 +15,8 @@ library(tradeAnalysis)
 ctAval <- getCTParameters()
 
 # Loading token
-token <- NA #read_lines(".CT-token")
+token <- read_lines("vignettes/.CT-token")
+if (token = "NA") token <- NA
 
 # Creating data structure with all folders
 build_ct_storage_structure()

@@ -1,7 +1,7 @@
 #' Create folders for storring CT data files on the hard drive
 #' 
 #' @param rootFolder The folder in which all storage is created. Beter keep default.
-build_ct_storage_structure <-
+build_ct_storage <-
   function(rootFolder = "~") {
     ifCreateDir <- function(basePath, folderName, returnName = TRUE) {
       newFolder <- file.path(basePath, folderName)
@@ -41,4 +41,10 @@ build_ct_storage_structure <-
     wtoMnAll <- ifCreateDir(ctMnAll, "wtoMnAll")
     wtoAnAllInOne <- ifCreateDir(wtoAnAll, "AllInOne")
     wtoMnAllInOne <- ifCreateDir(wtoMnAll, "AllInOne")
+    
+    # Copy Scripts
+    SourceFolder <- system.file("tradeHarvester", package = "tradeAnalysis")
+    filesToCopy <- file.path(SourceFolder, list.files(SourceFolder, all.files = T, no.. = TRUE))
+    invisible(lapply(filesToCopy, FUN = function(x) file.copy(from = x, to = baseDB)))
+    
   }
