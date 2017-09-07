@@ -20,7 +20,7 @@ token <- read_lines(".CT-token")
 if (token == "NA") token <- NA
 
 # Creating data structure with all folders
-build_ct_storage_structure()
+build_ct_storage()
 
 # Data in the folders ----------------------------------------------------
 
