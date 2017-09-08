@@ -156,15 +156,25 @@ wtoAnAllAgData <-
     load_clean_ct(.$year, rootFolderAnnual, rootFolderMonthly)
   }) %>%
   ungroup() %>% 
-  bind_rows(filter(., Reporter.Code != 0) %>% 
-              select(-Type) %>% 
-              agg_world(., aggPart = FALSE, returnAll = FALSE) %>% 
-              filter(Partner.Code != 0))
+  bind_rows(
+    filter(., Reporter.Code != 0) %>%
+      select(-Type) %>%
+      agg_world(., aggPart = FALSE, returnAll = FALSE) %>%
+      filter(Partner.Code != 0) %>%
+      mutate(Type = "Direct")
+  )
 
 # Saving data -------------------------------------------------------------
 
 wtoAnAllAgData <-
-  read_rds("~/ctData/ctBulkR/wtoAnAggAll.rds")
+  read_rds("~/ctData/ctBulkR/wtoAnAggAll.rds") %>%
+  bind_rows(
+    filter(., Reporter.Code != 0) %>%
+      select(-Type) %>%
+      agg_world(., aggPart = FALSE, returnAll = FALSE) %>%
+      filter(Partner.Code != 0) %>%
+      mutate(Type = "Direct")
+  )
 
 # All data as it is.
 write_rds(wtoAnAllAgData,
@@ -195,9 +205,7 @@ write_rds(
 
 # Splitting data in separate files for Shiny app  -------------------------
 
-# wtoAnAllAgData <- read_rds("~/ctData/ctBulkR/wtoAnAggAll.rds")
-
-filter(wtoAnAllAgData, Commodity.Code %in% filterCommodities, Reporter.Code == 0) %>%
+filter(wtoAnAllAgData, Commodity.Code %in% filterCommodities) %>%
   group_by(Reporter.Code) %>%
   do({
     x <- .
