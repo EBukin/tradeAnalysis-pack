@@ -155,9 +155,13 @@ wtoAnAllAgData <-
   do({
     load_clean_ct(.$year, rootFolderAnnual, rootFolderMonthly)
   }) %>%
-  ungroup()
+  ungroup() %>% 
+  bind_rows(agg_world(., aggPart = FALSE, returnAll = FALSE) %>% filter(Partner.Code != 0))
 
 # Saving data -------------------------------------------------------------
+
+wtoAnAllAgData <-
+  read_rds("~/ctData/ctBulkR/wtoAnAggAll.rds")
 
 # All data as it is.
 write_rds(wtoAnAllAgData,
