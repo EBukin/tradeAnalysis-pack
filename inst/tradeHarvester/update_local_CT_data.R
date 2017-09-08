@@ -16,8 +16,8 @@ ctAval <- getCTParameters()
 
 # Loading token
 token <- NA
-token <- read_lines(".CT-token")
-if (token == "NA") token <- NA
+token <- try(read_lines(".CT-token"), silent = TRUE)
+if (class(try(read_lines(".CT-token"))) == "try-error") token <- NA
 
 # Creating data structure with all folders
 build_ct_storage()
@@ -74,75 +74,57 @@ gc()
 
 # Filtering and reloading only WTO relevant data --------------------------
 
+# Initialising the reload folders structure
+foldersStructure <-
+  bind_rows(
+    tibble(fromFolder = "~/ctData/ctBulkR/ctAnAll/",
+           toFolder = "~/ctData/ctBulkR/ctAnAll/wtoAnAll/"),
+    tibble(fromFolder = "~/ctData/ctBulkR/ctMnAll/",
+           toFolder = "~/ctData/ctBulkR/ctMnAll/wtoMnAll/")
+  )
+
 # Reloading all annual data
 # Loading every single R data file and saving its filtered version
-fromFolder = "~/ctData/ctBulkR/ctAnAll/"
-toFolder = "~/ctData/ctBulkR/ctAnAll/wtoAnAll/"
-
-flt_data_to_reload(fromFolder, toFolder, newPrefix = "wto-") %>%
+foldersStructure %>%
   rowwise() %>%
   do({
-    if (!is.na(.$destOldFile)) {
-      moveToOld(.$destOldFile, toFolder)
-    }
-    assign(
-      .$destNewFile,
-      load_some_ct_bulks_rdata(
-        filesList = .$originNewFile,
-        fromFolder = fromFolder,
-        hsCodes = wtoAgFoodFull$Commodity.Code
-      )
-    )
-    save(list = .$destNewFile,
-         file = file.path(toFolder, .$destNewFile))
-    rm(list = .$destNewFile)
-    gc()
-    tibble()
+    fromFolder = .$fromFolder
+    toFolder = .$toFolder
+    flt_data_to_reload(fromFolder, toFolder, newPrefix = "wto-") %>%
+      rowwise() %>%
+      do({
+        if (!is.na(.$destOldFile)) {
+          moveToOld(.$destOldFile, toFolder)
+        }
+        assign(
+          .$destNewFile,
+          load_some_ct_bulks_rdata(
+            filesList = .$originNewFile,
+            fromFolder = fromFolder,
+            hsCodes = wtoAgFoodFull$Commodity.Code
+          )
+        )
+        save(list = .$destNewFile,
+             file = file.path(toFolder, .$destNewFile))
+        rm(list = .$destNewFile)
+        gc()
+        tibble()
+      })
   })
+
 
 # Resaving all filtered data in one file
-# wto_an <-
-#   load_some_ct_bulks_rdata(fromFolder,
-#                            filesList = listCTdata(fromFolder, "Rdata")$name)
-# 
-# readr::write_rds(wto_an,
-#                  path = file.path(toFolder, "AllInOne"),
-#                  compress = "gz")
-# rm(wto_an)
-# gc()
-
-# Reloading all monthly data -----------------------------------------------
-
-fromFolder = "~/ctData/ctBulkR/ctMnAll/"
-toFolder = "~/ctData/ctBulkR/ctMnAll/wtoMnAll/"
-
-flt_data_to_reload(fromFolder, toFolder, newPrefix = "wto-") %>%
+foldersStructure %>%
   rowwise() %>%
   do({
-    if (!is.na(.$destOldFile)) {
-      moveToOld(.$destOldFile, toFolder)
-    }
-    assign(
-      .$destNewFile,
-      load_some_ct_bulks_rdata(
-        filesList = .$originNewFile,
-        fromFolder = fromFolder,
-        hsCodes = wtoAgFoodFull$Commodity.Code
-      )
-    )
-    save(list = .$destNewFile,
-         file = file.path(toFolder, .$destNewFile))
-    rm(list = .$destNewFile)
+    wto_an <-
+      load_some_ct_bulks_rdata(.$toFolder,
+                               filesList = listCTdata(.$toFolder, "Rdata")$name)
+    readr::write_rds(wto_an,
+                     path = file.path(.$toFolder, "AllInOne"),
+                     compress = "gz")
+    rm(wto_an)
     gc()
     tibble()
   })
 
-# wto_mn <-
-#   load_some_ct_bulks_rdata(fromFolder,
-#                            filesList = listCTdata(fromFolder, "Rdata")$name)
-# 
-# readr::write_rds(wto_mn,
-#                  path = file.path(toFolder, "AllInOne"),
-#                  compress = "gz")
-# rm(wto_mn)
-# gc()
