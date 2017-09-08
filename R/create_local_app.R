@@ -39,9 +39,9 @@ create_local_app <- function(appName, toFolder = "~") {
   dir.create(dataLocation, showWarnings = FALSE)
   writeLines(dataLocation, file.path(newLocation, "dataPath.txt"))
   
-  if (file.exists("~/ctData/ctBulkR/wtaAnAggAll.rds")) {
+  if (file.exists("~/ctData/ctBulkR/wtoAnAggAll.rds")) {
     wtoAnAllAgData <-
-      readr::read_rds("~/ctData/ctBulkR/wtaAnAggAll.rds")
+      readr::read_rds("~/ctData/ctBulkR/wtoAnAggAll.rds")
     
     wtoAnAllAgData %>%
       dplyr::group_by(Reporter.Code) %>%
@@ -49,6 +49,8 @@ create_local_app <- function(appName, toFolder = "~") {
         x <- .
         code <- unique(x$Reporter.Code)
         readr::write_rds(x, stringr::str_c(dataLocation,"/", code, ".rds"), compress = "gz")
+        rm(x)
+        gc()
         tibble()
       })
     
@@ -56,7 +58,7 @@ create_local_app <- function(appName, toFolder = "~") {
       sel_dist(Reporter.Code, Year, Type) %>%
       readr::write_csv(stringr::str_c(dataLocation,"/", "dataAvailability.csv"))
   } else {
-    message(str_c("You need manually filled folder ", dataLocation, " with data"))
+    message(stringr::str_c("You need to fill folder ", dataLocation, " with data manually."))
   }
   
 }
