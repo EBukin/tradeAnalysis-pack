@@ -11,7 +11,7 @@ library(tidyverse)
 library(stringr)
 library(purrr)
 library(readr)
-# devtools::install_github("EBukin/tradeAnalysis-pack")
+devtools::install_github("EBukin/tradeAnalysis-pack")
 library(tradeAnalysis)
 
 # Functions ---------------------------------------------------------------
