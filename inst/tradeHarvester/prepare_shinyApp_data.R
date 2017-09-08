@@ -156,7 +156,10 @@ wtoAnAllAgData <-
     load_clean_ct(.$year, rootFolderAnnual, rootFolderMonthly)
   }) %>%
   ungroup() %>% 
-  bind_rows(agg_world(., aggPart = FALSE, returnAll = FALSE) %>% filter(Partner.Code != 0))
+  bind_rows(filter(., Reporter.Code != 0) %>% 
+              select(-Type) %>% 
+              agg_world(., aggPart = FALSE, returnAll = FALSE) %>% 
+              filter(Partner.Code != 0))
 
 # Saving data -------------------------------------------------------------
 
@@ -194,7 +197,7 @@ write_rds(
 
 # wtoAnAllAgData <- read_rds("~/ctData/ctBulkR/wtoAnAggAll.rds")
 
-filter(wtoAnAllAgData, Commodity.Code %in% filterCommodities) %>%
+filter(wtoAnAllAgData, Commodity.Code %in% filterCommodities, Reporter.Code == 0) %>%
   group_by(Reporter.Code) %>%
   do({
     x <- .
