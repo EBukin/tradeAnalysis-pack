@@ -21,7 +21,7 @@ tbCountryInputUpdate <-
           availableReporters <-
             setNames(availableReporters$Reporter.Code,
                      availableReporters$Reporter)
-          updateSelectizeInput(session,
+          updateSelectInput(session,
                                "tbReporter",
                                choices = availableReporters,
                                selected = selectedReporter)

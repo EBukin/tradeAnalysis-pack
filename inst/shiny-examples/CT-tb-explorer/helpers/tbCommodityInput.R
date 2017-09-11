@@ -9,7 +9,7 @@ tbCommodityInput <- function(id) {
       fluidRow(
         column(
           4,
-          selectizeInput(
+          selectInput(
             ns("tbReporter"),
             "Reporter",
             choices = c("Ukraine" = "804"),

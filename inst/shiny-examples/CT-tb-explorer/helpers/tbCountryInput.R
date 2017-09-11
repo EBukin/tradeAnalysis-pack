@@ -32,7 +32,7 @@ tbCountryInput <- function(id) {
       fluidRow(
         column(
           3,
-          selectizeInput(
+          selectInput(
             ns("tbReporter"),
             "Reporter",
             choices = c("Ukraine" = "804"),
