@@ -35,7 +35,7 @@ create_local_app <- function(appName, toFolder = "~") {
     copy.mode = TRUE
   )
   
-  dataLocation <- file.path("./ShinyData")
+  dataLocation <- file.path("./shinyData")
   dir.create(dataLocation, showWarnings = FALSE)
   writeLines(dataLocation, file.path(newLocation, "dataPath.txt"))
   
