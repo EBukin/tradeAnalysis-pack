@@ -1,4 +1,4 @@
-tbCountryInput <- function(id) {
+mainTradersInput <- function(id) {
   ns <- NS(id)
   tagList(
     box(
@@ -6,51 +6,48 @@ tbCountryInput <- function(id) {
       solidHeader = TRUE,
       status = "primary",
       width = 12,
-      fluidRow(column(
-        4,
-        sliderInput(
-          ns("tbPeriod"),
-          "Years",
-          2005,
-          2020,
-          step = 1,
-          ticks = FALSE,
-          sep = "",
-          value = c(2007, 2017)
-        )
-      ),
-      column(
-        8,
-        selectizeInput(
-          ns("tbCommodity"),
-          "Commodity",
-          choices = NULL,
-          selected = NULL,
-          multiple = FALSE
-        )
-      )),
       fluidRow(
         column(
-          3,
-          selectInput(
-            ns("tbReporter"),
-            "Reporter",
-            choices = c("Ukraine" = "804"),
+          7,
+          selectizeInput(
+            ns("tbCommodity"),
+            "Commodity",
+            choices = NULL,
+            selected = NULL,
             multiple = FALSE
           )
         ),
-        # column(2,
-        #        actionButton(ns('updateReporter'), "Load data")),
-        column(3,
+        column(2,
+               selectInput(
+                 ns("tbReporter"),
+                 "Reporter",
+                 choices = c("World" = "0"),
+                 multiple = FALSE
+               )),
+        column(
+          3,
+          sliderInput(
+            ns("tbPeriod"),
+            "Years",
+            2005,
+            2020,
+            step = 1,
+            sep = "",
+            value = c(2007, 2017)
+          )
+        )
+      ),
+      fluidRow(
+        column(2,
                numericInput(
                  ns("tbNumPartners"),
-                 "Number of partners",
+                 "Partners number",
                  value = 5
                )),
-        column(3,
+        column(2,
                numericInput(
                  ns("tbNumPeriods"),
-                 "Number of top periods",
+                 "Top periods number",
                  value = 5
                )),
         column(
@@ -63,33 +60,17 @@ tbCountryInput <- function(id) {
             selected = "eng",
             inline = TRUE
           )
-        )
-      ) ,
-      fluidRow(
-        column(2,
-               checkboxInput(ns("tbEU"),
-                             "EU as a region",
-                             value = TRUE)),
-        column(2,
-               checkboxInput(
-                 ns("tbOtherEU"),
-                 "Other EU as a region",
-                 value = FALSE
-               )),
-        column(2,
-               checkboxInput(ns("tbFSR"),
-                             "FSR as a region",
-                             value = FALSE)),
-        column(2,
-               checkboxInput(
-                 ns("tbOtherFSR"),
-                 "Other FSR as a region",
-                 value = TRUE
-               )),
-        column(2,
-               checkboxInput(ns("tbSepRus"),
-                             "Show Russia",
-                             value = TRUE)),
+        ),column(
+          3,
+          radioButtons(
+            ns("dataType"),
+            "Data type",
+            choices = c("Only direct" = "Direct",
+                        "Direct and Mirror" = "Mixed"),
+            selected = "Mixed",
+            inline = TRUE
+          )
+        ),
         column(
           2,
           selectInput(
@@ -126,15 +107,13 @@ tbCountryInput <- function(id) {
                numericInput(ns("tbSaveHeight"),
                             "Height",
                             12)),
-        column(
-          2,
-          selectInput(
-            ns("tbSaveUnits"),
-            "Unit",
-            choices = c("cm", "in", "px"),
-            selected = "cm"
-          )
-        ),
+        column(2,
+               selectInput(
+                 ns("tbSaveUnits"),
+                 "Unit",
+                 choices = c("cm", "in", "px"),
+                 selected = "cm"
+               )),
         column(2,
                numericInput(ns("tbSaveRes"),
                             "Resolution dpi",

@@ -1,4 +1,6 @@
 
+
+
 ctDataAvailabilityUI <- function(id) {
   ns <- NS(id)
   tagList(
@@ -9,7 +11,7 @@ ctDataAvailabilityUI <- function(id) {
       width = 12,
       fluidRow(
         column(
-          3,
+          width = 3,
           sliderInput(
             ns("yearPeriod"),
             "Years interval",
@@ -21,7 +23,7 @@ ctDataAvailabilityUI <- function(id) {
           )
         ),
         column(
-          3,
+          width = 3,
           selectizeInput(
             ns("regionsFilter"),
             "Select regions",
@@ -30,7 +32,7 @@ ctDataAvailabilityUI <- function(id) {
           )
         ),
         column(
-          6,
+          width = 6,
           selectizeInput(
             ns("countriesFilter"),
             "Select countries",
@@ -50,5 +52,3 @@ ctDataAvailabilityUI <- function(id) {
     )
   )
 }
-
-

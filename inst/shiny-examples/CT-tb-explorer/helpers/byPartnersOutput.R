@@ -1,6 +1,6 @@
 
 # UI for generating output of the TB by country module
-tbCountryOutput <- function(id) {
+byPartnersOutput <- function(id) {
   ns <- NS(id)
   tagList(
     box(

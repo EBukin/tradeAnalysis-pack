@@ -1,4 +1,4 @@
-tbCommodityInput <- function(id) {
+byCommodityInput <- function(id) {
   ns <- NS(id)
   tagList(
     box(
@@ -6,9 +6,10 @@ tbCommodityInput <- function(id) {
       solidHeader = TRUE,
       status = "primary",
       width = 12,
+      collapsible = TRUE,
       fluidRow(
         column(
-          4,
+          width = 3,
           selectInput(
             ns("tbReporter"),
             "Reporter",
@@ -16,30 +17,29 @@ tbCommodityInput <- function(id) {
             multiple = FALSE
           )
         ),
-        # column(2,
-        #        actionButton(ns('updateReporter'), "Load data")),
-        column(3,
-               selectizeInput(
-                 ns("tbPartner"),
-                 "Parter",
-                 choices = c("World" = "0"),
-                 multiple = FALSE
-               )),
         column(
-          3,
+          width = 3,
+          selectInput(
+            ns("tbPartner"),
+            "Parter",
+            choices = c("World" = "0"),
+            multiple = FALSE
+          )
+        ),
+        column(
+          width = 4,
           sliderInput(
             ns("tbPeriod"),
             "Years",
             2005,
             2020,
             step = 1,
-            ticks = FALSE,
             sep = "",
             value = c(2007, 2017)
           )
         ),
         column(
-          2,
+          width = 2,
           radioButtons(
             ns("tbLang"),
             "Language",
@@ -52,7 +52,7 @@ tbCommodityInput <- function(id) {
       ),
       fluidRow(
         column(
-          4,
+          width = 4,
           selectizeInput(
             ns("tbCommodityGroup"),
             "Commodity group",
@@ -61,20 +61,20 @@ tbCommodityInput <- function(id) {
             multiple = FALSE
           )
         ),
-        column(3,
-               numericInput(
-                 ns("tbNumPartners"),
-                 "Number of top commodities",
-                 value = 5
-               )),
-        column(3,
+        column(
+          width = 3,
+          numericInput(ns("tbNumPartners"),
+                       "Number of top commodities",
+                       value = 5)
+        ),
+        column(width = 3,
                numericInput(
                  ns("tbNumPeriods"),
                  "Number of top periods",
                  value = 5
                )),
         column(
-          2,
+          width = 2,
           selectInput(
             ns("tbPalitra"),
             "Choose palitra",
@@ -91,9 +91,9 @@ tbCommodityInput <- function(id) {
             selected = "Set3"
           )
         )
-      ) ,
+      ),
       fluidRow(column(
-        12,
+        width = 12,
         selectizeInput(
           ns("tbCommodity"),
           "Commodity",

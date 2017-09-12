@@ -1,4 +1,4 @@
-tbCountryOutputLogic <- function(input, output, session, getTbPlot) {
+byCommodityOutputLogic <- function(input, output, session, getTbPlot) {
   # Preparing output
   output$tbSavePNG <- downloadHandler(
     filename = function() {
@@ -45,8 +45,8 @@ tbCountryOutputLogic <- function(input, output, session, getTbPlot) {
   output$tbAreaName <- renderText({
     if (!is.null(getTbPlot()$data)) {
       paste0(getTbPlot()$RporterName,
-             "  -  ",
-             sel_unique(getTbPlot()$dataTable, Commodity))
+             "  -  by commodity trade structure with ",
+             sel_unique(getTbPlot()$dataTable, Partner))
     } else {
       NULL
     }

@@ -1,5 +1,5 @@
 # Modile for updating app selectors according to the available data
-tbCountryInputUpdate <-
+byPartnersInputUpdate <-
   function(input,
            output,
            session,

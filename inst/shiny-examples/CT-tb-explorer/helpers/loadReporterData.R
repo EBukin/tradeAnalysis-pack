@@ -1,5 +1,5 @@
 # Server logic for loading trade data
-loadReporterTradeData <-
+loadReporterData <-
   function(input, output, session, path = "~/ctData/ShinyData/") {
     allDataTable <- reactiveValues(allData = NULL)
     listFiles <- reactive({

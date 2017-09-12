@@ -205,6 +205,16 @@ write_rds(
 
 # Splitting data in separate files for Shiny app  -------------------------
 
+WorldData <- 
+  wtoAnAllAgData %>% 
+  filter(Partner.Code == 0) %>% 
+  rename(Partner.Code = Reporter.Code,
+         Reporter.Code = Partner.Code)
+
+bind_rows(WorldData %>% filter(Type == "Direct"),
+          WorldData %>% mutate(Type = "Dir-Mir")) %>%
+  write_rds("~/ctData/ShinyData/0.rds")
+
 filter(wtoAnAllAgData, Commodity.Code %in% filterCommodities) %>%
   group_by(Reporter.Code) %>%
   do({
