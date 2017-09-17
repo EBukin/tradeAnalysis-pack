@@ -38,13 +38,13 @@ mainTradersInput <- function(id) {
         )
       ),
       fluidRow(
-        column(2,
+        column(3,
                numericInput(
                  ns("tbNumPartners"),
                  "Partners number",
                  value = 5
                )),
-        column(2,
+        column(3,
                numericInput(
                  ns("tbNumPeriods"),
                  "Top periods number",
@@ -60,19 +60,20 @@ mainTradersInput <- function(id) {
             selected = "eng",
             inline = TRUE
           )
-        ),column(
-          3,
-          radioButtons(
-            ns("dataType"),
-            "Data type",
-            choices = c("Only direct" = "Direct",
-                        "Direct and Mirror" = "Mixed"),
-            selected = "Mixed",
-            inline = TRUE
-          )
         ),
+        # column(
+        #   3,
+        #   radioButtons(
+        #     ns("dataType"),
+        #     "Data type",
+        #     choices = c("Only direct" = "Direct",
+        #                 "Direct and Mirror" = "Mixed"),
+        #     selected = "Mixed",
+        #     inline = TRUE
+        #   )
+        # ),
         column(
-          2,
+          3,
           selectInput(
             ns("tbPalitra"),
             "Choose palitra",

@@ -50,16 +50,17 @@ mainTradersPlotLogic <- function(input, output, session, getData) {
         allData %>%
         flt_rep_ct(selectedReporter) %>%
         flt_com_ct(selectedCommodity) %>%
-        flt_year_ct(selectedTimeInterval)
-      if (selectedDataType == "Direct") {
-        plotData <- 
-          plotData %>% 
-          filter(Type == "Direct")
-      } else {
-        plotData <- 
-          plotData %>% 
-          filter(Type != "Direct")
-      }
+        flt_year_ct(selectedTimeInterval) %>% 
+        filter(Type == "Direct")
+      # if (selectedDataType == "Direct") {
+      #   plotData <- 
+      #     plotData %>% 
+      #     filter(Type == "Direct")
+      # } else {
+      #   plotData <- 
+      #     plotData %>% 
+      #     filter(Type != "Direct")
+      # }
     } else {
       plotData <- tibble()
     }
