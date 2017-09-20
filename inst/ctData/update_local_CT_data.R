@@ -121,7 +121,7 @@ foldersStructure %>%
       load_some_ct_bulks_rdata(.$toFolder,
                                filesList = listCTdata(.$toFolder, "Rdata")$name)
     readr::write_rds(wto_an,
-                     path = file.path(.$toFolder, "AllInOne"),
+                     path = file.path(.$toFolder, "AllInOne.rds"),
                      compress = "gz")
     rm(wto_an)
     gc()

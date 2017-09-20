@@ -11,7 +11,7 @@ library(tidyverse)
 library(stringr)
 library(purrr)
 library(readr)
-devtools::install_github("EBukin/tradeAnalysis-pack")
+# devtools::install_github("EBukin/tradeAnalysis-pack")
 library(tradeAnalysis)
 
 # Functions ---------------------------------------------------------------
@@ -155,28 +155,22 @@ wtoAnAllAgData <-
   do({
     load_clean_ct(.$year, rootFolderAnnual, rootFolderMonthly)
   }) %>%
-  ungroup() %>% 
-  bind_rows(
-    filter(., Reporter.Code != 0) %>%
-      select(-Type) %>%
-      agg_world(., aggPart = FALSE, returnAll = FALSE) %>%
-      filter(Partner.Code != 0) %>%
-      mutate(Type = "Direct")
-  )
+  ungroup() 
+
+# Cleaning World totals from the data
+worldData <- 
+  wtoAnAllAgData %>% 
+  filter(Partner.Code == 0) %>% 
+  rename(Partner.Code = Reporter.Code,
+         Reporter.Code = Partner.Code)
+
+wtoAnAllAgData <- 
+  bind_rows(wtoAnAllAgData,
+            worldData)
 
 # Saving data -------------------------------------------------------------
 
-wtoAnAllAgData <-
-  read_rds("~/ctData/ctBulkR/wtoAnAggAll.rds") %>%
-  bind_rows(
-    filter(., Reporter.Code != 0) %>%
-      select(-Type) %>%
-      agg_world(., aggPart = FALSE, returnAll = FALSE) %>%
-      filter(Partner.Code != 0) %>%
-      mutate(Type = "Direct")
-  )
-
-# All data as it is.
+# Saving this data on the hard drive
 write_rds(wtoAnAllAgData,
           "~/ctData/ctBulkR/wtoAnAggAll.rds",
           compress = "gz")
@@ -198,24 +192,19 @@ write_rds(
 
 write_rds(
   filter(wtoAnAllAgData, !Commodity.Code %in% wtoAgFoodFull$Commodity.Code | Commodity.Code %in% wtoAgFood$Commodity.Code),
-  "~/ctData/ctBulkR/wtoAnAggshort.rds",
+  "~/ctData/ctBulkR/wtoAnAggShort.rds",
   compress = "gz"
 )
 
-
 # Splitting data in separate files for Shiny app  -------------------------
 
-WorldData <- 
-  wtoAnAllAgData %>% 
-  filter(Partner.Code == 0) %>% 
-  rename(Partner.Code = Reporter.Code,
-         Reporter.Code = Partner.Code)
-
-bind_rows(WorldData %>% filter(Type == "Direct"),
-          WorldData %>% mutate(Type = "Dir-Mir")) %>%
-  write_rds("~/ctData/ShinyData/0.rds")
+worldData %>% 
+  filter(Type == "Direct") %>%
+  filter(Commodity.Code %in% filterCommodities) %>% 
+  write_rds("~/ctData/ShinyData/0.rds", compress = "gz")
 
 filter(wtoAnAllAgData, Commodity.Code %in% filterCommodities) %>%
+  filter(Reporter.Code != 0) %>% 
   group_by(Reporter.Code) %>%
   do({
     x <- .
@@ -228,4 +217,5 @@ filter(wtoAnAllAgData, Commodity.Code %in% filterCommodities) %>%
 
 wtoAnAllAgData %>%
   sel_dist(Reporter.Code, Year, Type) %>%
+  filter(Reporter.Code != 0 | (Reporter.Code == 0 & Type == "Direct")) %>% 
   write_csv("~/ctData/ShinyData/dataAvailability.csv")
