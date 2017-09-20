@@ -43,7 +43,7 @@ build_ct_storage <-
     wtoMnAllInOne <- ifCreateDir(wtoMnAll, "AllInOne")
     
     # Copy Scripts
-    SourceFolder <- system.file("tradeHarvester", package = "tradeAnalysis")
+    SourceFolder <- system.file("ctData", package = "tradeAnalysis")
     filesToCopy <- file.path(SourceFolder, list.files(SourceFolder, all.files = T, no.. = TRUE))
     invisible(lapply(filesToCopy[stringr::str_detect(filesToCopy[], ".R$")], FUN = function(x) file.copy(from = x, to = baseDB, overwrite = TRUE)))
     invisible(lapply(filesToCopy[!stringr::str_detect(filesToCopy[], ".R$")], FUN = function(x) file.copy(from = x, to = baseDB, overwrite = FALSE)))
