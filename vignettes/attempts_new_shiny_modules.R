@@ -10,13 +10,14 @@ library(shinydashboard)
 library(plotly)
 library(DT)
 
-folder <- "inst/shiny-examples/CT-tb-explorer/helpers/"
+folder <- "inst/shiny-examples/trade-data-explorer/helpers/"
 lapply(file.path(folder,list.files(folder, ".R$")), source)
 
-source("inst/shiny-examples/CT-tb-explorer/ui.R")
-source("inst/shiny-examples/CT-tb-explorer/server.R")
+source("inst/shiny-examples/trade-data-explorer/ui.R")
+source("inst/shiny-examples/trade-data-explorer/server.R")
 
 app <- shinyApp(ui, server)
+
 runApp(app)
 
 

@@ -78,7 +78,21 @@ tbPlotLogic <- function(input, output, session, getData) {
       # Building a plot ## ## ## ## ## ## ## ## ## ##
       pData <-
         plotData %>%
-        filter(Partner.Code != 0) %>%
+        filter(Partner.Code != 0)
+      
+      pData <-
+        tibble(Trade.Flow.Code = c(1,2)) %>% 
+        rowwise() %>% 
+        do({
+          x <- unique(.$Trade.Flow.Code)
+          pData %>% 
+            distinct(Year, Reporter.Code, Type, Period, Partner.Code, Commodity.Code, Variable) %>% 
+            mutate(Trade.Flow.Code = x)
+        }) %>% 
+        ungroup() %>% 
+        left_join(pData, by = c("Year", "Reporter.Code", "Type", "Period", "Partner.Code", "Commodity.Code", "Variable", "Trade.Flow.Code")) %>% 
+        distinct() %>% 
+        mutate(Value = ifelse(is.na(Value), 0, Value)) %>%
         rank_agg_top_partners(
           top_n = selectedPartNumb,
           agg = T,
@@ -90,6 +104,7 @@ tbPlotLogic <- function(input, output, session, getData) {
           topPeriod = selectedNumPeriods
         )  %>%
         mutate(Value = Value / 1000000)
+      
       
       plt <-
         pData %>%
