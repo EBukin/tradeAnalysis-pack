@@ -200,7 +200,11 @@ write_rds(
 
 worldData %>% 
   filter(Type == "Direct") %>%
-  filter(Commodity.Code %in% filterCommodities) %>% 
+  filter(Commodity.Code %in% filterCommodities) %>%
+  bind_rows(group_by(., Year, Type, Period, Trade.Flow.Code, Reporter.Code, Commodity.Code, Variable) %>% 
+              summarise(Value = sum(Value, na.rm = T)) %>%
+              ungroup() %>% 
+              mutate(Partner.Code = 0)) %>% 
   write_rds("~/ctData/ShinyData/0.rds", compress = "gz")
 
 filter(wtoAnAllAgData, Commodity.Code %in% filterCommodities) %>%
