@@ -30,10 +30,11 @@ build_ct_storage <-
     
     baseDB <- ifCreateDir(rootFolder, "ctData")
     ctBulkZIP <- ifCreateDir(baseDB, "ctBulkZIP")
+    ShinyDataFolder <- ifCreateDir(baseDB, "ShinyData")
     ifCreateDir(ctBulkZIP, "ctAnAll", F)
     ifCreateDir(ctBulkZIP, "ctMnAll", F)
-    ifCreateDir(ctBulkZIP, "ctAnByCountry", F)
-    ifCreateDir(ctBulkZIP, "ctMnByCountry", F)
+    # ifCreateDir(ctBulkZIP, "ctAnByCountry", F)
+    # ifCreateDir(ctBulkZIP, "ctMnByCountry", F)
     ctBulkR <- ifCreateDir(baseDB, "ctBulkR")
     ctAnAll <- ifCreateDir(ctBulkR, "ctAnAll")
     wtoAnAll <- ifCreateDir(ctAnAll, "wtoAnAll")

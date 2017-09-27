@@ -20,7 +20,7 @@ token <- try(read_lines(".CT-token"), silent = TRUE)
 if (class(try(read_lines(".CT-token"))) == "try-error") token <- NA
 
 # Creating data structure with all folders
-build_ct_storage()
+# build_ct_storage()
 
 # Data in the folders ----------------------------------------------------
 
