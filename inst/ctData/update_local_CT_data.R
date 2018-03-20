@@ -11,13 +11,13 @@ library(tradeAnalysis)
 
 # Loading data ------------------------------------------------------------
 
-# Available data:
-ctAval <- getCTParameters()
-
 # Loading token
 token <- NA
 token <- try(read_lines(".CT-token"), silent = TRUE)
 if (class(try(read_lines(".CT-token"))) == "try-error") token <- NA
+
+# Available data:
+ctAval <- getCTParameters(token = token)
 
 # Creating data structure with all folders
 # build_ct_storage()

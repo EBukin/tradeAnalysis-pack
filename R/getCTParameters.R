@@ -1,7 +1,10 @@
 #' Get CT bulk data availability from the web
 #'
-getCTParameters <- function() {
-  jsonlite::fromJSON("http://comtrade.un.org/api/refs/da/bulk?parameters") %>%
+getCTParameters <- function(token = NA) {
+  request <- "http://comtrade.un.org/api/refs/da/bulk?parameters"
+  if (!is.na(token)) 
+    request <- stringr::str_c("https://comtrade.un.org/api/refs/da/bulk?token=", token)
+  jsonlite::fromJSON(request) %>%
     tbl_df() %>%
     mutate(
       year = stringr::str_sub(ps, start = 1, end = 4),
