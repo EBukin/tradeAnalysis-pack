@@ -10,7 +10,23 @@ readCTZIP <-
     to <- file.path(from,"temp")
     
     # unzipping all files
-    try(unzip(zipfile = file.path(from, file), exdir = to))
+    if (.Platform$OS.type == "unix") {
+      decompression <-
+        system2("unzip",
+                args = c(
+                  "-o",
+                  # include override flag
+                  gsub(" ", "\\\\ ", normalizePath(file.path(from, file))),
+                  "-d",
+                  gsub(" ", "\\\\ ", normalizePath(to))
+                ),
+                stdout = TRUE)
+      if (grepl("Warning message", tail(decompression, 1)))
+        print(decompression)
+      
+    } else {
+      try(unzip(zipfile = file.path(from, file), exdir = to))
+    }
     csv_file <- file.path(to, unzip(zipfile = file.path(from, file), exdir = to, list = TRUE)$Name)
     
     ctdf <- readCTCSV(csv_file)
