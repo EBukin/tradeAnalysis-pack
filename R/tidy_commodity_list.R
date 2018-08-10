@@ -133,6 +133,7 @@ tidy_commodity_list <-
       })
     
     output <- setNames(as.list(tidyList), dataList$SubGroup) 
+    output <- output[!is.na(names(output))]
     
     if (orderedDataFrame) {
       output <- data
